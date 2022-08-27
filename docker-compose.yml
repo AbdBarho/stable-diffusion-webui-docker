@@ -11,8 +11,7 @@ services:
       - ./output:/output
       - ./models:/models
     environment:
-      - CLI_ARGS=--outdir /output --save-metadata --ckpt /models/model.ckpt
-      #--extra-models-cpu --optimized
+      - CLI_ARGS=--extra-models-cpu
     deploy:
       resources:
         reservations:
