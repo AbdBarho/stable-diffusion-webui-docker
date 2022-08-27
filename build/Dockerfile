@@ -8,24 +8,17 @@ RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorc
 RUN git clone https://github.com/hlky/stable-diffusion.git && cd stable-diffusion && git reset --hard 554bd068e6f2f6bc55449a67fe017ddd77090f28
 RUN conda env update --file stable-diffusion/environment.yaml --name base && conda clean -a -y
 
+# fonts
+RUN apt-get update && apt install fonts-dejavu-core && apt-get clean
 
 RUN git clone https://github.com/hlky/stable-diffusion-webui.git && cd stable-diffusion-webui && \
-  git reset --hard 82770bacae08f3b41a0df3eee9fca214d6b7fae6 && \
-  cp -t /stable-diffusion/scripts/  txt2img.yaml webui.py webui.yaml webui_playground.py  && \
+  git reset --hard fe6f1e3dc5773aabf879e1d686699092bf483a6b && \
+  cp -t /stable-diffusion/scripts/ txt2img.yaml webui.py webui.yaml webui_playground.py && \
   cd / && rm -rf stable-diffusion-webui
 
-# newer versions of the UI uses arial as font, which needs to be installed
-# https://github.com/hlky/stable-diffusion-webui/blob/82770bacae08f3b41a0df3eee9fca214d6b7fae6/webui.py#L364
-# this might change in the future, so we can remove it later
-WORKDIR /tmp/
-RUN apt-get update && apt install cabextract wget &&  wget https://www.freedesktop.org/software/fontconfig/webfonts/webfonts.tar.gz &&\
-  tar -xzf webfonts.tar.gz && cd msfonts/ && cabextract *.exe && cp Arial.TTF /stable-diffusion/arial.ttf &&\
-  apt-get clean && rm -rf /tmp/
-
-
-ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
 WORKDIR /stable-diffusion
+ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
 EXPOSE 7860
 CMD ln -sf /models/model.ckpt /stable-diffusion/models/ldm/stable-diffusion-v1/model.ckpt && \
