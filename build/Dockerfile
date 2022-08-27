@@ -9,6 +9,12 @@ RUN git clone https://github.com/hlky/stable-diffusion.git && cd stable-diffusio
 RUN conda env update --file stable-diffusion/environment.yaml --name base && conda clean -a -y
 
 
+RUN git clone https://github.com/hlky/stable-diffusion-webui.git && cd stable-diffusion-webui && \
+  git reset --hard b2dc4539d4171ab4fc78471a5bb9425d6a5d5445 && \
+  cp -t /stable-diffusion/scripts/  txt2img.yaml webui.py webui.yaml webui_playground.py  && \
+  cd / && rm -rf stable-diffusion-webui
+
+
 
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
