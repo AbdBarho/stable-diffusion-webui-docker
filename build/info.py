@@ -8,5 +8,5 @@ file.write_text(
     Created using <a href="https://github.com/AbdBarho/stable-diffusion-webui-docker">stable-diffusion-webui-docker</a>.
   </p>
   <p>For help and advanced usage guides,
-""")
+""", 1)
 )
