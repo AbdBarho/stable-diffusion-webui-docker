@@ -8,20 +8,34 @@ RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorc
 RUN git clone https://github.com/hlky/stable-diffusion.git && cd stable-diffusion && git reset --hard 554bd068e6f2f6bc55449a67fe017ddd77090f28
 RUN conda env update --file stable-diffusion/environment.yaml --name base && conda clean -a -y
 
-# fonts
+# fonts for generating the grid
 RUN apt-get update && apt install fonts-dejavu-core && apt-get clean
 
+# Note: don't update the sha of previous versions because the install will take forever
+# instead, update the repo state in a later step
+RUN cd stable-diffusion && git pull && git reset --hard 6b442c05296dd350fcf7f752e17c4b4bb015a03b && \
+  conda env update --file environment.yaml --name base && conda clean -a -y
+
+# download latest UI version, update the sha below in case you want some other version
 RUN git clone https://github.com/hlky/stable-diffusion-webui.git && cd stable-diffusion-webui && \
   git reset --hard 33890563d237889aca7cbc4f04ae42b885aee07e && \
   cp -t /stable-diffusion/scripts/ txt2img.yaml webui.py webui.yaml webui_playground.py && \
   cd / && rm -rf stable-diffusion-webui
 
 
+# For testing different versions:
+# RUN git clone https://github.com/AbdBarho/stable-diffusion-webui.git && cd stable-diffusion-webui && \
+#   git checkout respect-cli-params &&\
+#   cp -t /stable-diffusion/scripts/ txt2img.yaml webui.py webui.yaml webui_playground.py && \
+#   cd / && rm -rf stable-diffusion-webui
+
+
 WORKDIR /stable-diffusion
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
 EXPOSE 7860
-CMD ln -sf /models/model.ckpt /stable-diffusion/models/ldm/stable-diffusion-v1/model.ckpt && \
+CMD \
+  ln -sf /models/model.ckpt /stable-diffusion/models/ldm/stable-diffusion-v1/model.ckpt && \
   ln -sf /models/GFPGANv1.3.pth   /stable-diffusion/src/gfpgan/experiments/pretrained_models/GFPGANv1.3.pth && \
   ln -sf /models/RealESRGAN_x4plus.pth   /stable-diffusion/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus.pth && \
   # force facexlib cache
