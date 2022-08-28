@@ -13,12 +13,12 @@ RUN apt-get update && apt install fonts-dejavu-core && apt-get clean
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-RUN cd stable-diffusion && git pull && git reset --hard 6b442c05296dd350fcf7f752e17c4b4bb015a03b && \
+RUN cd stable-diffusion && git pull && git reset --hard ac31d943ce0c99b7dd4df7e6cb1c14f2e275ca96 && \
   conda env update --file environment.yaml --name base && conda clean -a -y
 
-# download latest UI version, update the sha below in case you want some other version
+# download dev UI version, update the sha below in case you want some other version
 RUN git clone https://github.com/hlky/stable-diffusion-webui.git && cd stable-diffusion-webui && \
-  git reset --hard 33890563d237889aca7cbc4f04ae42b885aee07e && \
+  git reset --hard 244f945c40b8dec3fd1faf8824b99abeb3bc4b97 && \
   cp -t /stable-diffusion/scripts/ txt2img.yaml webui.py webui.yaml webui_playground.py && \
   cd / && rm -rf stable-diffusion-webui
 
@@ -32,10 +32,10 @@ RUN git clone https://github.com/hlky/stable-diffusion-webui.git && cd stable-di
 
 WORKDIR /stable-diffusion
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
-
 EXPOSE 7860
+COPY info.py /info.py
 CMD \
-  ln -sf /models/model.ckpt /stable-diffusion/models/ldm/stable-diffusion-v1/model.ckpt && \
+  python /info.py scripts/webui.py && \
   ln -sf /models/GFPGANv1.3.pth   /stable-diffusion/src/gfpgan/experiments/pretrained_models/GFPGANv1.3.pth && \
   ln -sf /models/RealESRGAN_x4plus.pth   /stable-diffusion/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus.pth && \
   # force facexlib cache
