@@ -43,9 +43,11 @@ ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS="" \
   RealESRGAN_ANIME_PATH=/stable-diffusion/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus_anime_6B.pth
 EXPOSE 7860
 CMD \
-  (test -f /models/GFPGANv1.3.pth && ln -sf /models/GFPGANv1.3.pth "${GFPGAN_PATH}" && echo "Mounted GFPGAN"); \
-  (test -f /models/RealESRGAN_x4plus.pth && ln -sf /models/RealESRGAN_x4plus.pth "${RealESRGAN_PATH}" && echo "Mounted RealESRGAN");\
-  (test -f /models/RealESRGAN_x4plus_anime_6B.pth && ln -sf /models/RealESRGAN_x4plus_anime_6B.pth "${RealESRGAN_ANIME_PATH}" && echo "Mounted RealESRGAN_ANIME"); \
+  for path in "${GFPGAN_PATH}" "${RealESRGAN_PATH}" "${RealESRGAN_ANIME_PATH}"; do \
+  name=$(basename "${path}"); \
+  base=$(dirname "${path}"); \
+  test -f "/models/${name}" && mkdir -p "${base}" && ln -sf "/models/${name}" "${path}" && echo "Mounted ${name}";\
+  done;\
   # force facexlib cache
   mkdir -p /cache/weights/ && rm -rf /opt/conda/lib/python3.8/site-packages/facexlib/weights && \
   ln -sf  /cache/weights/ /opt/conda/lib/python3.8/site-packages/facexlib/ && \
