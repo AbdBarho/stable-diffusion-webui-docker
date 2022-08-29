@@ -13,17 +13,20 @@ RUN apt-get update && apt install fonts-dejavu-core && apt-get clean
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-RUN cd stable-diffusion && git pull && git reset --hard f3ab556a0c25389cf76f82e63073054e32313829 && \
+RUN cd stable-diffusion && git pull && git reset --hard 64490d2df8b321d6562d3023210a30a2c5ad42b7 && \
   conda env update --file environment.yaml --name base && conda clean -a -y
 
 # download dev UI version, update the sha below in case you want some other version
-RUN git clone https://github.com/hlky/stable-diffusion-webui.git && cd stable-diffusion-webui && \
-  git reset --hard 083ffd9ad83d196100fd4b8edfa82c9378546327 && \
-  cp -t /stable-diffusion/scripts/ txt2img.yaml webui.py webui.yaml webui_playground.py relauncher.py && \
-  cd frontend && \
-  cp -t /stable-diffusion/frontend/ __init__.py css_and_js.py frontend.py ui_functions.py && \
-  cd / && rm -rf stable-diffusion-webui
-
+RUN <<EOF
+git clone https://github.com/hlky/stable-diffusion-webui.git
+cd stable-diffusion-webui
+# map to this file: https://github.com/hlky/stable-diffusion-webui/blob/master/.github/sync.yml
+git reset --hard e253a27a0fd5f252e9acb9b0003f7e3570ab7162
+cp -t /stable-diffusion/scripts/ webui.py relauncher.py txt2img.yaml
+cp -t /stable-diffusion/configs/webui webui.yaml
+cp -t /stable-diffusion/frontend/ frontend/*
+cd / && rm -rf stable-diffusion-webui
+EOF
 
 # For testing different versions:
 # RUN git clone https://github.com/AbdBarho/stable-diffusion-webui.git && cd stable-diffusion-webui && \

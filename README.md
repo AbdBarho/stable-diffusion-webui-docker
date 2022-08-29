@@ -2,7 +2,7 @@
 
 Run Stable Diffusion on your machine with a nice UI without any hassle!
 
-This repository provides the [WebUI](https://github.com/hlky/stable-diffusion-webui) as docker for easy setup and deployment. Please note that this repo delivers all cutting-edge changes from the WebUI, so expect some bugs.
+This repository provides the [WebUI](https://github.com/hlky/stable-diffusion-webui) as docker for easy setup and deployment. Please note that this repo delivers all cutting-edge unstable changes from the WebUI, so expect some bugs.
 
 ## Setup
 
@@ -47,7 +47,7 @@ Note: the first start will take sometime as some other models will be downloaded
 
 ## Config
 
-in the `docker-compose.yml` you can change the cli parameters of the webui, the ports, and gpu setup. You can find all cli configs [here](https://github.com/hlky/stable-diffusion-webui/blob/f3ab556a0c25389cf76f82e63073054e32313829/webui.py)
+in the `docker-compose.yml` you can change the `CLI_ARGS` variable contains all of the variables that will be passed to [the web ui](https://github.com/hlky/stable-diffusion-webui/blob/e253a27a0fd5f252e9acb9b0003f7e3570ab7162/webui.py), by default: `--extra-models-cpu --optimized-turbo` are given, which allow you to use this model on a 6GB GPU.
 
 # Disclaimer
 
