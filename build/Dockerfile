@@ -35,13 +35,17 @@ COPY info.py /info.py
 RUN  python /info.py /stable-diffusion/scripts/webui.py
 
 WORKDIR /stable-diffusion
-ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
+ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS="" \
+  GFPGAN_PATH=/stable-diffusion/src/gfpgan/experiments/pretrained_models/GFPGANv1.3.pth \
+  RealESRGAN_PATH=/stable-diffusion/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus.pth \
+  RealESRGAN_ANIME_PATH=/stable-diffusion/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus_anime_6B.pth
 EXPOSE 7860
 CMD \
-  ln -sf /models/GFPGANv1.3.pth   /stable-diffusion/src/gfpgan/experiments/pretrained_models/GFPGANv1.3.pth && \
-  ln -sf /models/RealESRGAN_x4plus.pth   /stable-diffusion/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus.pth && \
+  (test -f /models/GFPGANv1.3.pth && ln -sf /models/GFPGANv1.3.pth "${GFPGAN_PATH}" && echo "Mounted GFPGAN"); \
+  (test -f /models/RealESRGAN_x4plus.pth && ln -sf /models/RealESRGAN_x4plus.pth "${RealESRGAN_PATH}" && echo "Mounted RealESRGAN");\
+  (test -f /models/RealESRGAN_x4plus_anime_6B.pth && ln -sf /models/RealESRGAN_x4plus_anime_6B.pth "${RealESRGAN_ANIME_PATH}" && echo "Mounted RealESRGAN_ANIME"); \
   # force facexlib cache
   mkdir -p /cache/weights/ && rm -rf /opt/conda/lib/python3.8/site-packages/facexlib/weights && \
   ln -sf  /cache/weights/ /opt/conda/lib/python3.8/site-packages/facexlib/ && \
   # run, -u to not buffer stdout / stderr
-  python3 -u scripts/webui.py --outdir /output --save-metadata --ckpt /models/model.ckpt ${CLI_ARGS}
+  python3 -u scripts/webui.py --outdir /output --ckpt /models/model.ckpt --save-metadata ${CLI_ARGS}
