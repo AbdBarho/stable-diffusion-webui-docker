@@ -13,13 +13,15 @@ RUN apt-get update && apt install fonts-dejavu-core && apt-get clean
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-RUN cd stable-diffusion && git pull && git reset --hard ac31d943ce0c99b7dd4df7e6cb1c14f2e275ca96 && \
+RUN cd stable-diffusion && git pull && git reset --hard f3ab556a0c25389cf76f82e63073054e32313829 && \
   conda env update --file environment.yaml --name base && conda clean -a -y
 
 # download dev UI version, update the sha below in case you want some other version
 RUN git clone https://github.com/hlky/stable-diffusion-webui.git && cd stable-diffusion-webui && \
-  git reset --hard 244f945c40b8dec3fd1faf8824b99abeb3bc4b97 && \
-  cp -t /stable-diffusion/scripts/ txt2img.yaml webui.py webui.yaml webui_playground.py && \
+  git reset --hard 083ffd9ad83d196100fd4b8edfa82c9378546327 && \
+  cp -t /stable-diffusion/scripts/ txt2img.yaml webui.py webui.yaml webui_playground.py relauncher.py && \
+  cd frontend && \
+  cp -t /stable-diffusion/frontend/ __init__.py css_and_js.py frontend.py ui_functions.py && \
   cd / && rm -rf stable-diffusion-webui
 
 
@@ -32,7 +34,7 @@ RUN git clone https://github.com/hlky/stable-diffusion-webui.git && cd stable-di
 
 # add info
 COPY info.py /info.py
-RUN  python /info.py /stable-diffusion/scripts/webui.py
+RUN  python /info.py /stable-diffusion/frontend/frontend.py
 
 WORKDIR /stable-diffusion
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS="" \
