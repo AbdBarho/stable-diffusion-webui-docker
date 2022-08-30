@@ -13,27 +13,26 @@ RUN apt-get update && apt install fonts-dejavu-core && apt-get clean
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-RUN cd stable-diffusion && git pull && git reset --hard c0c2a7c0d55561cfb6f42a3681346b9b70749ff1 && \
+RUN cd stable-diffusion && git pull && git reset --hard fe76828926653f979263b4c9d0bf7acc75f4aad2 && \
   conda env update --file environment.yaml --name base && conda clean -a -y
 
 # download dev UI version, update the sha below in case you want some other version
-RUN <<EOF
-git clone https://github.com/hlky/stable-diffusion-webui.git
-cd stable-diffusion-webui
-# map to this file: https://github.com/hlky/stable-diffusion-webui/blob/master/.github/sync.yml
-git reset --hard 49e6178fd82ca736f9bbc621c6b12487c300e493
-cp -t /stable-diffusion/scripts/ webui.py relauncher.py txt2img.yaml
-cp -t /stable-diffusion/configs/webui webui.yaml
-cp -t /stable-diffusion/frontend/ frontend/*
-cd / && rm -rf stable-diffusion-webui
-EOF
+# RUN <<EOF
+# git clone https://github.com/hlky/stable-diffusion-webui.git
+# cd stable-diffusion-webui
+# # map to this file: https://github.com/hlky/stable-diffusion-webui/blob/master/.github/sync.yml
+# git reset --hard 49e6178fd82ca736f9bbc621c6b12487c300e493
+# cp -t /stable-diffusion/scripts/ webui.py relauncher.py txt2img.yaml
+# cp -t /stable-diffusion/configs/webui webui.yaml
+# cp -t /stable-diffusion/frontend/ frontend/*
+# cd / && rm -rf stable-diffusion-webui
+# EOF
 
-# For testing different versions:
-# RUN git clone https://github.com/AbdBarho/stable-diffusion-webui.git && cd stable-diffusion-webui && \
-#   git checkout respect-cli-params &&\
-#   cp -t /stable-diffusion/scripts/ txt2img.yaml webui.py webui.yaml webui_playground.py && \
-#   cd / && rm -rf stable-diffusion-webui
-
+# Textual-inversion:
+# RUN <<EOF
+# git clone https://github.com/hlky/sd-enable-textual-inversion.git
+# cp -rf sd-enable-textual-inversion /stable-diffusion
+# EOF
 
 # add info
 COPY info.py /info.py
@@ -52,7 +51,7 @@ CMD \
   test -f "/models/${name}" && mkdir -p "${base}" && ln -sf "/models/${name}" "${path}" && echo "Mounted ${name}";\
   done;\
   # force facexlib cache
-  mkdir -p /cache/weights/ && rm -rf /opt/conda/lib/python3.8/site-packages/facexlib/weights && \
-  ln -sf  /cache/weights/ /opt/conda/lib/python3.8/site-packages/facexlib/ && \
+  mkdir -p /cache/weights/ && rm -rf /stable-diffusion/src/facexlib/facexlib/weights && \
+  ln -sf  /cache/weights/ /stable-diffusion/src/facexlib/facexlib/ && \
   # run, -u to not buffer stdout / stderr
   python3 -u scripts/webui.py --outdir /output --ckpt /models/model.ckpt --save-metadata ${CLI_ARGS}
