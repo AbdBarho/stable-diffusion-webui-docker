@@ -18,19 +18,14 @@ you can let it build in the background while you download the different models
 - (Optional) [GFPGANv1.3.pth (333MB)](https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth) to improve generated faces.
 - (Optional) [RealESRGAN_x4plus.pth (64MB)](https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth) and [RealESRGAN_x4plus_anime_6B.pth (18MB)](https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth) for super-sampling.
 
-Put all of the downloaded models in the `models` folder, the folder structure should look something like this:
+Put all of the downloaded files in the `models` folder, it should look something like this:
 
 ```
-├── README.md
-├── docker-compose.yml
-├── build
-├── cache
-├── models
-│   ├── GFPGANv1.3.pth
-│   ├── RealESRGAN_x4plus.pth
-│   ├── RealESRGAN_x4plus_anime_6B.pth
-│   └── model.ckpt
-├── output
+models/
+├── GFPGANv1.3.pth
+├── RealESRGAN_x4plus.pth
+├── RealESRGAN_x4plus_anime_6B.pth
+└── model.ckpt
 ```
 
 ## Run
