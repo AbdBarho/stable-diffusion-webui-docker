@@ -1,0 +1,22 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "WebUI",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "/stable-diffusion",
+      "args": ["--ckpt", "${workspaceFolder}/models/model.ckpt", "--gfpgan-dir", "${workspaceFolder}/models/", "--extra-models-cpu"],
+      "env": {
+        "TRANSFORMERS_CACHE":"${workspaceFolder}/cache/transformers",
+        "TORCH_HOME":"${workspaceFolder}/cache/torch"
+      },
+      "console": "integratedTerminal",
+      "justMyCode": false
+    }
+  ]
+}
