@@ -47,7 +47,7 @@ Note: the first start will take sometime as some other models will be downloaded
 
 ## Config
 
-in the `docker-compose.yml` you can change the `CLI_ARGS` variable contains all of the variables that will be passed to [the web ui](https://github.com/hlky/stable-diffusion-webui/blob/e253a27a0fd5f252e9acb9b0003f7e3570ab7162/webui.py), by default: `--extra-models-cpu --optimized-turbo` are given, which allow you to use this model on a 6GB GPU.
+in the `docker-compose.yml` you can change the `CLI_ARGS` variable contains all of the variables that will be passed to [the web ui](https://github.com/hlky/stable-diffusion-webui/blob/49e6178fd82ca736f9bbc621c6b12487c300e493/webui.py), by default: `--extra-models-cpu --optimized-turbo` are given, which allow you to use this model on a 6GB GPU.
 
 # Disclaimer
 

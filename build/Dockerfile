@@ -13,7 +13,7 @@ RUN apt-get update && apt install fonts-dejavu-core && apt-get clean
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-RUN cd stable-diffusion && git pull && git reset --hard 64490d2df8b321d6562d3023210a30a2c5ad42b7 && \
+RUN cd stable-diffusion && git pull && git reset --hard c0c2a7c0d55561cfb6f42a3681346b9b70749ff1 && \
   conda env update --file environment.yaml --name base && conda clean -a -y
 
 # download dev UI version, update the sha below in case you want some other version
@@ -21,7 +21,7 @@ RUN <<EOF
 git clone https://github.com/hlky/stable-diffusion-webui.git
 cd stable-diffusion-webui
 # map to this file: https://github.com/hlky/stable-diffusion-webui/blob/master/.github/sync.yml
-git reset --hard e253a27a0fd5f252e9acb9b0003f7e3570ab7162
+git reset --hard 49e6178fd82ca736f9bbc621c6b12487c300e493
 cp -t /stable-diffusion/scripts/ webui.py relauncher.py txt2img.yaml
 cp -t /stable-diffusion/configs/webui webui.yaml
 cp -t /stable-diffusion/frontend/ frontend/*
