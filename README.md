@@ -42,7 +42,7 @@ Note: the first start will take sometime as some other models will be downloaded
 
 ## Config
 
-in the `docker-compose.yml` you can change the `CLI_ARGS` variable contains all of the variables that will be passed to [the web ui](https://github.com/hlky/stable-diffusion-webui/blob/49e6178fd82ca736f9bbc621c6b12487c300e493/webui.py).
+in the `docker-compose.yml` you can change the `CLI_ARGS` variable contains all of the variables that will be passed to [the web ui](https://github.com/hlky/stable-diffusion/blob/fa977b3d6f9d0b264035c949fd70415476f00036/scripts/webui.py).
 
 By default: `--gfpgan-gpu 0 --esrgan-cpu --optimized-turbo` are given, which allow you to use this model on a 6GB GPU.
 NOTE: GFPGAN does not work on the CPU [More info here](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues/4)
