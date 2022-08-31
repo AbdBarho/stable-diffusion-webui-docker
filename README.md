@@ -57,8 +57,8 @@ in the `docker-compose.yml` you can change the `CLI_ARGS` variable, which contai
 ## FAQ
 
 - To enable [Textual Inversion](https://github.com/hlky/sd-enable-textual-inversion) remove `--optimize` and `--optimize-turbo` flags and add `--no-half`, [more info here](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues/6).
+- If [output is a always green imagee](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues/9), use `--precission full --no-half`.
 - [The Application Freezes When Trying Batch Sizes Higher Than One](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues/12)
-- [Output is a green imagee](https://github.com/hlky/stable-diffusion-webui/issues/34)
 
 # Disclaimer
 
