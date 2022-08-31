@@ -9,7 +9,7 @@ RUN git clone https://github.com/hlky/stable-diffusion.git && cd stable-diffusio
 RUN conda env update --file stable-diffusion/environment.yaml --name base && conda clean -a -y
 
 # fonts for generating the grid
-RUN apt-get update && apt install fonts-dejavu-core && apt-get clean
+RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
@@ -29,10 +29,11 @@ RUN apt-get update && apt install fonts-dejavu-core && apt-get clean
 # EOF
 
 # Textual-inversion:
-# RUN <<EOF
-# git clone https://github.com/hlky/sd-enable-textual-inversion.git
-# cp -rf sd-enable-textual-inversion /stable-diffusion
-# EOF
+RUN <<EOF
+git clone https://github.com/hlky/sd-enable-textual-inversion.git &&
+cd /sd-enable-textual-inversion && git reset --hard 08f9b5046552d17cf7327b30a98410222741b070 &&
+rsync -a /sd-enable-textual-inversion/ /stable-diffusion/
+EOF
 
 # add info
 COPY info.py /info.py
