@@ -13,7 +13,7 @@ RUN apt-get update && apt install fonts-dejavu-core && apt-get clean
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-RUN cd stable-diffusion && git pull && git reset --hard fe76828926653f979263b4c9d0bf7acc75f4aad2 && \
+RUN cd stable-diffusion && git pull && git reset --hard fa977b3d6f9d0b264035c949fd70415476f00036 && \
   conda env update --file environment.yaml --name base && conda clean -a -y
 
 # download dev UI version, update the sha below in case you want some other version
