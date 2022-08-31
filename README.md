@@ -55,7 +55,7 @@ By default: `--extra-models-cpu --optimized-turbo` are given, which allow you to
 
 ## FAQ
 
-- Enable [Textual Inversion](https://github.com/hlky/sd-enable-textual-inversion) remove `--optimize` and `--optimize-turbo` flags and add `--no-half`, [more info here](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues/6).
+- To enable [Textual Inversion](https://github.com/hlky/sd-enable-textual-inversion) remove `--optimize` and `--optimize-turbo` flags and add `--no-half`, [more info here](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues/6).
 - [The Application Freezes When Trying Batch Sizes Higher Than One](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues/12)
 - [Output is a green imagee](https://github.com/hlky/stable-diffusion-webui/issues/34)
 
