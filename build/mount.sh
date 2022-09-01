@@ -12,7 +12,12 @@ MODELS["/latent-diffusion/experiments/pretrained_models/project.yaml"]=LDSR.yaml
 for path in "${!MODELS[@]}"; do
   name=${MODELS[$path]}
   base=$(dirname "${path}")
-  test -f "/models/${name}" && mkdir -p "${base}" && ln -sf "/models/${name}" "${path}" && echo "Mounted ${name}"
+  from_path="/models/${name}"
+  if test -f "${from_path}"; then
+    mkdir -p "${base}" && ln -sf "${from_path}" "${path}" && echo "Mounted ${name}"
+  else
+    echo "Skipping ${name}"
+  fi
 done
 
 # force facexlib cache

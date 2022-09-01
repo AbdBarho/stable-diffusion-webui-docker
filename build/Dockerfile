@@ -12,7 +12,7 @@ RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-RUN cd stable-diffusion && git pull && git reset --hard ba12cc71f5170654f6047eb1d2b7993dcddf785c && \
+RUN cd stable-diffusion && git pull && git reset --hard e51657753737f98f8586701b4b7562b846db9d44 && \
   conda env update --file environment.yaml --name base && conda clean -a -y
 
 # download dev UI version, update the sha below in case you want some other version
