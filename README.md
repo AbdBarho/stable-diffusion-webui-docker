@@ -50,15 +50,14 @@ Note: the first start will take sometime as some other models will be downloaded
 
 ## Config
 
-in the `docker-compose.yml` you can change the `CLI_ARGS` variable, which contains all of the arguments that will be passed to the WebUI. By default: `--extra-models-cpu --optimized-turbo` are given, which allow you to use this model on a 6GB GPU. However, some features might not be available in the mode.
+in the `docker-compose.yml` you can change the `CLI_ARGS` variable, which contains the arguments that will be passed to the WebUI. By default: `--extra-models-cpu --optimized-turbo` are given, which allow you to use this model on a 6GB GPU. However, some features might not be available in the mode.
 
-[You can find the full list of arguments here](https://github.com/hlky/stable-diffusion/blob/ff8c2d0b709f1e4180fb19fa5c27ec28c414cedd/scripts/webui.py)
+[You can find the full list of arguments here](https://github.com/hlky/stable-diffusion/blob/c5b2c86f1479dec75b0e92dd37f9357a68594bda/scripts/webui.py)
 
 ## FAQ
 
 - To enable [Textual Inversion](https://github.com/hlky/sd-enable-textual-inversion) remove `--optimize` and `--optimize-turbo` flags and add `--no-half`, [more info here](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues/6).
-- If [output is a always green imagee](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues/9), use `--precission full --no-half`.
-- [The Application Freezes When Trying Batch Sizes Higher Than One](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues/12)
+- If [output is a always green imagee](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues/9), use `--precision full --no-half`.
 
 # Disclaimer
 
