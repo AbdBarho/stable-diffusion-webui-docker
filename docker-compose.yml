@@ -11,7 +11,7 @@ services:
       - ./output:/output
       - ./models:/models
     environment:
-      - CLI_ARGS=--optimized
+      - CLI_ARGS=--extra-models-cpu --optimized-turbo
     deploy:
       resources:
         reservations:
