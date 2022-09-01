@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**Has this issue been opened before? Check issues [here](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues?q=is%3Aissue) and in [this one as well](https://github.com/hlky/stable-diffusion-webui)**
+**Has this issue been opened before? Check the [FAQ](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Main), the [issues](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues?q=is%3Aissue) and in [the issues in the WebUI repo](https://github.com/hlky/stable-diffusion-webui)**
 
 
 
