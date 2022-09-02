@@ -2,3 +2,5 @@
 /GFPGANv1.3.pth
 /RealESRGAN_x4plus.pth
 /RealESRGAN_x4plus_anime_6B.pth
+/LDSR.ckpt
+/LDSR.yaml

@@ -2,18 +2,23 @@
 
 FROM continuumio/miniconda3:4.12.0
 
-
 RUN conda install python=3.8.5 && conda clean -a -y
 RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch && conda clean -a -y
 RUN git clone https://github.com/hlky/stable-diffusion.git && cd stable-diffusion && git reset --hard ff8c2d0b709f1e4180fb19fa5c27ec28c414cedd
 RUN conda env update --file stable-diffusion/environment.yaml --name base && conda clean -a -y
+
+# Fix: Module PIL has not attribute "Resampling"
+RUN conda install -c anaconda pillow==9.2.0 && conda clean -a -y
+
+
+SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
 # fonts for generating the grid
 RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-RUN cd stable-diffusion && git pull && git reset --hard c5b2c86f1479dec75b0e92dd37f9357a68594bda && \
+RUN cd stable-diffusion && git pull && git reset --hard d667ff52a36b4e79526f01555bfbf85428f334ce && \
   conda env update --file environment.yaml --name base && conda clean -a -y
 
 # download dev UI version, update the sha below in case you want some other version
@@ -28,31 +33,32 @@ RUN cd stable-diffusion && git pull && git reset --hard c5b2c86f1479dec75b0e92dd
 # cd / && rm -rf stable-diffusion-webui
 # EOF
 
-# Textual-inversion:
+# Textual inversion
 RUN <<EOF
 git clone https://github.com/hlky/sd-enable-textual-inversion.git &&
 cd /sd-enable-textual-inversion && git reset --hard 08f9b5046552d17cf7327b30a98410222741b070 &&
-rsync -a /sd-enable-textual-inversion/ /stable-diffusion/
+rsync -a /sd-enable-textual-inversion/ /stable-diffusion/ &&
+rm -rf /sd-enable-textual-inversion
 EOF
 
+# Latent diffusion
+RUN <<EOF
+git clone https://github.com/devilismyfriend/latent-diffusion &&
+cd /latent-diffusion &&
+git reset --hard 4119cf038fb953360fb004e48adb9913eed3594a &&
+# hacks all the way down
+mv ldm ldm_latent &&
+sed -i -- 's/from ldm/from ldm_latent/g' *.py
+# dont forget to update the yaml!!
+EOF
+
+
 # add info
-COPY info.py /info.py
-RUN  python /info.py /stable-diffusion/frontend/frontend.py
+COPY . /docker/
+RUN python /docker/info.py /stable-diffusion/frontend/frontend.py
 
 WORKDIR /stable-diffusion
-ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS="" \
-  GFPGAN_PATH=/stable-diffusion/src/gfpgan/experiments/pretrained_models/GFPGANv1.3.pth \
-  RealESRGAN_PATH=/stable-diffusion/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus.pth \
-  RealESRGAN_ANIME_PATH=/stable-diffusion/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus_anime_6B.pth
+ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 EXPOSE 7860
-CMD \
-  for path in "${GFPGAN_PATH}" "${RealESRGAN_PATH}" "${RealESRGAN_ANIME_PATH}"; do \
-  name=$(basename "${path}"); \
-  base=$(dirname "${path}"); \
-  test -f "/models/${name}" && mkdir -p "${base}" && ln -sf "/models/${name}" "${path}" && echo "Mounted ${name}";\
-  done;\
-  # force facexlib cache
-  mkdir -p /cache/weights/ && rm -rf /stable-diffusion/src/facexlib/facexlib/weights && \
-  ln -sf  /cache/weights/ /stable-diffusion/src/facexlib/facexlib/ && \
-  # run, -u to not buffer stdout / stderr
-  python3 -u scripts/webui.py --outdir /output --ckpt /models/model.ckpt --save-metadata ${CLI_ARGS}
+# run, -u to not buffer stdout / stderr
+CMD /docker/mount.sh && python3 -u scripts/webui.py --outdir /output --ckpt /models/model.ckpt --ldsr-dir /latent-diffusion --save-metadata ${CLI_ARGS}
