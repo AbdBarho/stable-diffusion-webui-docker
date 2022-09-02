@@ -29,7 +29,7 @@ you can let it build in the background while you download the different models
 - [Stable Diffusion v1.4 (4GB)](https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media), rename to `model.ckpt`
 - (Optional) [GFPGANv1.3.pth (333MB)](https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth).
 - (Optional) [RealESRGAN_x4plus.pth (64MB)](https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth) and [RealESRGAN_x4plus_anime_6B.pth (18MB)](https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth).
-- (Optional) [LDSR](https://heibox.uni-heidelberg.de/f/578df07c8fc04ffbadf3/?dl=1) and [its configuration file](https://heibox.uni-heidelberg.de/f/31a76b13ea27482981b4/?dl=1), rename to `LDSR.ckpt` and `LDSR.yaml` respectively.
+- (Optional) [LDSR (2GB)](https://heibox.uni-heidelberg.de/f/578df07c8fc04ffbadf3/?dl=1) and [its configuration](https://heibox.uni-heidelberg.de/f/31a76b13ea27482981b4/?dl=1), rename to `LDSR.ckpt` and `LDSR.yaml` respectively.
 <!-- - (Optional) [RealESRGAN_x2plus.pth (64MB)](https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/RealESRGAN_x2plus.pth)
 - TODO: (I still need to find the RealESRGAN_x2plus_6b.pth) -->
 
@@ -62,6 +62,8 @@ Note: the first start will take sometime as some other models will be downloaded
 in the `docker-compose.yml` you can change the `CLI_ARGS` variable, which contains the arguments that will be passed to the WebUI. By default: `--extra-models-cpu --optimized-turbo` are given, which allow you to use this model on a 6GB GPU. However, some features might not be available in the mode.
 
 [You can find the full list of arguments here.](https://github.com/hlky/stable-diffusion/blob/d667ff52a36b4e79526f01555bfbf85428f334ce/scripts/webui.py)
+
+### FAQ
 
 You can find fixes to common issues [in the wiki page.](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Main)
 
