@@ -2,19 +2,23 @@
 
 Run Stable Diffusion on your machine with a nice UI without any hassle!
 
-This repository provides the [WebUI](https://github.com/hlky/stable-diffusion-webui) as docker for easy setup and deployment. Please note that this repo delivers all cutting-edge unstable changes from the WebUI, so expect some bugs.
+This repository provides the [WebUI](https://github.com/hlky/stable-diffusion-webui) as a docker image for easy setup and deployment. Please note that the WebUI is experimental and evolving quickly, so expect some bugs.
 
 ## Features
 
 - Interactive UI with many features, and more on the way!
 - Support for 6GB GPU cards.
 - GFPGAN for face reconstruction, RealESRGAN for super-sampling.
-- [Textual Inversion](https://github.com/hlky/sd-enable-textual-inversion)
+- Experimental:
+  - [Textual Inversion](https://github.com/hlky/sd-enable-textual-inversion)
+  - Latent Diffusion Super Resolution
+  - GoBig
+  - GoLatent
 - many more!
 
 ## Setup
 
-make sure you have an **up to date** version of docker installed. Download this repo and run:
+Make sure you have an **up to date** version of docker installed. Download this repo and run:
 
 ```
 docker compose build
@@ -57,7 +61,7 @@ Note: the first start will take sometime as some other models will be downloaded
 
 in the `docker-compose.yml` you can change the `CLI_ARGS` variable, which contains the arguments that will be passed to the WebUI. By default: `--extra-models-cpu --optimized-turbo` are given, which allow you to use this model on a 6GB GPU. However, some features might not be available in the mode.
 
-[You can find the full list of arguments here.](https://github.com/hlky/stable-diffusion/blob/c5b2c86f1479dec75b0e92dd37f9357a68594bda/scripts/webui.py)
+[You can find the full list of arguments here.](https://github.com/hlky/stable-diffusion/blob/d667ff52a36b4e79526f01555bfbf85428f334ce/scripts/webui.py)
 
 You can find fixes to common issues [in the wiki page.](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Main)
 

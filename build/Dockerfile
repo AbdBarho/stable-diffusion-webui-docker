@@ -7,12 +7,18 @@ RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorc
 RUN git clone https://github.com/hlky/stable-diffusion.git && cd stable-diffusion && git reset --hard ff8c2d0b709f1e4180fb19fa5c27ec28c414cedd
 RUN conda env update --file stable-diffusion/environment.yaml --name base && conda clean -a -y
 
+# Fix: Module PIL has not attribute "Resampling"
+RUN conda install -c anaconda pillow==9.2.0 && conda clean -a -y
+
+
+SHELL ["/bin/bash", "-ceuxo", "pipefail"]
+
 # fonts for generating the grid
 RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-RUN cd stable-diffusion && git pull && git reset --hard e51657753737f98f8586701b4b7562b846db9d44 && \
+RUN cd stable-diffusion && git pull && git reset --hard d667ff52a36b4e79526f01555bfbf85428f334ce && \
   conda env update --file environment.yaml --name base && conda clean -a -y
 
 # download dev UI version, update the sha below in case you want some other version
@@ -39,8 +45,13 @@ EOF
 RUN <<EOF
 git clone https://github.com/devilismyfriend/latent-diffusion &&
 cd /latent-diffusion &&
-git reset --hard b3896adb4784e9fc4ec600d91aa2cdaa6fe48285
+git reset --hard 4119cf038fb953360fb004e48adb9913eed3594a &&
+# hacks all the way down
+mv ldm ldm_latent &&
+sed -i -- 's/from ldm/from ldm_latent/g' *.py
+# dont forget to update the yaml!!
 EOF
+
 
 # add info
 COPY . /docker/
@@ -50,4 +61,4 @@ WORKDIR /stable-diffusion
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
-CMD /bin/bash -c /docker/mount.sh && python3 -u scripts/webui.py --outdir /output --ckpt /models/model.ckpt --ldsr-dir /latent-diffusion --save-metadata ${CLI_ARGS}
+CMD /docker/mount.sh && python3 -u scripts/webui.py --outdir /output --ckpt /models/model.ckpt --ldsr-dir /latent-diffusion --save-metadata ${CLI_ARGS}
