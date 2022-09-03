@@ -57,15 +57,16 @@ Will start the app on http://localhost:7860/
 
 Note: the first start will take sometime as some other models will be downloaded, these will be cached in the `cache` folder, so next runs are faster.
 
+### FAQ
+
+You can find fixes to common issues [in the wiki page.](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/FAQ)
+
+
 ## Config
 
 in the `docker-compose.yml` you can change the `CLI_ARGS` variable, which contains the arguments that will be passed to the WebUI. By default: `--extra-models-cpu --optimized-turbo` are given, which allow you to use this model on a 6GB GPU. However, some features might not be available in the mode.
 
 [You can find the full list of arguments here.](https://github.com/hlky/stable-diffusion/blob/d667ff52a36b4e79526f01555bfbf85428f334ce/scripts/webui.py)
-
-### FAQ
-
-You can find fixes to common issues [in the wiki page.](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Main)
 
 # Disclaimer
 
