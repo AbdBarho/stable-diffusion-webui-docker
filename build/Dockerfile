@@ -2,22 +2,30 @@
 
 FROM continuumio/miniconda3:4.12.0
 
-RUN conda install python=3.8.5 && conda clean -a -y
-RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch && conda clean -a -y
-RUN git clone https://github.com/hlky/stable-diffusion.git && cd stable-diffusion && git reset --hard ff8c2d0b709f1e4180fb19fa5c27ec28c414cedd
-RUN conda env update --file stable-diffusion/environment.yaml --name base && conda clean -a -y
-
-
 SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
-# fonts for generating the grid
+RUN conda install python=3.8.5 && conda clean -a -y
+RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch && conda clean -a -y
+
 RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
+
+
+RUN <<EOF
+git clone https://github.com/hlky/stable-diffusion.git
+cd stable-diffusion
+git reset --hard c84748aa6802c2f934687883a79bde745d2a58a6
+conda env update --file environment.yaml -n base
+conda clean -a -y
+EOF
+
+# new dependency, should be added to the environment.yaml
+RUN pip install -U --no-cache-dir pyperclip
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-RUN cd stable-diffusion && git pull && git reset --hard c84748aa6802c2f934687883a79bde745d2a58a6 && \
-  conda env update --file environment.yaml --name base && conda clean -a -y \
-  && pip install -U --no-cache-dir pyperclip
+# RUN cd stable-diffusion && git pull && git reset --hard c84748aa6802c2f934687883a79bde745d2a58a6 && \
+#   conda env update --file environment.yaml --name base && conda clean -a -y
+
 
 # download dev UI version, update the sha below in case you want some other version
 # RUN <<EOF
