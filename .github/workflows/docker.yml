@@ -1,0 +1,11 @@
+name: Build Image
+
+on: [push]
+
+jobs:
+  build_docker:
+    runs-on: ubuntu-latest
+    name: Make sure the image builds
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker compose build --progress plain
