@@ -23,8 +23,8 @@ RUN pip install -U --no-cache-dir pyperclip
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-# RUN cd stable-diffusion && git pull && git reset --hard c84748aa6802c2f934687883a79bde745d2a58a6 && \
-#   conda env update --file environment.yaml --name base && conda clean -a -y
+RUN cd stable-diffusion && git pull && git reset --hard bb765f1897c968495ffe12a06b421d97b56d5ae1 && \
+  conda env update --file environment.yaml --name base && conda clean -a -y
 
 
 # download dev UI version, update the sha below in case you want some other version

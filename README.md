@@ -10,10 +10,10 @@ This repository provides the [WebUI](https://github.com/hlky/stable-diffusion-we
 - Support for 6GB GPU cards.
 - GFPGAN for face reconstruction, RealESRGAN for super-sampling.
 - Experimental:
-  - [Textual Inversion](https://github.com/hlky/sd-enable-textual-inversion)
   - Latent Diffusion Super Resolution
   - GoBig
   - GoLatent
+  - [Textual Inversion](https://github.com/hlky/sd-enable-textual-inversion)
 - many more!
 
 ## Setup
@@ -81,3 +81,5 @@ Special thanks to everyone behind these awesome projects, without them, none of 
 - [hlky/stable-diffusion-webui](https://github.com/hlky/stable-diffusion-webui)
 - [AUTOMATIC1111/stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
 - [CompVis/stable-diffusion](https://github.com/CompVis/stable-diffusion)
+- [hlky/sd-enable-textual-inversion](https://github.com/hlky/sd-enable-textual-inversion)
+- [devilismyfriend/latent-diffusion](https://github.com/devilismyfriend/latent-diffusion)
