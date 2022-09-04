@@ -23,7 +23,8 @@ RUN pip install -U --no-cache-dir pyperclip
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-RUN cd stable-diffusion && git pull && git reset --hard bb765f1897c968495ffe12a06b421d97b56d5ae1 && \
+ARG WEBUI_SHA=bb765f1897c968495ffe12a06b421d97b56d5ae1
+RUN cd stable-diffusion && git pull && git reset --hard ${WEBUI_SHA} && \
   conda env update --file environment.yaml --name base && conda clean -a -y
 
 

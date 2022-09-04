@@ -2,7 +2,12 @@ version: '3.9'
 
 services:
   model:
-    build: ./build/
+    build:
+      context: ./build/
+      args:
+        # You can choose any commit sha from https://github.com/hlky/stable-diffusion/commits/main
+        # USE AT YOUR OWN RISK! otherwise just leave it empty.
+        WEBUI_SHA:
     restart: on-failure
     ports:
       - "7860:7860"
