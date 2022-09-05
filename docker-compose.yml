@@ -3,7 +3,7 @@ version: '3.9'
 services:
   model:
     build:
-      context: ./build/
+      context: ./hlky/
       args:
         # You can choose any commit sha from https://github.com/hlky/stable-diffusion/commits/main
         # USE AT YOUR OWN RISK! otherwise just leave it empty.
