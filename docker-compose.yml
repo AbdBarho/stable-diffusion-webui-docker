@@ -2,7 +2,12 @@ version: '3.9'
 
 services:
   model:
-    build: ./lstein/
+    build:
+      context: ./hlky/
+      args:
+        # You can choose any commit sha from https://github.com/hlky/stable-diffusion/commits/main
+        # USE AT YOUR OWN RISK! otherwise just leave it empty.
+        WEBUI_SHA:
     restart: on-failure
     ports:
       - "7860:7860"
@@ -11,7 +16,7 @@ services:
       - ./output:/output
       - ./models:/models
     environment:
-      - CLI_ARGS=
+      - CLI_ARGS=--extra-models-cpu --optimized-turbo
     deploy:
       resources:
         reservations:

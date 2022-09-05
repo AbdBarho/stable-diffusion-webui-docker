@@ -2,7 +2,12 @@
 
 Run Stable Diffusion on your machine with a nice UI without any hassle!
 
-This repository provides the [WebUI](https://github.com/hlky/stable-diffusion-webui) as a docker image for easy setup and deployment. Please note that the WebUI is experimental and evolving quickly, so expect some bugs.
+This repository provides the [WebUI](https://github.com/hlky/stable-diffusion-webui) as a docker image for easy setup and deployment.
+
+Now with experimental support for 2 other forks:
+
+- [AUTOMATIC1111](./AUTOMATIC1111/) (Stable, very few bugs!)
+- [lstein](./lstein/)
 
 ## Features
 
@@ -13,7 +18,6 @@ This repository provides the [WebUI](https://github.com/hlky/stable-diffusion-we
   - Latent Diffusion Super Resolution
   - GoBig
   - GoLatent
-  - [Textual Inversion](https://github.com/hlky/sd-enable-textual-inversion)
 - many more!
 
 ## Setup
@@ -79,6 +83,7 @@ Special thanks to everyone behind these awesome projects, without them, none of 
 
 - [hlky/stable-diffusion-webui](https://github.com/hlky/stable-diffusion-webui)
 - [AUTOMATIC1111/stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
+- [lstein/stable-diffusion](https://github.com/lstein/stable-diffusion)
 - [CompVis/stable-diffusion](https://github.com/CompVis/stable-diffusion)
 - [hlky/sd-enable-textual-inversion](https://github.com/hlky/sd-enable-textual-inversion)
 - [devilismyfriend/latent-diffusion](https://github.com/devilismyfriend/latent-diffusion)
