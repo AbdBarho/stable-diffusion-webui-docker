@@ -14,7 +14,7 @@ FROM pytorch/pytorch:1.12.1-cuda11.3-cudnn8-runtime
 SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install git -y && apt-get clean
+RUN apt-get update && apt-get install git fonts-dejavu-core -y && apt-get clean
 
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git

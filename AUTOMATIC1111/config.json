@@ -1,3 +1,4 @@
 {
-  "outdir_samples": "/output"
+  "outdir_samples": "/output",
+  "font": "DejaVuSans.ttf"
 }
