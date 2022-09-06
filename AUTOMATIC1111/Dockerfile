@@ -19,13 +19,12 @@ RUN apt-get update && apt-get install git fonts-dejavu-core -y && apt-get clean
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard 064965c4660f57f24e2d51a9854defaeabf8c0cf
+git reset --hard db6db585eb9ee48e7315e28603e18531dbc87067
 pip install -U --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
 RUN <<EOF
-pip install --prefer-binary -U --no-cache-dir diffusers numpy invisible-watermark git+https://github.com/crowsonkb/k-diffusion.git \
-  git+https://github.com/TencentARC/GFPGAN.git markupsafe==2.0.1 opencv-python-headless
+pip install --prefer-binary -U --no-cache-dir opencv-python-headless markupsafe==2.0.1
 EOF
 
 

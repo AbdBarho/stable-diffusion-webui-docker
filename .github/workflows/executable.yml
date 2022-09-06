@@ -1,0 +1,17 @@
+name: Check executable
+
+on: [push]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+        shopt -s globstar
+        for file in **/*.sh; do
+            if [ -f "${file}" ] && [ -r "${file}" ] && [ ! -x "${file}" ]; then
+                echo "$file" is not executable;
+                exit 1;
+            done
+        done
