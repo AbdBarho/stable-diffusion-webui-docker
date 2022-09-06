@@ -1,0 +1,22 @@
+name: Check executable
+
+on: [push]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    name: Check all sh
+    steps:
+      - run: git config --global core.fileMode true
+      - uses: actions/checkout@v3
+      - shell: bash
+        run: |
+          shopt -s globstar;
+          FAIL=0
+          for file in **/*.sh; do
+              if [ -f "${file}" ] && [ -r "${file}" ] && [ ! -x "${file}" ]; then
+                  echo "$file" is not executable;
+                  FAIL=1
+              fi
+          done
+          exit ${FAIL}

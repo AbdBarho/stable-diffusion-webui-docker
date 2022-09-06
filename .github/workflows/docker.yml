@@ -6,19 +6,19 @@ on: [push]
 jobs:
   build_hlky:
     runs-on: ubuntu-latest
-    name: Build hlky
+    name: hlky
     steps:
       - uses: actions/checkout@v3
       - run: docker compose build --progress plain
   build_AUTOMATIC1111:
     runs-on: ubuntu-latest
-    name: Build AUTOMATIC1111
+    name: AUTOMATIC1111
     steps:
       - uses: actions/checkout@v3
       - run: cd AUTOMATIC1111 && docker compose build --progress plain
   build_lstein:
     runs-on: ubuntu-latest
-    name: Build lstein
+    name: lstein
     steps:
       - uses: actions/checkout@v3
       - run: cd lstein && docker compose build --progress plain
