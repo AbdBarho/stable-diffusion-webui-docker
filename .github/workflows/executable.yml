@@ -8,7 +8,7 @@ jobs:
     name: Check all sh
     steps:
       - uses: actions/checkout@v3
-      - shell: /bin/bash -ce
+      - shell: bash
         run: |
           shopt -s globstar;
           for file in **/*.sh; do
