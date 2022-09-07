@@ -4,6 +4,7 @@ FROM alpine/git:2.36.2 as download
 RUN <<EOF
 # who knows
 git config --global http.postBuffer 1048576000
+git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer
 git clone https://github.com/CompVis/stable-diffusion.git repositories/stable-diffusion
 git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers
 rm -rf repositories/taming-transformers/data repositories/taming-transformers/assets
@@ -23,19 +24,30 @@ git reset --hard db6db585eb9ee48e7315e28603e18531dbc87067
 pip install -U --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
+# Note: don't update the sha of previous versions because the install will take forever
+# instead, update the repo state in a later step
+ARG SHA=e92d4cf7476f1897fce376916dfb40755ea7920f
 RUN <<EOF
+cd stable-diffusion-webui
+git pull
+git reset --hard ${SHA}
+pip install -U --prefer-binary --no-cache-dir -r requirements.txt
+EOF
+
+ENV ROOT=/workspace/stable-diffusion-webui \
+  WORKDIR=/workspace/stable-diffusion-webui/repositories/stable-diffusion
+
+COPY --from=download /git/ ${ROOT}
+RUN <<EOF
+pip install --prefer-binary -U --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
 pip install --prefer-binary -U --no-cache-dir opencv-python-headless markupsafe==2.0.1
 EOF
 
-
-ENV ROOT=/workspace/stable-diffusion-webui \
-  WORKDIR=/workspace/stable-diffusion-webui/repositories/stable-diffusion \
-  TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
-
-COPY --from=download /git/ ${ROOT}
+ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
 
 COPY . /docker
+RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 
 WORKDIR ${WORKDIR}
 EXPOSE 7860
