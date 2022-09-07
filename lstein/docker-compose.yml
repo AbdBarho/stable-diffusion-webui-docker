@@ -3,7 +3,6 @@ version: '3.9'
 services:
   model:
     build: .
-    restart: on-failure
     ports:
       - "7860:7860"
     volumes:
