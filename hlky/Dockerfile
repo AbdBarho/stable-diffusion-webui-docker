@@ -11,9 +11,9 @@ RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 
 
 RUN <<EOF
-git clone https://github.com/hlky/stable-diffusion.git
+git clone https://github.com/sd-webui/stable-diffusion-webui.git stable-diffusion
 cd stable-diffusion
-git reset --hard c84748aa6802c2f934687883a79bde745d2a58a6
+git reset --hard 2b1ac8daf7ea82c6c56eabab7e80ec1c33106a98
 conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
@@ -23,22 +23,9 @@ RUN pip install -U --no-cache-dir pyperclip
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-ARG WEBUI_SHA=bb765f1897c968495ffe12a06b421d97b56d5ae1
+ARG WEBUI_SHA=2b1ac8daf7ea82c6c56eabab7e80ec1c33106a98
 RUN cd stable-diffusion && git pull && git reset --hard ${WEBUI_SHA} && \
   conda env update --file environment.yaml --name base && conda clean -a -y
-
-
-# download dev UI version, update the sha below in case you want some other version
-# RUN <<EOF
-# git clone https://github.com/hlky/stable-diffusion-webui.git
-# cd stable-diffusion-webui
-# # map to this file: https://github.com/hlky/stable-diffusion-webui/blob/master/.github/sync.yml
-# git reset --hard 49e6178fd82ca736f9bbc621c6b12487c300e493
-# cp -t /stable-diffusion/scripts/ webui.py relauncher.py txt2img.yaml
-# cp -t /stable-diffusion/configs/webui webui.yaml
-# cp -t /stable-diffusion/frontend/ frontend/*
-# cd / && rm -rf stable-diffusion-webui
-# EOF
 
 # Textual inversion
 RUN <<EOF
@@ -62,7 +49,7 @@ EOF
 
 # add info
 COPY . /docker/
-RUN python /docker/info.py /stable-diffusion/frontend/frontend.py
+RUN python /docker/info.py /stable-diffusion/frontend/frontend.py && chmod +x /docker/mount.sh
 
 WORKDIR /stable-diffusion
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""

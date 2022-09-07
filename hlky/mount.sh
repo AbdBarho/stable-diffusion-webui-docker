@@ -26,6 +26,5 @@ if test -f /models/LDSR.yaml; then
 fi
 
 # force facexlib cache
-mkdir -p /cache/weights/
-rm -rf /stable-diffusion/src/facexlib/facexlib/weights
-ln -sf /cache/weights/ /stable-diffusion/src/facexlib/facexlib/
+mkdir -p /cache/weights/ /stable-diffusion/gfpgan/
+ln -sf /cache/weights/ /stable-diffusion/gfpgan/

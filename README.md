@@ -67,7 +67,7 @@ You can find fixes to common issues [in the wiki page.](https://github.com/AbdBa
 
 ## Config
 
-in the `docker-compose.yml` you can change the `CLI_ARGS` variable, which contains the arguments that will be passed to the WebUI. By default: `--extra-models-cpu --optimized-turbo` are given, which allow you to use this model on a 6GB GPU. However, some features might not be available in the mode. [You can find the full list of arguments here.](https://github.com/hlky/stable-diffusion/blob/bb765f1897c968495ffe12a06b421d97b56d5ae1/scripts/webui.py)
+in the `docker-compose.yml` you can change the `CLI_ARGS` variable, which contains the arguments that will be passed to the WebUI. By default: `--extra-models-cpu --optimized-turbo` are given, which allow you to use this model on a 6GB GPU. However, some features might not be available in the mode. [You can find the full list of arguments here.](https://github.com/hlky/stable-diffusion-webui/blob/2b1ac8daf7ea82c6c56eabab7e80ec1c33106a98/scripts/webui.py)
 
 You can set the `WEBUI_SHA` to [any SHA from the main repo](https://github.com/hlky/stable-diffusion/commits/main), this will build the container against that commit. Use at your own risk.
 
