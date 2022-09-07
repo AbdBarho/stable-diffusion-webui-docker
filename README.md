@@ -1,4 +1,4 @@
-﻿# Stable Diffusion WebUI Docker
+# Stable Diffusion WebUI Docker
 
 Run Stable Diffusion on your machine with a nice UI without any hassle!
 
@@ -8,6 +8,8 @@ Now with experimental support for 2 other forks:
 
 - [AUTOMATIC1111](./AUTOMATIC1111/) (Stable, very few bugs!)
 - [lstein](./lstein/)
+
+NOTE: big update coming up!
 
 ## Features
 
