@@ -24,27 +24,25 @@ git reset --hard db6db585eb9ee48e7315e28603e18531dbc87067
 pip install -U --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
-# Note: don't update the sha of previous versions because the install will take forever
-# instead, update the repo state in a later step
-ARG SHA=e92d4cf7476f1897fce376916dfb40755ea7920f
-RUN <<EOF
-cd stable-diffusion-webui
-git pull
-git reset --hard ${SHA}
-pip install -U --prefer-binary --no-cache-dir -r requirements.txt
-EOF
-
 ENV ROOT=/workspace/stable-diffusion-webui \
   WORKDIR=/workspace/stable-diffusion-webui/repositories/stable-diffusion
 
 COPY --from=download /git/ ${ROOT}
+RUN pip install --prefer-binary -U --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
+
+# Note: don't update the sha of previous versions because the install will take forever
+# instead, update the repo state in a later step
+ARG SHA=701f76b29ab8fa9c1d35ae8abce36b99e12d5d08
 RUN <<EOF
-pip install --prefer-binary -U --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
-pip install --prefer-binary -U --no-cache-dir opencv-python-headless markupsafe==2.0.1
+cd stable-diffusion-webui
+git pull
+git reset --hard ${SHA}
+pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
-ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
+RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless markupsafe==2.0.1
 
+ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
 COPY . /docker
 RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
@@ -52,4 +50,4 @@ RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 WORKDIR ${WORKDIR}
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
-CMD /docker/mount.sh && python3 -u ../../webui.py --listen ${CLI_ARGS}
+CMD /docker/mount.sh && python3 -u ../../webui.py --listen --port 7860 ${CLI_ARGS}
