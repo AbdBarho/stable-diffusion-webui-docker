@@ -9,6 +9,7 @@ services:
       - ../cache:/cache
       - ../output:/output
       - ../models:/models
+      - ./config.json:/docker/config.json
     environment:
       - CLI_ARGS=--medvram --opt-split-attention
     deploy:

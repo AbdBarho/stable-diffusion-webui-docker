@@ -32,7 +32,7 @@ RUN pip install --prefer-binary -U --no-cache-dir -r ${ROOT}/repositories/CodeFo
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-ARG SHA=701f76b29ab8fa9c1d35ae8abce36b99e12d5d08
+ARG SHA=17a7477c7282b0ff16fa1232e5922c0a645e4459
 RUN <<EOF
 cd stable-diffusion-webui
 git pull
