@@ -10,29 +10,37 @@ git clone https://github.com/CompVis/taming-transformers.git repositories/taming
 rm -rf repositories/taming-transformers/data repositories/taming-transformers/assets
 EOF
 
-FROM pytorch/pytorch:1.12.1-cuda11.3-cudnn8-runtime
+
+FROM continuumio/miniconda3:4.12.0
 
 SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install git fonts-dejavu-core -y && apt-get clean
+
+RUN conda install python=3.8.5 && conda clean -a -y
+RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch && conda clean -a -y
+
+RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
+
 
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard db6db585eb9ee48e7315e28603e18531dbc87067
-pip install -U --prefer-binary --no-cache-dir -r requirements.txt
+git reset --hard 13eec4f3d4081fdc43883c5ef02e471a2b6c7212
+conda env update --file environment-wsl2.yaml -n base
+conda clean -a -y
+pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
-ENV ROOT=/workspace/stable-diffusion-webui \
-  WORKDIR=/workspace/stable-diffusion-webui/repositories/stable-diffusion
+ENV ROOT=/stable-diffusion-webui \
+  WORKDIR=/stable-diffusion-webui/repositories/stable-diffusion
 
 COPY --from=download /git/ ${ROOT}
-RUN pip install --prefer-binary -U --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
+RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-ARG SHA=17a7477c7282b0ff16fa1232e5922c0a645e4459
+ARG SHA=1b963c205fe97d33a1dfe3fc7c62bc860a0e7d2e
 RUN <<EOF
 cd stable-diffusion-webui
 git pull

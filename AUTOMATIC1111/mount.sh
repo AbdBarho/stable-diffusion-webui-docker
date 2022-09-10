@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 declare -A MODELS
 
 MODELS["${WORKDIR}/models/ldm/stable-diffusion-v1/model.ckpt"]=model.ckpt
@@ -17,8 +19,8 @@ for path in "${!MODELS[@]}"; do
 done
 
 # force realesrgan cache
-rm -rf /opt/conda/lib/python3.7/site-packages/realesrgan/weights
-ln -s -T /models /opt/conda/lib/python3.7/site-packages/realesrgan/weights
+rm -rf /opt/conda/lib/python3.8/site-packages/realesrgan/weights
+ln -s -T /models /opt/conda/lib/python3.8/site-packages/realesrgan/weights
 
 # force facexlib cache
 mkdir -p /cache/weights/ ${WORKDIR}/gfpgan/
