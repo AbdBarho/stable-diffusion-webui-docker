@@ -3,10 +3,10 @@ version: '3.9'
 x-base_service: &base_service
     ports:
       - "7860:7860"
-    volumes: &base_volumes
-      - ./cache:/cache
-      - ./output:/output
-      - ./models:/models
+    volumes:
+      - &v1 ./cache:/cache
+      - &v2 ./output:/output
+      - &v3 ./models:/models
     deploy:
       resources:
         reservations:
@@ -29,6 +29,11 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
+    volumes:
+      - *v1
+      - *v2
+      - *v3
+      - ./services/AUTOMATIC1111/config.json:/docker/config.json
     environment:
       - CLI_ARGS=--medvram --opt-split-attention
 
