@@ -1,24 +1,14 @@
-name: Build Image
+name: Build Images
 
 on: [push]
 
-# TODO: how to cache intermediate images?
 jobs:
-  build_hlky:
+  build_all:
     runs-on: ubuntu-latest
-    name: hlky
+    name: All
     steps:
       - uses: actions/checkout@v3
-      - run: docker compose build --progress plain
-  build_AUTOMATIC1111:
-    runs-on: ubuntu-latest
-    name: AUTOMATIC1111
-    steps:
-      - uses: actions/checkout@v3
-      - run: cd AUTOMATIC1111 && docker compose build --progress plain
-  build_lstein:
-    runs-on: ubuntu-latest
-    name: lstein
-    steps:
-      - uses: actions/checkout@v3
-      - run: cd lstein && docker compose build --progress plain
+      # better caching?
+      - run: docker compose --profile auto build --progress plain
+      - run: docker compose --profile hlky build --progress plain
+      - run: docker compose --profile lstein build --progress plain

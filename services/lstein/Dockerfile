@@ -4,6 +4,8 @@ FROM continuumio/miniconda3:4.12.0
 
 SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 RUN conda install python=3.8.5 && conda clean -a -y
 RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch && conda clean -a -y
 
@@ -25,5 +27,5 @@ WORKDIR /stable-diffusion
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD mkdir -p /stable-diffusion/models/ldm/stable-diffusion-v1/ && \
-  ln -sf /models/model.ckpt /stable-diffusion/models/ldm/stable-diffusion-v1/model.ckpt && \
+  ln -sf /cache/models/model.ckpt /stable-diffusion/models/ldm/stable-diffusion-v1/model.ckpt && \
   python3 -u scripts/dream.py --outdir /output --web --host 0.0.0.0 --port 7860 ${CLI_ARGS}
