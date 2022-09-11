@@ -9,16 +9,16 @@ jobs:
     name: hlky
     steps:
       - uses: actions/checkout@v3
-      - run: docker compose build --profile hlky --progress plain
+      - run: docker compose --profile hlky build --progress plain
   build_AUTOMATIC1111:
     runs-on: ubuntu-latest
     name: AUTOMATIC1111
     steps:
       - uses: actions/checkout@v3
-      - run: cd AUTOMATIC1111 && docker compose build --profile auto --progress plain
+      - run: docker compose --profile auto  build --progress plain
   build_lstein:
     runs-on: ubuntu-latest
     name: lstein
     steps:
       - uses: actions/checkout@v3
-      - run: cd lstein && docker compose build --profile lstein --progress plain
+      - run: docker compose --profile lstein build --progress plain
