@@ -28,7 +28,7 @@ services:
     profiles: ["hlky"]
     build: ./services/hlky/
     environment:
-      - CLI_ARGS=--extra-models-cpu --optimized-turbo
+      - CLI_ARGS=--optimized-turbo
 
   automatic1111: &automatic
     <<: *base_service
