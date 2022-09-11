@@ -53,7 +53,11 @@ RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless markups
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
 COPY . /docker
-RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
+RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py && \
+  #TODO: hacks for cpu suppoort
+  find ${ROOT} -type f -name '*.py' -exec sed -i "s/torch\.has_cuda/torch.cuda.is_available()/g" {} \; && \
+  find ${ROOT} -type f -name '*.py' -exec sed -i "s/torch\.has_mps/False/g" {} \;
+
 
 WORKDIR ${WORKDIR}
 EXPOSE 7860

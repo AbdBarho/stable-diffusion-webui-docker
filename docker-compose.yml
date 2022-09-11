@@ -1,22 +1,12 @@
 version: '3.9'
 
-services:
-  model:
-    build:
-      context: ./hlky/
-      args:
-        # You can choose any commit sha from https://github.com/hlky/stable-diffusion/commits/main
-        # USE AT YOUR OWN RISK! otherwise just leave it empty.
-        BRANCH:
-        WEBUI_SHA:
+x-base_service: &base_service
     ports:
       - "7860:7860"
-    volumes:
+    volumes: &base_volumes
       - ./cache:/cache
       - ./output:/output
       - ./models:/models
-    environment:
-      - CLI_ARGS=--extra-models-cpu --optimized-turbo
     deploy:
       resources:
         reservations:
@@ -24,3 +14,32 @@ services:
               - driver: nvidia
                 device_ids: ['0']
                 capabilities: [gpu]
+
+name: webui-docker
+
+services:
+  hlky:
+    <<: *base_service
+    profiles: ["hlky"]
+    build: ./services/hlky/
+    environment:
+      - CLI_ARGS=--extra-models-cpu --optimized-turbo
+
+  automatic1111: &automatic
+    <<: *base_service
+    profiles: ["auto"]
+    build: ./services/AUTOMATIC1111
+    environment:
+      - CLI_ARGS=--medvram --opt-split-attention
+
+  automatic1111-cpu:
+    <<: *automatic
+    profiles: ["auto-cpu"]
+    deploy: {}
+    environment:
+      - CLI_ARGS=--no-half --precision full
+
+  lstein:
+    <<: *base_service
+    profiles: ["lstein"]
+    build: ./services/lstein/
