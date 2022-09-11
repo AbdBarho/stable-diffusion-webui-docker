@@ -25,8 +25,8 @@ RUN pip install -U --no-cache-dir pyperclip
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-ARG BRANCH=dev
-ARG WEBUI_SHA=be2ece06837e37d90181a17340c7e1aac91ba4fb
+ARG BRANCH=master
+ARG WEBUI_SHA=2236e8b5854092054e2c30edc559006ace53bf96
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -36,19 +36,11 @@ conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
 
-# Textual inversion
-RUN <<EOF
-git clone https://github.com/hlky/sd-enable-textual-inversion.git &&
-cd /sd-enable-textual-inversion && git reset --hard 08f9b5046552d17cf7327b30a98410222741b070 &&
-rsync -a /sd-enable-textual-inversion/ /stable-diffusion/ &&
-rm -rf /sd-enable-textual-inversion
-EOF
-
 # Latent diffusion
 RUN <<EOF
-git clone https://github.com/devilismyfriend/latent-diffusion &&
-cd /latent-diffusion &&
-git reset --hard 6d61fc03f15273a457950f2cdc10dddf53ba6809 &&
+git clone https://github.com/Hafiidz/latent-diffusion.git
+cd latent-diffusion
+git reset --hard e1a84a89fcbb49881546cf2acf1e7e250923dba0
 # hacks all the way down
 mv ldm ldm_latent &&
 sed -i -- 's/from ldm/from ldm_latent/g' *.py
