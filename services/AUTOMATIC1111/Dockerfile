@@ -40,10 +40,10 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-ARG SHA=06fadd2dc5c2753558a9f3971568c2673819f48c
+ARG SHA=b5d1af11b7dc718d4d91d379c75e46f4bd2e2fe6
 RUN <<EOF
 cd stable-diffusion-webui
-git pull
+git pull --rebase
 git reset --hard ${SHA}
 pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
@@ -53,10 +53,7 @@ RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless markups
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
 COPY . /docker
-RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py && \
-  #TODO: hacks for cpu suppoort
-  find ${ROOT} -type f -name '*.py' -exec sed -i "s/torch\.has_cuda/torch.cuda.is_available()/g" {} \; && \
-  find ${ROOT} -type f -name '*.py' -exec sed -i "s/torch\.has_mps/False/g" {} \;
+RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 
 
 WORKDIR ${WORKDIR}
