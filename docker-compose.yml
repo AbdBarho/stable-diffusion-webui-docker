@@ -37,7 +37,7 @@ services:
     volumes:
       - *v1
       - *v2
-      - ./services/AUTOMATIC1111/config.json:/docker/config.json
+      - ./services/AUTOMATIC1111/config.json:/stable-diffusion-webui/config.json
     environment:
       - CLI_ARGS=--medvram --opt-split-attention
 

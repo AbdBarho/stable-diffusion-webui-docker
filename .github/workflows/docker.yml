@@ -12,3 +12,4 @@ jobs:
       - run: docker compose --profile auto build --progress plain
       - run: docker compose --profile hlky build --progress plain
       - run: docker compose --profile lstein build --progress plain
+      - run: docker compose --profile download build --progress plain

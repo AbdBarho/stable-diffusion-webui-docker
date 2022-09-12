@@ -15,7 +15,7 @@ RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 RUN <<EOF
 git clone https://github.com/sd-webui/stable-diffusion-webui.git stable-diffusion
 cd stable-diffusion
-git reset --hard 2b1ac8daf7ea82c6c56eabab7e80ec1c33106a98
+git reset --hard 7623a5734740025d79b710f3744bff9276e1467b
 conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
@@ -26,7 +26,7 @@ RUN pip install -U --no-cache-dir pyperclip
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 ARG BRANCH=master
-ARG SHA=2236e8b5854092054e2c30edc559006ace53bf96
+ARG SHA=7623a5734740025d79b710f3744bff9276e1467b
 RUN <<EOF
 cd stable-diffusion
 git fetch

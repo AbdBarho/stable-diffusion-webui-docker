@@ -33,4 +33,4 @@ ln -sf -T /cache/weights ${ROOT}/repositories/CodeFormer/weights/CodeFormer
 ln -sf -T /cache/weights ${ROOT}/repositories/CodeFormer/weights/facelib
 
 # mount config
-ln -sf /docker/config.json ${WORKDIR}/config.json
+# ln -sf /docker/config.json ${WORKDIR}/config.json
