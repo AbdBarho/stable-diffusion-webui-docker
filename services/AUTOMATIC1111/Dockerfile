@@ -2,10 +2,11 @@
 
 FROM alpine/git:2.36.2 as download
 RUN <<EOF
-# who knows
+# because taming-transformers is huge
 git config --global http.postBuffer 1048576000
 git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer
 git clone https://github.com/CompVis/stable-diffusion.git repositories/stable-diffusion
+git clone https://github.com/salesforce/BLIP.git repositories/BLIP
 git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers
 rm -rf repositories/taming-transformers/data repositories/taming-transformers/assets
 EOF
@@ -40,7 +41,7 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-ARG SHA=b5d1af11b7dc718d4d91d379c75e46f4bd2e2fe6
+ARG SHA=c249bbb4d41ecfb43cf4ba43f23a4c8b08d8c56e
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
@@ -48,7 +49,7 @@ git reset --hard ${SHA}
 pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
-RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless markupsafe==2.0.1
+RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless markupsafe==2.0.1 gfpgan==1.3.5
 
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
@@ -59,4 +60,4 @@ RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 WORKDIR ${WORKDIR}
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
-CMD /docker/mount.sh && python3 -u ../../webui.py --listen --port 7860 ${CLI_ARGS}
+CMD /docker/mount.sh && python3 -u ../../webui.py --listen --port 7860 --hide-ui-dir-config ${CLI_ARGS}
