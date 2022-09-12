@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       # better caching?
-      - run: docker compose --profile auto --profile hlky --profile lstein build --progress plain
-      # - run: docker compose --profile hlky build --progress plain
-      # - run: docker compose --profile lstein build --progress plain
+      - run: docker compose --profile auto build --progress plain
+      - run: docker compose --profile hlky build --progress plain
+      - run: docker compose --profile lstein build --progress plain
       - run: docker compose --profile download build --progress plain
