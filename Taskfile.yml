@@ -1,6 +1,6 @@
 version: '3'
 # silent: true
-output: prefixed
+output: group
 dotenv: [.env]
 
 # Default environment variables for projects
@@ -16,23 +16,31 @@ tasks:
       - task: list
   list:
     desc: list tasks
+    prefix: ' '
     cmds:
-      - task --list
+      - task --list --color=true --list-all
   vars:
     desc: variable output
     cmds:
       - |
         echo -e "{{.light_gray}}=== ℹ {{ .reversed }} Variable Info from Task {{ .nocolor }} === "
         echo -e "{{.light_gray}}ARTIFACT_DIRECTORY          {{.nocolor}}: {{ .orange}}{{ .ARTIFACT_DIRECTORY }} {{ .nocolor }}"
-  build:
+
+  ### Core Task ###
+  init:
+    desc: Download models, build initial docker-compose setup
+    cmds:
+    - task: download
+    - task: update
+  compose:build:
     desc: setup tooling for project and download dependencies
     cmds:
       - |
         docker compose --profile download up --build
-  up:
-    desc: docker compose --profile {{ .UI }} up
+  compose:up:
+    desc: 'compose up with the current profile of: {{ .UI }}'
     cmds:
-    - docker compose up
+    - docker compose --profile {{ .UI }} up
   update:
     desc: run updates
     interactive: true
@@ -43,17 +51,21 @@ tasks:
   download:
     desc: get extras downloaded
     cmds:
-     # curl --progress-bar -C - https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media -o {{ .MODEL_DIRECTORY }}/models/model.ckpt
     - |
+      echo '👉 This might take a few minutes. However, it will resume downloading if interuppted and ran again'
       mkdir -p cache/models || true
+      curl --progress-bar -C - https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media -o {{ .MODEL_DIRECTORY }}/model.ckpt
       curl --progress-bar -C - https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth -o {{ .MODEL_DIRECTORY }}/GFPGANv1.3.pth
       curl --progress-bar -C - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth -o {{ .MODEL_DIRECTORY }}/RealESRGAN_x4plus.pth
       curl --progress-bar -C - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth -o {{ .MODEL_DIRECTORY }}/RealESRGAN_x4plus_anime_6B.pth
       curl --progress-bar -C - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/RealESRGAN_x2plus.pth -o {{ .MODEL_DIRECTORY }}/RealESRGAN_x2plus.pth
       curl --progress-bar -C - https://heibox.uni-heidelberg.de/f/578df07c8fc04ffbadf3/?dl=1 -o {{ .MODEL_DIRECTORY }}/LDSR.ckpt
       curl --progress-bar -C - https://heibox.uni-heidelberg.de/f/31a76b13ea27482981b4/?dl=1 -o {{ .MODEL_DIRECTORY }}/LDSR.yaml
-  init:
-    desc: Download models, build initial docker-compose setup
-    cmds:
-    - task: download
-    - task: update
+    status:
+      - test -f {{ .MODEL_DIRECTORY }}/model.ckpt
+      - test -f {{ .MODEL_DIRECTORY }}/GFPGANv1.3.pth
+      - test -f {{ .MODEL_DIRECTORY }}/RealESRGAN_x4plus.pth
+      - test -f {{ .MODEL_DIRECTORY }}/RealESRGAN_x4plus_anime_6B.pth
+      - test -f {{ .MODEL_DIRECTORY }}/RealESRGAN_x2plus.pth
+      - test -f {{ .MODEL_DIRECTORY }}/LDSR.ckpt
+      - test -f {{ .MODEL_DIRECTORY }}/LDSR.yaml
