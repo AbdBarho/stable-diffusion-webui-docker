@@ -26,7 +26,7 @@ RUN pip install -U --no-cache-dir pyperclip
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 ARG BRANCH=master
-ARG SHA=7623a5734740025d79b710f3744bff9276e1467b
+ARG SHA=e6a9e5d968aad020e54045a0923d8c6aa0b54591
 RUN <<EOF
 cd stable-diffusion
 git fetch
