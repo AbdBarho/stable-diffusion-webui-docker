@@ -10,6 +10,24 @@ env:
 vars:
   TODAY: '{{ now | date "2006-01-02T15:04:05-07:00" }}'
   MODEL_DIRECTORY: cache/models
+  black: \033[:0;30m
+  red: \033[:0;31m
+  green: \033[:0;32m
+  orange: \033[:0;33m
+  blue: \033[:0;34m
+  purple: \033[:0;35m
+  cyan: \033[:0;36m
+  light_gray: \033[:0;37m
+  dark_gray: \033[:1;30m
+  light_red: \033[:1;31m
+  light_green: \033[:1;32m
+  yellow: \033[:1;33m
+  light_blue: \033[:1;34m
+  light_purple: \033[:1;35m
+  light_cyan: \033[:1;36m
+  white: \033[:1;37m
+  nocolor: \u001b[0m
+  reversed: \u001b[7m
 tasks:
   default:
     cmds:
@@ -24,7 +42,9 @@ tasks:
     cmds:
       - |
         echo -e "{{.light_gray}}=== ℹ {{ .reversed }} Variable Info from Task {{ .nocolor }} === "
-        echo -e "{{.light_gray}}ARTIFACT_DIRECTORY          {{.nocolor}}: {{ .orange}}{{ .ARTIFACT_DIRECTORY }} {{ .nocolor }}"
+        echo -e "{{.light_gray}}MODEL_DIRECTORY          {{.nocolor}}: {{ .orange}}{{ .MODEL_DIRECTORY }} {{ .nocolor }}"
+        echo -e "{{.light_gray}}DOCKER_BUILDKIT          {{.nocolor}}: {{ .orange}}{{ .DOCKER_BUILDKIT }} {{ .nocolor }}"
+        echo -e "{{.light_gray}}UI                       {{.nocolor}}: {{ .orange}}{{ .UI }} {{ .nocolor }}"
 
   ### Core Task ###
   init:
@@ -40,11 +60,13 @@ tasks:
   compose:up:
     desc: 'compose up with the current profile of: {{ .UI }}'
     cmds:
+    - task: vars
     - docker compose --profile {{ .UI }} up
   update:
     desc: run updates
     interactive: true
     cmds:
+    - task: vars
     - |
       docker compose --profile {{ .UI }} up --build
     - task: download
