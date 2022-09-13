@@ -30,7 +30,7 @@ tasks:
       - |
         docker compose --profile download up --build
   up:
-    desc: docker compose up --profile {{ .UI }}
+    desc: docker compose --profile {{ .UI }} up
     cmds:
     - docker compose up
   update:
