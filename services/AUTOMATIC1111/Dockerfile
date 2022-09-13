@@ -50,7 +50,6 @@ pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
 RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless
-#gfpgan==1.3.5
 
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
