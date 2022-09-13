@@ -1,2 +1,5 @@
 /dev
 /.devcontainer
+output/
+cache/
+models/
