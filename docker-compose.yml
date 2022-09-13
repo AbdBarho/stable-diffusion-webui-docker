@@ -52,3 +52,42 @@ services:
     <<: *base_service
     profiles: ["lstein"]
     build: ./services/lstein/
+
+name: webui-docker
+
+services:
+  download:
+    build: ./services/download/
+    profiles: ["download"]
+    volumes:
+      - *v1
+
+  hlky:
+    <<: *base_service
+    profiles: ["hlky"]
+    build: ./services/hlky/
+    environment:
+      - CLI_ARGS=--optimized-turbo
+
+  automatic1111: &automatic
+    <<: *base_service
+    profiles: ["auto"]
+    build: ./services/AUTOMATIC1111
+    volumes:
+      - *v1
+      - *v2
+      - ./services/AUTOMATIC1111/config.json:/stable-diffusion-webui/config.json
+    environment:
+      - CLI_ARGS=--medvram --opt-split-attention
+
+  automatic1111-cpu:
+    <<: *automatic
+    profiles: ["auto-cpu"]
+    deploy: {}
+    environment:
+      - CLI_ARGS=--no-half --precision full
+
+  lstein:
+    <<: *base_service
+    profiles: ["lstein"]
+    build: ./services/lstein/
