@@ -4,7 +4,29 @@ Run Stable Diffusion on your machine with a nice UI without any hassle!
 
 This repository provides multiple UIs for you to play around with stable diffusion:
 
+## Quick Start
+
+- Install [Taskfile](https://taskfile.dev/installation?ref=AbdBarho-stable-diffusion-webui-docker)
+    - Quick Snippet:
+        - Linux: `sudo snap install task --classic`
+        - MacOS: `HOMEBREW_NO_AUTO_UPDATE=1 brew install go-task/tap/go-task`
+        - Windows: `choco install go-task -y` or `scoop install task`
+        - Curl: `sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin`
+        - Go: `go install github.com/go-task/task/v3/cmd/task@latest`
+
+- Run `task` and see a list of all the pre-built tasks.
+
+This will simplify your setup and running of the project.
+For example, to get started, just run:
+
+```shell
+task init
+```
+
+This will download the models with the resume option using curl (allowing it to continue if interuppted without restarting from scratch), followed by running the required docker commands.
+
 ## Features
+
 
 ### AUTOMATIC1111
 
