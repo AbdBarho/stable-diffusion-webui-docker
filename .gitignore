@@ -3,3 +3,5 @@
 output/
 cache/
 models/
+.env
+.DS_Store

@@ -1,0 +1,59 @@
+version: '3'
+# silent: true
+output: prefixed
+dotenv: [.env]
+
+# Default environment variables for projects
+env:
+  DOCKER_BUILDKIT: 1
+
+vars:
+  TODAY: '{{ now | date "2006-01-02T15:04:05-07:00" }}'
+  MODEL_DIRECTORY: cache/models
+tasks:
+  default:
+    cmds:
+      - task: list
+  list:
+    desc: list tasks
+    cmds:
+      - task --list
+  vars:
+    desc: variable output
+    cmds:
+      - |
+        echo -e "{{.light_gray}}=== ℹ {{ .reversed }} Variable Info from Task {{ .nocolor }} === "
+        echo -e "{{.light_gray}}ARTIFACT_DIRECTORY          {{.nocolor}}: {{ .orange}}{{ .ARTIFACT_DIRECTORY }} {{ .nocolor }}"
+  build:
+    desc: setup tooling for project and download dependencies
+    cmds:
+      - |
+        docker compose --profile download up --build
+  up:
+    desc: docker compose up --profile {{ .UI }}
+    cmds:
+    - docker compose up
+  update:
+    desc: run updates
+    interactive: true
+    cmds:
+    - |
+      docker compose --profile {{ .UI }} up --build
+    - task: download
+  download:
+    desc: get extras downloaded
+    cmds:
+     # curl --progress-bar -C - https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media -o {{ .MODEL_DIRECTORY }}/models/model.ckpt
+    - |
+      mkdir -p cache/models || true
+      curl --progress-bar -C - https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth -o {{ .MODEL_DIRECTORY }}/GFPGANv1.3.pth
+      curl --progress-bar -C - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth -o {{ .MODEL_DIRECTORY }}/RealESRGAN_x4plus.pth
+      curl --progress-bar -C - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth -o {{ .MODEL_DIRECTORY }}/RealESRGAN_x4plus_anime_6B.pth
+      curl --progress-bar -C - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/RealESRGAN_x2plus.pth -o {{ .MODEL_DIRECTORY }}/RealESRGAN_x2plus.pth
+      curl --progress-bar -C - https://heibox.uni-heidelberg.de/f/578df07c8fc04ffbadf3/?dl=1 -o {{ .MODEL_DIRECTORY }}/LDSR.ckpt
+      curl --progress-bar -C - https://heibox.uni-heidelberg.de/f/31a76b13ea27482981b4/?dl=1 -o {{ .MODEL_DIRECTORY }}/LDSR.yaml
+  init:
+    desc: Download models, build initial docker-compose setup
+    cmds:
+    - task: download
+    - task: update
