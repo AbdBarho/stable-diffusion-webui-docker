@@ -41,7 +41,7 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-ARG SHA=744ac1f89a075be4535146279feef800214c35a8
+ARG SHA=85b97cc49c4766cb47306e71e552871a0791ea29
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
@@ -49,7 +49,8 @@ git reset --hard ${SHA}
 pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
-RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless markupsafe==2.0.1 gfpgan==1.3.5
+RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless
+#gfpgan==1.3.5
 
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
