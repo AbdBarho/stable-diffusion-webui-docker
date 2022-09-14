@@ -1,6 +1,6 @@
 version: '3'
 # silent: true
-output: group
+#output: group
 dotenv: [.env]
 
 # Default environment variables for projects
@@ -67,9 +67,10 @@ tasks:
     interactive: true
     cmds:
     - task: vars
-    - |
-      docker compose --profile {{ .UI }} up --build
     - task: download
+    - |
+      docker compose --profile {{ .UI }} build
+
   download:
     desc: get extras downloaded
     cmds:
@@ -83,6 +84,7 @@ tasks:
       curl --progress-bar -C - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/RealESRGAN_x2plus.pth -o {{ .MODEL_DIRECTORY }}/RealESRGAN_x2plus.pth
       curl --progress-bar -C - https://heibox.uni-heidelberg.de/f/578df07c8fc04ffbadf3/?dl=1 -o {{ .MODEL_DIRECTORY }}/LDSR.ckpt
       curl --progress-bar -C - https://heibox.uni-heidelberg.de/f/31a76b13ea27482981b4/?dl=1 -o {{ .MODEL_DIRECTORY }}/LDSR.yaml
+      curl --progress-bar -C - https://thisanimedoesnotexist.ai/downloads/wd-v1-2-full-ema.ckpt -o {{ .MODEL_DIRECTORY }}/waifu-diffusion.ckpt
     status:
       - test -f {{ .MODEL_DIRECTORY }}/model.ckpt
       - test -f {{ .MODEL_DIRECTORY }}/GFPGANv1.3.pth
@@ -91,3 +93,5 @@ tasks:
       - test -f {{ .MODEL_DIRECTORY }}/RealESRGAN_x2plus.pth
       - test -f {{ .MODEL_DIRECTORY }}/LDSR.ckpt
       - test -f {{ .MODEL_DIRECTORY }}/LDSR.yaml
+      - test -f {{ .MODEL_DIRECTORY }}/waifu-diffusion.ckpt
+
