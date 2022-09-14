@@ -26,7 +26,7 @@ RUN pip install -U --no-cache-dir pyperclip
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 ARG BRANCH=master
-ARG SHA=e6a9e5d968aad020e54045a0923d8c6aa0b54591
+ARG SHA=833a91047df999302f699637768741cecee9c37b
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -56,4 +56,6 @@ WORKDIR /stable-diffusion
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
-CMD /docker/mount.sh && python3 -u scripts/webui.py --outdir /output --ckpt /cache/models/model.ckpt --ldsr-dir /latent-diffusion ${CLI_ARGS}
+CMD /docker/mount.sh && \
+  python3 -u scripts/webui.py --outdir /output --ckpt /cache/models/model.ckpt --ldsr-dir /latent-diffusion --inbrowser ${CLI_ARGS}
+#STREAMLIT_SERVER_PORT=7860 python -m streamlit run scripts/webui_streamlit.py
