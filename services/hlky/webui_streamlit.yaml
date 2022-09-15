@@ -18,6 +18,7 @@ general:
   skip_grid: False
   skip_save: False
   grid_format: "jpg:95"
+  save_format: "png"
   n_rows: -1
   no_verify_input: False
   no_half: False
