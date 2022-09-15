@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN conda install python=3.8.5 && conda clean -a -y
 RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch && conda clean -a -y
 
-RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
+RUN apt-get update && apt install fonts-dejavu-core rsync gcc -y && apt-get clean
 
 
 RUN <<EOF

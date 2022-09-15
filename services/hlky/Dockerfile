@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN conda install python=3.8.5 && conda clean -a -y
 RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch && conda clean -a -y
 
-RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
+RUN apt-get update && apt install fonts-dejavu-core rsync gcc -y && apt-get clean
 
 
 RUN <<EOF
@@ -27,6 +27,8 @@ RUN pip install -U --no-cache-dir pyperclip
 # instead, update the repo state in a later step
 ARG BRANCH=master
 ARG SHA=833a91047df999302f699637768741cecee9c37b
+# ARG BRANCH=dev
+# ARG SHA=b4de6caf697d311c1238c15a4c863fa529a35522
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -58,4 +60,4 @@ EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
   python3 -u scripts/webui.py --outdir /output --ckpt /cache/models/model.ckpt --ldsr-dir /latent-diffusion --inbrowser ${CLI_ARGS}
-#STREAMLIT_SERVER_PORT=7860 python -m streamlit run scripts/webui_streamlit.py
+  # STREAMLIT_SERVER_PORT=7860 python -m streamlit run scripts/webui_streamlit.py
