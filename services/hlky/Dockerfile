@@ -13,6 +13,7 @@ RUN apt-get update && apt install fonts-dejavu-core rsync gcc -y && apt-get clea
 
 
 RUN <<EOF
+git config --global http.postBuffer 1048576000
 git clone https://github.com/sd-webui/stable-diffusion-webui.git stable-diffusion
 cd stable-diffusion
 git reset --hard 7623a5734740025d79b710f3744bff9276e1467b
