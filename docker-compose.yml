@@ -52,3 +52,6 @@ services:
     <<: *base_service
     profiles: ["lstein"]
     build: ./services/lstein/
+    environment:
+      - PRELOAD=false
+      - CLI_ARGS=

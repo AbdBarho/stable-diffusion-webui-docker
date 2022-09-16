@@ -20,12 +20,25 @@ conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
 
-ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
+ARG BRANCH=development SHA=45af30f3a4c98b50c755717831c5fff75a3a8b43
+# ARG BRANCH=main SHA=89da371f4841f7e05da5a1672459d700c3920784
+RUN <<EOF
+cd stable-diffusion
+git fetch
+git checkout ${BRANCH}
+git reset --hard ${SHA}
+conda env update --file environment.yaml -n base
+conda clean -a -y
+EOF
+
+RUN pip uninstall opencv-python -y && pip install --prefer-binary --upgrade --force-reinstall --no-cache-dir opencv-python-headless
+
+COPY . /docker/
+RUN python3 /docker/info.py /stable-diffusion/static/dream_web/index.html
+
+ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch PRELOAD=false CLI_ARGS=""
 WORKDIR /stable-diffusion
-
 EXPOSE 7860
-# run, -u to not buffer stdout / stderr
-CMD mkdir -p /stable-diffusion/models/ldm/stable-diffusion-v1/ && \
-  ln -sf /cache/models/model.ckpt /stable-diffusion/models/ldm/stable-diffusion-v1/model.ckpt && \
-  python3 -u scripts/dream.py --outdir /output --web --host 0.0.0.0 --port 7860 ${CLI_ARGS}
+
+CMD /docker/mount.sh && python3 -u scripts/dream.py --outdir /output --web --host 0.0.0.0 --port 7860 ${CLI_ARGS}
