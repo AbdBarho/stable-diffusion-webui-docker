@@ -35,7 +35,7 @@ EOF
 RUN pip uninstall opencv-python -y && pip install --prefer-binary --upgrade --force-reinstall --no-cache-dir opencv-python-headless
 
 COPY . /docker/
-RUN python3 /docker/info.py /stable-diffusion/static/dream_web/index.html
+RUN python3 /docker/info.py /stable-diffusion/static/dream_web/index.html && chmod +x /docker/mount.sh
 
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch PRELOAD=false CLI_ARGS=""
 WORKDIR /stable-diffusion
