@@ -44,5 +44,15 @@
   "interrogate_clip_num_beams": 1,
   "interrogate_clip_min_length": 24,
   "interrogate_clip_max_length": 48,
-  "interrogate_clip_dict_limit": 1500.0
+  "interrogate_clip_dict_limit": 1500.0,
+  "samples_filename_pattern": "",
+  "directories_filename_pattern": "",
+  "save_selected_only": false,
+  "filter_nsfw": false,
+  "img2img_color_correction": false,
+  "img2img_fix_steps": false,
+  "enable_quantization": false,
+  "enable_batch_seeds": true,
+  "memmon_poll_rate": 8,
+  "sd_model_checkpoint": null
 }
