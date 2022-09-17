@@ -29,7 +29,7 @@ RUN pip install -U --no-cache-dir pyperclip
 # ARG BRANCH=master
 # ARG SHA=833a91047df999302f699637768741cecee9c37b
 ARG BRANCH=dev
-ARG SHA=27c8134547bf43c6b9669a322059efec9c98d617
+ARG SHA=abb0c1c37756f0b5c3869a4037fd3402671c025a
 RUN <<EOF
 cd stable-diffusion
 git fetch
