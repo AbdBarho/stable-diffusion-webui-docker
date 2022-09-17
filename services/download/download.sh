@@ -2,6 +2,8 @@
 
 set -Eeuo pipefail
 
+mkdir -p /cache/torch /cache/transformers /cache/weights /cache/models /cache/custom-models
+
 echo "Downloading, this might take a while..."
 
 aria2c --input-file /docker/links.txt --dir /cache/models --continue

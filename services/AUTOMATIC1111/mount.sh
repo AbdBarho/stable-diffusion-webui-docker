@@ -32,5 +32,4 @@ rm -rf ${ROOT}/repositories/CodeFormer/weights/CodeFormer ${ROOT}/repositories/C
 ln -sf -T /cache/weights ${ROOT}/repositories/CodeFormer/weights/CodeFormer
 ln -sf -T /cache/weights ${ROOT}/repositories/CodeFormer/weights/facelib
 
-# mount config
-# ln -sf /docker/config.json ${WORKDIR}/config.json
+mkdir -p /cache/torch /cache/transformers /cache/weights /cache/models /cache/custom-models

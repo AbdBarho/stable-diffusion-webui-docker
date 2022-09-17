@@ -42,7 +42,7 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=7fe00d08402b8bf9f7f0ffef59ee3f3ad0187cfc
+ARG SHA=99585b3514e2d7e987651d5c6a0806f933af012b
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
@@ -61,4 +61,5 @@ RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 WORKDIR ${WORKDIR}
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
-CMD /docker/mount.sh && python3 -u ../../webui.py --listen --port 7860 --hide-ui-dir-config ${CLI_ARGS}
+CMD /docker/mount.sh && \
+  python3 -u ../../webui.py --listen --port 7860 --hide-ui-dir-config --ckpt-dir /cache/custom-models --ckpt /cache/models/model.ckpt ${CLI_ARGS}
