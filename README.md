@@ -7,12 +7,12 @@ This repository provides multiple UIs for you to play around with stable diffusi
 ## Quick Start
 
 - Install [Taskfile](https://taskfile.dev/installation?ref=AbdBarho-stable-diffusion-webui-docker)
-    - Quick Snippet:
-        - Linux: `sudo snap install task --classic`
-        - MacOS: `HOMEBREW_NO_AUTO_UPDATE=1 brew install go-task/tap/go-task`
-        - Windows: `choco install go-task -y` or `scoop install task`
-        - Curl: `sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin`
-        - Go: `go install github.com/go-task/task/v3/cmd/task@latest`
+  - Quick Snippet:
+    - Linux: `sudo snap install task --classic`
+    - MacOS: `HOMEBREW_NO_AUTO_UPDATE=1 brew install go-task/tap/go-task`
+    - Windows: `choco install go-task -y` or `scoop install task`
+    - Curl: `sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin`
+    - Go: `go install github.com/go-task/task/v3/cmd/task@latest`
 
 - Run `task` and see a list of all the pre-built tasks.
 
@@ -26,7 +26,6 @@ task init
 This will download the models with the resume option using curl (allowing it to continue if interuppted without restarting from scratch), followed by running the required docker commands.
 
 ## Features
-
 
 ### AUTOMATIC1111
 
@@ -63,13 +62,22 @@ Screenshots:
 
 ### lstein
 
-[lstein's fork](https://github.com/lstein/stable-diffusion) is very mature when it comes to the cli, but less so for the WebUI.
+[lstein's fork](https://github.com/lstein/stable-diffusion) is very mature when it comes to the cli, and the WebUI has potential.
+
+| Text to image                                                                                              | Image to image                                                                                             | Extras                                                                                                     |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| ![](https://user-images.githubusercontent.com/24505302/190662506-dabdc967-93af-4d78-8533-394604d29ba4.jpg) | ![](https://user-images.githubusercontent.com/24505302/190662557-7640d9f0-30d8-4527-97b0-07d3f48108d4.jpg) | ![](https://user-images.githubusercontent.com/24505302/190662588-37a01fad-f993-4674-9ae6-8714aa229f7b.jpg) |
 
 ## Setup & Usage
 
 Visit the wiki for [Setup](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Setup) and [Usage](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Usage) instructions, checkout the [FAQ](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/FAQ) page if you face any problems, or create a new issue!
 
 ## Contributing
+
+Contributions are welcome! create an issue first of what you want to contribute (before you implement anything) so we can talk about it.
+
+## Contributing
+
 Contributions are welcome! create an issue first of what you want to contribute (before you implement anything) so we can talk about it.
 
 ## Disclaimer
