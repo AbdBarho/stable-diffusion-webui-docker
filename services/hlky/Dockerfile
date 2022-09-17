@@ -26,10 +26,10 @@ RUN pip install -U --no-cache-dir pyperclip
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-ARG BRANCH=master
-ARG SHA=833a91047df999302f699637768741cecee9c37b
-# ARG BRANCH=dev
-# ARG SHA=5f3d7facdea58fc4f89b8c584d22a4639615a2f8
+# ARG BRANCH=master
+# ARG SHA=833a91047df999302f699637768741cecee9c37b
+ARG BRANCH=dev
+ARG SHA=abb0c1c37756f0b5c3869a4037fd3402671c025a
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -56,7 +56,7 @@ COPY . /docker/
 RUN python /docker/info.py /stable-diffusion/frontend/frontend.py && chmod +x /docker/mount.sh
 
 WORKDIR /stable-diffusion
-ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
+ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch PYTHONPATH="${PYTHONPATH}:/stable-diffusion" CLI_ARGS=""
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
