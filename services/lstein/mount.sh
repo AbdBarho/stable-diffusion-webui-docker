@@ -14,6 +14,9 @@ if test -f /cache/models/GFPGANv1.3.pth; then
   echo "Mounted GFPGANv1.3.pth"
 fi
 
+# Preload models. See https://github.com/lstein/stable-diffusion/issues/34
+python3 scripts/preload_models.py
+
 # facexlib
 FACEX_WEIGHTS=/opt/conda/lib/python3.8/site-packages/facexlib/weights
 
