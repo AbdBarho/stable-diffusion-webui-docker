@@ -44,13 +44,13 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-# ARG SHA=7e77938230d4fefb6edccdba0b80b61d8416673e
-# RUN <<EOF
-# cd stable-diffusion-webui
-# git pull --rebase
-# git reset --hard ${SHA}
-# pip install --prefer-binary --no-cache-dir -r requirements.txt
-# EOF
+ARG SHA=9e892d90ceaa6493d8b9092c89017485bb658c5b
+RUN <<EOF
+cd stable-diffusion-webui
+git pull --rebase
+git reset --hard ${SHA}
+pip install --prefer-binary --no-cache-dir -r requirements.txt
+EOF
 
 RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless
 
