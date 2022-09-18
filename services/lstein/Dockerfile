@@ -6,7 +6,8 @@ SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN conda install python=3.8.5 && conda clean -a -y
+# now it requires python3.9
+# RUN conda install python=3.8.5 && conda clean -a -y
 RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch && conda clean -a -y
 
 RUN apt-get update && apt install fonts-dejavu-core rsync gcc -y && apt-get clean
@@ -15,13 +16,13 @@ RUN apt-get update && apt install fonts-dejavu-core rsync gcc -y && apt-get clea
 RUN <<EOF
 git clone https://github.com/lstein/stable-diffusion.git
 cd stable-diffusion
-git reset --hard 751283a2de81bee4bb571fbabe4adb19f1d85b97
-conda env update --file environment.yaml -n base
-conda clean -a -y
+# git reset --hard 751283a2de81bee4bb571fbabe4adb19f1d85b97
+# conda env update --file environment.yaml -n base
+# conda clean -a -y
 EOF
 
 
-ARG BRANCH=development SHA=45af30f3a4c98b50c755717831c5fff75a3a8b43
+ARG BRANCH=development SHA=9bcb0dff968bd7732ca7fa61b7cb3f6e1c8a7943
 # ARG BRANCH=main SHA=89da371f4841f7e05da5a1672459d700c3920784
 RUN <<EOF
 cd stable-diffusion
@@ -32,7 +33,7 @@ conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
 
-RUN pip uninstall opencv-python -y && pip install --prefer-binary --upgrade --force-reinstall --no-cache-dir opencv-python-headless
+RUN pip uninstall opencv-python -y && pip install --prefer-binary --force-reinstall --no-cache-dir opencv-python-headless transformers==4.22
 
 COPY . /docker/
 RUN python3 /docker/info.py /stable-diffusion/static/dream_web/index.html && chmod +x /docker/mount.sh

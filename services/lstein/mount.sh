@@ -15,11 +15,15 @@ if test -f /cache/models/GFPGANv1.3.pth; then
 fi
 
 # facexlib
-FACEX_WEIGHTS=/opt/conda/lib/python3.8/site-packages/facexlib/weights
+FACEX_WEIGHTS=/opt/conda/lib/python3.9/site-packages/facexlib/weights
 
 rm -rf "${FACEX_WEIGHTS}"
 mkdir -p /cache/weights
 ln -sf -T /cache/weights "${FACEX_WEIGHTS}"
+
+REALESRGAN_WEIGHTS=/opt/conda/lib/python3.9/site-packages/realesrgan/weights
+rm -rf "${REALESRGAN_WEIGHTS}"
+ln -sf -T /cache/weights "${REALESRGAN_WEIGHTS}"
 
 if "${PRELOAD}" == "true"; then
   python3 -u scripts/preload_models.py
