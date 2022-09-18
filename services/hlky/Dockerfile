@@ -21,9 +21,6 @@ conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
 
-# new dependency, should be added to the environment.yaml
-RUN pip install -U --no-cache-dir pyperclip
-
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 # ARG BRANCH=master
@@ -38,6 +35,8 @@ git reset --hard ${SHA}
 conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
+
+RUN pip uninstall transformers -y && pip install -U --no-cache-dir pyperclip transformers==4.22
 
 # Latent diffusion
 RUN <<EOF
