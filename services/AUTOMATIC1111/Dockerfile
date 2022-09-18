@@ -1,13 +1,16 @@
 # syntax=docker/dockerfile:1
 
 FROM alpine/git:2.36.2 as download
+
+
+RUN git clone --depth 1 https://github.com/CompVis/stable-diffusion.git repositories/stable-diffusion
+RUN git clone --depth 1 https://github.com/sczhou/CodeFormer.git repositories/CodeFormer
+RUN git clone --depth 1 https://github.com/salesforce/BLIP.git repositories/BLIP
+
 RUN <<EOF
 # because taming-transformers is huge
 git config --global http.postBuffer 1048576000
-git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer
-git clone https://github.com/CompVis/stable-diffusion.git repositories/stable-diffusion
-git clone https://github.com/salesforce/BLIP.git repositories/BLIP
-git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers
+git clone --depth 1 https://github.com/CompVis/taming-transformers.git repositories/taming-transformers
 rm -rf repositories/taming-transformers/data repositories/taming-transformers/assets
 EOF
 
@@ -27,14 +30,13 @@ RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard 13eec4f3d4081fdc43883c5ef02e471a2b6c7212
-conda env update --file environment-wsl2.yaml -n base
-conda clean -a -y
+git reset --hard 7e77938230d4fefb6edccdba0b80b61d8416673e
 pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
 ENV ROOT=/stable-diffusion-webui \
   WORKDIR=/stable-diffusion-webui/repositories/stable-diffusion
+
 
 COPY --from=download /git/ ${ROOT}
 RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
@@ -42,13 +44,13 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=99585b3514e2d7e987651d5c6a0806f933af012b
-RUN <<EOF
-cd stable-diffusion-webui
-git pull --rebase
-git reset --hard ${SHA}
-pip install --prefer-binary --no-cache-dir -r requirements.txt
-EOF
+# ARG SHA=7e77938230d4fefb6edccdba0b80b61d8416673e
+# RUN <<EOF
+# cd stable-diffusion-webui
+# git pull --rebase
+# git reset --hard ${SHA}
+# pip install --prefer-binary --no-cache-dir -r requirements.txt
+# EOF
 
 RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless
 
