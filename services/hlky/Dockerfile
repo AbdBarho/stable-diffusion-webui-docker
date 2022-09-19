@@ -23,10 +23,10 @@ EOF
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-# ARG BRANCH=master
+ARG BRANCH=master
 # ARG SHA=833a91047df999302f699637768741cecee9c37b
-ARG BRANCH=dev
-ARG SHA=abb0c1c37756f0b5c3869a4037fd3402671c025a
+# ARG BRANCH=dev
+ARG SHA=17748cbc9c34df44d0381c42e4f0fe1903089438
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -40,9 +40,8 @@ RUN pip uninstall transformers -y && pip install -U --no-cache-dir pyperclip tra
 
 # Latent diffusion
 RUN <<EOF
-git clone https://github.com/Hafiidz/latent-diffusion.git
+git clone --depth 1 https://github.com/Hafiidz/latent-diffusion.git
 cd latent-diffusion
-git reset --hard e1a84a89fcbb49881546cf2acf1e7e250923dba0
 # hacks all the way down
 mv ldm ldm_latent &&
 sed -i -- 's/from ldm/from ldm_latent/g' *.py
