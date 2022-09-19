@@ -39,7 +39,7 @@ services:
       - *v2
       - ./services/AUTOMATIC1111/config.json:/stable-diffusion-webui/config.json
     environment:
-      - CLI_ARGS=--medvram --opt-split-attention
+      - CLI_ARGS=--medvram
 
   automatic1111-cpu:
     <<: *automatic
