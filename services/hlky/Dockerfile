@@ -25,8 +25,8 @@ EOF
 # instead, update the repo state in a later step
 ARG BRANCH=master
 # ARG SHA=833a91047df999302f699637768741cecee9c37b
-# ARG BRANCH=dev
-ARG SHA=17748cbc9c34df44d0381c42e4f0fe1903089438
+ARG BRANCH=dev
+ARG SHA=fa6a31b23c38b41541ed9af19201e6f8355ac165
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -59,4 +59,4 @@ EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
   python3 -u scripts/webui.py --outdir /output --ckpt /cache/models/model.ckpt --ldsr-dir /latent-diffusion --inbrowser ${CLI_ARGS}
-# STREAMLIT_SERVER_PORT=7860 python -m streamlit run scripts/webui_streamlit.py
+#  STREAMLIT_SERVER_PORT=7860 python -m streamlit run scripts/webui_streamlit.py
