@@ -54,5 +54,14 @@
   "enable_quantization": false,
   "enable_batch_seeds": true,
   "memmon_poll_rate": 8,
-  "sd_model_checkpoint": null
+  "sd_model_checkpoint": null,
+  "SWIN_tile": 192,
+  "SWIN_tile_overlap": 8,
+  "ldsr_steps": 30,
+  "ldsr_pre_down": 1,
+  "ldsr_post_down": 1,
+  "upscaler_for_hires_fix": null,
+  "js_modal_lightbox": true,
+  "js_modal_lightbox_initialy_zoomed": true,
+  "use_original_name_batch": false
 }
