@@ -6,6 +6,9 @@ declare -A MODELS
 
 MODELS["${WORKDIR}/models/ldm/stable-diffusion-v1/model.ckpt"]=model.ckpt
 MODELS["${ROOT}/GFPGANv1.3.pth"]=GFPGANv1.3.pth
+MODELS["${WORKDIR}/repositories/latent-diffusion/experiments/pretrained_models/model.chkpt"]=LDSR.ckpt
+MODELS["${WORKDIR}/repositories/latent-diffusion/experiments/pretrained_models/project.yaml"]=LDSR.yaml
+
 
 MODELS_DIR=/cache/models
 

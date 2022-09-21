@@ -14,9 +14,9 @@ RUN apt-get update && apt install fonts-dejavu-core rsync gcc -y && apt-get clea
 
 
 RUN <<EOF
-git clone https://github.com/lstein/stable-diffusion.git
+git clone https://github.com/invoke-ai/InvokeAI.git stable-diffusion
 cd stable-diffusion
-git reset --hard e994073b5bdfa3c77313681c5944be1544eb65b6
+git reset --hard a1739a73b48bfe98b6abcb67f5a0197a9ad270e0
 sed -i -- 's/python=3.8.5/python=3.9/g' environment.yaml
 conda env update --file environment.yaml -n base
 conda clean -a -y
@@ -24,7 +24,9 @@ EOF
 
 
 ARG BRANCH=development SHA=50d607ffea3734072a80e38b09ba0c3758af5d40
-# ARG BRANCH=main SHA=89da371f4841f7e05da5a1672459d700c3920784
+# this breaks on generation:
+# there is a new UI anyway, but it is not by any means ready.
+# ARG BRANCH=development SHA=bdbc76fcd4bd3362312dc91b087d9af66de423b1
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -51,4 +53,4 @@ EXPOSE 7860
 
 CMD /docker/mount.sh && \
   python3 -u scripts/dream.py --outdir /output --web --host 0.0.0.0 --port 7860 ${CLI_ARGS}
-  #python3 -u backend/server.py
+# python3 -u backend/server.py --host 0.0.0.0 --port 9090
