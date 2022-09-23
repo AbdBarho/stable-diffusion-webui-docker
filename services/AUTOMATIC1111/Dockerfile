@@ -68,4 +68,4 @@ WORKDIR ${WORKDIR}
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
-  python3 -u ../../webui.py --listen --port 7860 --hide-ui-dir-config --ckpt-dir /cache/custom-models --ckpt /cache/models/model.ckpt ${CLI_ARGS}
+  python3 -u ../../webui.py --listen --port 7860 --hide-ui-dir-config --ckpt-dir /cache/custom-models --ckpt /cache/models/model.ckpt --gfpgan-model /cache/models/GFPGANv1.3.pth ${CLI_ARGS}
