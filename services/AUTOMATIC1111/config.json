@@ -63,5 +63,15 @@
   "upscaler_for_hires_fix": null,
   "js_modal_lightbox": true,
   "js_modal_lightbox_initialy_zoomed": true,
-  "use_original_name_batch": false
+  "use_original_name_batch": false,
+  "directories_max_prompt_words": 8,
+  "realesrgan_enabled_models": [
+    "Real-ESRGAN 4x plus",
+    "Real-ESRGAN 4x plus anime 6B",
+    "Real-ESRGAN 2x plus",
+    "Real-ESRGAN AnimeVideo",
+    "Real-ESRGAN General WDN x4x3",
+    "Real-ESRGAN General x4x3"
+  ],
+  "samples_log_stdout": false
 }

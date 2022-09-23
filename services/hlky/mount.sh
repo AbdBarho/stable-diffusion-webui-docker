@@ -35,4 +35,4 @@ mkdir -p /cache/weights/ /stable-diffusion/gfpgan/
 ln -sf /cache/weights/ /stable-diffusion/gfpgan/
 
 # streamlit config
-ln -sf /docker/webui_streamlit.yaml /stable-diffusion/configs/webui/webui_streamlit.yaml
+ln -sf /docker/userconfig_streamlit.yaml /stable-diffusion/configs/webui/userconfig_streamlit.yaml
