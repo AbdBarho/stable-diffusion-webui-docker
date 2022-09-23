@@ -23,8 +23,8 @@ EOF
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
-# ARG BRANCH=master  SHA=833a91047df999302f699637768741cecee9c37b
-ARG BRANCH=dev SHA=fa6a31b23c38b41541ed9af19201e6f8355ac165
+# ARG BRANCH=master  SHA=d0bb60a139d60e6c2b9be4e18e0e29a86aa5af59
+ARG BRANCH=dev SHA=2a911049aa07a1a79f8cfc8e05d13b906c23efcf
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -56,5 +56,5 @@ ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch PYTHONPATH="$
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
-  python3 -u scripts/webui.py --outdir /output --ckpt /cache/models/model.ckpt --ldsr-dir /latent-diffusion --inbrowser ${CLI_ARGS}
-#  STREAMLIT_SERVER_PORT=7860 python -m streamlit run scripts/webui_streamlit.py
+  python3 -u scripts/webui.py --outdir /output --ckpt /cache/models/model.ckpt --ldsr-dir /latent-diffusion ${CLI_ARGS}
+# STREAMLIT_SERVER_PORT=7860 python -m streamlit run scripts/webui_streamlit.py  --theme.base dark
