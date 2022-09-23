@@ -37,7 +37,7 @@ conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
 
-RUN pip uninstall opencv-python -y && pip install --prefer-binary --force-reinstall --no-cache-dir opencv-python-headless transformers==4.22
+RUN pip uninstall opencv-python -y && pip install --prefer-binary --force-reinstall --no-cache-dir opencv-python-headless transformers==4.19.2
 
 COPY . /docker/
 RUN <<EOF

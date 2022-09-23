@@ -34,7 +34,7 @@ conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
 
-RUN pip uninstall transformers -y && pip install -U --no-cache-dir pyperclip transformers==4.22
+RUN pip install -U --no-cache-dir pyperclip
 
 # Latent diffusion
 RUN <<EOF
