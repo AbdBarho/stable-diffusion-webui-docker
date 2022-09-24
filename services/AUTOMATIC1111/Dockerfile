@@ -61,8 +61,12 @@ RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless
 ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
 COPY . /docker
-RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
-
+RUN <<EOF
+chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
+# hackiest of hacks, change default cache dir of clip #88
+# https://github.com/openai/CLIP/blob/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1/clip/clip.py#L94
+sed -i -- 's/download_root: str = None/download_root: str = "\/cache\/weights"/' /opt/conda/lib/python3.8/site-packages/clip/clip.py
+EOF
 
 WORKDIR ${WORKDIR}
 EXPOSE 7860
