@@ -21,20 +21,6 @@ conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
 
-# Note: don't update the sha of previous versions because the install will take forever
-# instead, update the repo state in a later step
-# ARG BRANCH=master  SHA=d0bb60a139d60e6c2b9be4e18e0e29a86aa5af59
-ARG BRANCH=dev SHA=2a911049aa07a1a79f8cfc8e05d13b906c23efcf
-RUN <<EOF
-cd stable-diffusion
-git fetch
-git checkout ${BRANCH}
-git reset --hard ${SHA}
-conda env update --file environment.yaml -n base
-conda clean -a -y
-EOF
-
-RUN pip install -U --no-cache-dir pyperclip
 
 # Latent diffusion
 RUN <<EOF
@@ -47,6 +33,21 @@ sed -i -- 's/from ldm/from ldm_latent/g' *.py
 EOF
 
 
+# Note: don't update the sha of previous versions because the install will take forever
+# instead, update the repo state in a later step
+# ARG BRANCH=master  SHA=d0bb60a139d60e6c2b9be4e18e0e29a86aa5af59
+ARG BRANCH=dev SHA=f585ab1923730339ea75d36b53ac1d5b6cbde500
+RUN <<EOF
+cd stable-diffusion
+git fetch
+git checkout ${BRANCH}
+git reset --hard ${SHA}
+conda env update --file environment.yaml -n base
+conda clean -a -y
+EOF
+
+RUN pip install -U --no-cache-dir pyperclip
+
 # add info
 COPY . /docker/
 RUN python /docker/info.py /stable-diffusion/frontend/frontend.py && chmod +x /docker/mount.sh
@@ -57,4 +58,4 @@ EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
   python3 -u scripts/webui.py --outdir /output --ckpt /cache/models/model.ckpt --ldsr-dir /latent-diffusion ${CLI_ARGS}
-# STREAMLIT_SERVER_PORT=7860 python -m streamlit run scripts/webui_streamlit.py  --theme.base dark
+  # STREAMLIT_SERVER_PORT=7860 python -m streamlit run scripts/webui_streamlit.py  --theme.base dark
