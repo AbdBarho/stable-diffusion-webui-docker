@@ -1,2 +1,3 @@
 /dev
 /.devcontainer
+embeddings/*
