@@ -16,6 +16,7 @@ This repository provides multiple UIs for you to play around with stable diffusi
 - Loopback, prompt weighting, prompt matrix, X/Y plot
 - Live preview of the generated images.
 - Highly optimized 4GB GPU support, or even CPU only!
+- Textual inversion allows you to use pretrained textual inversion embeddings
 - [Full feature list here](https://github.com/AUTOMATIC1111/stable-diffusion-webui-feature-showcase)
 
 | Text to image                                                                                              | Image to image                                                                                             | Extras                                                                                                     |
