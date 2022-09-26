@@ -1,0 +1,33 @@
+# docker-compose.override.yml distributed file
+# Here you can tweak configuration to your own needs
+#
+# Example override for specific services only
+# 1. Prepared labels to use it with traefik locally (easy https setup) on domains:
+#    * sd-hlky.localtest.me for hlky (points to 127.0.0.1)
+#    * sd-auto.localtest.me for auto (also domain points to 127.0.0.1)
+# 2. Overriden environment PYTORCH_CUDA_ALLOW_CONF for auto, to allow better memory fragmentation handling
+
+services:
+  hlky:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.local-sd-hlky.rule=Host(`sd-hlky.localtest.me`)"
+      - "traefik.http.routers.local-sd-hlky.entrypoints=websecure"
+      - "traefik.http.routers.local-sd-hlky.tls=true"
+      - "traefik.http.services.local-sd-hlky.loadbalancer.server.port=7860"
+    networks:
+      - traefik-public
+  automatic1111:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.local-sd-automatic.rule=Host(`sd-auto.localtest.me`)"
+      - "traefik.http.routers.local-sd-automatic.entrypoints=websecure"
+      - "traefik.http.routers.local-sd-automatic.tls=true"
+      - "traefik.http.services.local-sd-automatic.loadbalancer.server.port=7860"
+    networks:
+      - traefik-public
+    environment:
+      - PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
+networks:
+  traefik-public:
+    external: true
