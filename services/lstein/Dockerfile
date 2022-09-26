@@ -23,7 +23,7 @@ conda clean -a -y
 EOF
 
 
-ARG BRANCH=development SHA=50d607ffea3734072a80e38b09ba0c3758af5d40
+ARG BRANCH=development SHA=b40bfb5116b7fc618f78a0d152005ceb46153443
 # this breaks on generation:
 # there is a new UI anyway, but it is not by any means ready.
 # ARG BRANCH=development SHA=bdbc76fcd4bd3362312dc91b087d9af66de423b1
