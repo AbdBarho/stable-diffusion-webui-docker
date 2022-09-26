@@ -22,21 +22,10 @@ conda clean -a -y
 EOF
 
 
-# Latent diffusion
-RUN <<EOF
-git clone --depth 1 https://github.com/Hafiidz/latent-diffusion.git
-cd latent-diffusion
-# hacks all the way down
-mv ldm ldm_latent &&
-sed -i -- 's/from ldm/from ldm_latent/g' *.py
-# dont forget to update the yaml!!
-EOF
-
-
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 # ARG BRANCH=master  SHA=d0bb60a139d60e6c2b9be4e18e0e29a86aa5af59
-ARG BRANCH=dev SHA=f585ab1923730339ea75d36b53ac1d5b6cbde500
+ARG BRANCH=dev SHA=1fd28eed1ebc3aa04b9b00e2a899f3bf07f64bdc
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -53,9 +42,9 @@ COPY . /docker/
 RUN python /docker/info.py /stable-diffusion/frontend/frontend.py && chmod +x /docker/mount.sh
 
 WORKDIR /stable-diffusion
-ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch PYTHONPATH="${PYTHONPATH}:/stable-diffusion" CLI_ARGS=""
+ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch PYTHONPATH="${PYTHONPATH}:${PWD}" CLI_ARGS=""
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
-  python3 -u scripts/webui.py --outdir /output --ckpt /cache/models/model.ckpt --ldsr-dir /latent-diffusion ${CLI_ARGS}
+  python3 -u scripts/webui.py --outdir /output --ckpt /cache/models/model.ckpt ${CLI_ARGS}
   # STREAMLIT_SERVER_PORT=7860 python -m streamlit run scripts/webui_streamlit.py  --theme.base dark
