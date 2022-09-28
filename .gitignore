@@ -1,3 +1,4 @@
 /dev
 /.devcontainer
 embeddings/*
+/docker-compose.override.yml
