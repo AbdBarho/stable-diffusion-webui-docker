@@ -25,7 +25,7 @@ EOF
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 # ARG BRANCH=master  SHA=d0bb60a139d60e6c2b9be4e18e0e29a86aa5af59
-ARG BRANCH=dev SHA=1fd28eed1ebc3aa04b9b00e2a899f3bf07f64bdc
+ARG BRANCH=dev SHA=7bd785d28f974c6e268604794acc549607e33090
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -47,4 +47,4 @@ EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
   python3 -u scripts/webui.py --outdir /output --ckpt /cache/models/model.ckpt ${CLI_ARGS}
-  # STREAMLIT_SERVER_PORT=7860 python -m streamlit run scripts/webui_streamlit.py  --theme.base dark
+# sed -i -- 's/8501/7860/g' .streamlit/config.toml && STREAMLIT_SERVER_HEADLESS=true python -u -m streamlit run scripts/webui_streamlit.py  --theme.base dark --server.port 7860
