@@ -18,4 +18,3 @@ jobs:
           days-before-pr-stale: 14
           days-before-issue-close: 7
           days-before-pr-close: 7
-          ignore-updates:  true
