@@ -23,7 +23,7 @@ conda clean -a -y
 EOF
 
 
-ARG BRANCH=development SHA=b40bfb5116b7fc618f78a0d152005ceb46153443
+ARG BRANCH=development SHA=8c9f2ae705cf723d4a8a73c416e8d8bf2d746977
 # this breaks on generation:
 # there is a new UI anyway, but it is not by any means ready.
 # ARG BRANCH=development SHA=bdbc76fcd4bd3362312dc91b087d9af66de423b1
@@ -33,7 +33,7 @@ git fetch
 git reset --hard
 git checkout ${BRANCH}
 git reset --hard ${SHA}
-conda env update --file environment.yaml -n base
+conda env update --file environment.yml -n base
 conda clean -a -y
 EOF
 
@@ -52,5 +52,8 @@ WORKDIR /stable-diffusion
 EXPOSE 7860
 
 CMD /docker/mount.sh && \
-  python3 -u scripts/dream.py --outdir /output --web --host 0.0.0.0 --port 7860 ${CLI_ARGS}
-# python3 -u backend/server.py --host 0.0.0.0 --port 9090
+  # python3 -u backend/server.py --host 0.0.0.0 --port 7860 --cors http://localhost:7860
+  # python3 -u scripts/dream.py --outdir /output --web --host 0.0.0.0 --port 7860 ${CLI_ARGS}
+  echo The lstein webUI is currently deactivated due to implementation limitations: \
+  https://github.com/invoke-ai/InvokeAI/blob/8c9f2ae705cf723d4a8a73c416e8d8bf2d746977/backend/modules/create_cmd_parser.py#L26 \
+  Once the path the output is fixed, the UI will be activated again
