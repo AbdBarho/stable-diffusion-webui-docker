@@ -40,6 +40,7 @@ Screenshots:
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | ![](https://user-images.githubusercontent.com/24505302/189541298-f902b021-a1eb-4e4b-b2eb-b6a696a8ec80.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541295-7d7f2162-2189-4e0a-abbd-703f4779e1cd.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541294-aa7f7735-a973-4e17-ada0-1fe3acbb1772.jpg) |
 
+<!--
 ### lstein
 
 [lstein's fork](https://github.com/lstein/stable-diffusion) is very mature when it comes to the cli, and the WebUI has potential.
@@ -47,6 +48,7 @@ Screenshots:
 | Text to image                                                                                              | Image to image                                                                                             | Extras                                                                                                     |
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | ![](https://user-images.githubusercontent.com/24505302/190662506-dabdc967-93af-4d78-8533-394604d29ba4.jpg) | ![](https://user-images.githubusercontent.com/24505302/190662557-7640d9f0-30d8-4527-97b0-07d3f48108d4.jpg) | ![](https://user-images.githubusercontent.com/24505302/190662588-37a01fad-f993-4674-9ae6-8714aa229f7b.jpg) |
+-->
 
 ## Setup & Usage
 
