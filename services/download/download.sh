@@ -2,7 +2,7 @@
 
 set -Eeuo pipefail
 
-mkdir -p /cache/torch /cache/transformers /cache/weights /cache/models /cache/custom-models
+mkdir -p /data/.cache /data/StableDiffusion /data/Codeformer /data/GFPGAN /data/ESRGAN /data/BSRGAN /data/RealESRGAN /data/SwinIR /data/LDSR
 
 cat <<EOF
 By using this software, you agree to the following licenses:
@@ -13,8 +13,11 @@ EOF
 
 echo "Downloading, this might take a while..."
 
-aria2c --input-file /docker/links.txt --dir /cache/models --continue
+aria2c --input-file /docker/links.txt --dir /data --continue
 
 echo "Checking SHAs..."
 
 parallel --will-cite -a /docker/checksums.sha256 "echo -n {} | sha256sum -c"
+
+# fix potential permissions
+chmod -R 777 /data /output

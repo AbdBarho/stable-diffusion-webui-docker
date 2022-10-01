@@ -1,36 +1,31 @@
 #!/bin/bash
 
-set -e
+set -Eeuo pipefail
 
-declare -A MODELS
+declare -A MOUNTS
 
-MODELS["${ROOT}/GFPGANv1.3.pth"]=GFPGANv1.3.pth
-MODELS["${WORKDIR}/repositories/latent-diffusion/experiments/pretrained_models/model.chkpt"]=LDSR.ckpt
-MODELS["${WORKDIR}/repositories/latent-diffusion/experiments/pretrained_models/project.yaml"]=LDSR.yaml
+MOUNTS["/root/.cache"]="/data/.cache"
 
-MODELS_DIR=/cache/models
+# main
+MOUNTS["${ROOT}/models/Stable-diffusion"]="/data/StableDiffusion"
+MOUNTS["${ROOT}/models/Codeformer"]="/data/Codeformer"
+MOUNTS["${ROOT}/models/GFPGAN"]="/data/GFPGAN"
+MOUNTS["${ROOT}/models/ESRGAN"]="/data/ESRGAN"
+MOUNTS["${ROOT}/models/BSRGAN"]="/data/BSRGAN"
+MOUNTS["${ROOT}/models/RealESRGAN"]="/data/RealESRGAN"
+MOUNTS["${ROOT}/models/SwinIR"]="/data/SwinIR"
+MOUNTS["${ROOT}/models/LDSR"]="/data/LDSR"
 
-for path in "${!MODELS[@]}"; do
-  name=${MODELS[$path]}
-  base=$(dirname "${path}")
-  from_path="${MODELS_DIR}/${name}"
-  if test -f "${from_path}"; then
-    mkdir -p "${base}" && ln -sf "${from_path}" "${path}" && echo "Mounted ${name}"
-  else
-    echo "Skipping ${name}"
-  fi
+MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
+
+# extra hacks
+MOUNTS["${ROOT}/repositories/CodeFormer/weights/facelib"]="/data/.cache"
+
+for to_path in "${!MOUNTS[@]}"; do
+  set -Eeuo pipefail
+  from_path="${MOUNTS[${to_path}]}"
+  rm -rf "${to_path}"
+  mkdir -p "$(dirname "${to_path}")"
+  ln -sT "${from_path}" "${to_path}"
+  echo Mounted $(basename "${from_path}")
 done
-
-# force realesrgan cache
-rm -rf /opt/conda/lib/python3.8/site-packages/realesrgan/weights
-ln -s -T "${MODELS_DIR}" /opt/conda/lib/python3.8/site-packages/realesrgan/weights
-
-# force facexlib cache
-mkdir -p /cache/weights/ ${WORKDIR}/gfpgan/
-ln -sf /cache/weights/ ${WORKDIR}/gfpgan/
-# code former cache
-rm -rf ${ROOT}/repositories/CodeFormer/weights/CodeFormer ${ROOT}/repositories/CodeFormer/weights/facelib
-ln -sf -T /cache/weights ${ROOT}/repositories/CodeFormer/weights/CodeFormer
-ln -sf -T /cache/weights ${ROOT}/repositories/CodeFormer/weights/facelib
-
-mkdir -p /cache/torch /cache/transformers /cache/weights /cache/models /cache/custom-models

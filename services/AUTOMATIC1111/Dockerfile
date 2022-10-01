@@ -49,7 +49,7 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=f80c3696f63a181f720105559d42ee53453ed0eb
+ARG SHA=3f417566b0bda8eab05d247567aebf001c1d1725
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
@@ -60,18 +60,16 @@ EOF
 
 RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless
 
-ENV TRANSFORMERS_CACHE=/cache/transformers TORCH_HOME=/cache/torch CLI_ARGS=""
 
 COPY . /docker
 RUN <<EOF
 chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
-# hackiest of hacks, change default cache dir of clip #88
-# https://github.com/openai/CLIP/blob/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1/clip/clip.py#L94
-sed -i -- 's/download_root: str = None/download_root: str = "\/cache\/weights"/' /opt/conda/lib/python3.8/site-packages/clip/clip.py
 EOF
 
+ENV CLI_ARGS=""
 WORKDIR ${WORKDIR}
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
-  python3 -u ../../webui.py --listen --port 7860 --hide-ui-dir-config --ckpt-dir /cache/custom-models --ckpt /cache/models/model.ckpt --gfpgan-model /cache/models/GFPGANv1.3.pth ${CLI_ARGS}
+  python3 -u ../../webui.py --listen --port 7860 --hide-ui-dir-config --ckpt-dir ${ROOT}/models/Stable-diffusion ${CLI_ARGS}
+#  --gfpgan-models-path /data/GFPGAN --codeformer-models-path /data/Codeformer --esrgan-models-path /data/ESRGAN --bsrgan-models-path /data/BSRGAN --realesrgan-models-path /data/RealESRGAN --swinir-models-path /data/SwinIR --ldsr-models-path /data/LDSR

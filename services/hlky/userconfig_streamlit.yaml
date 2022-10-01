@@ -1,7 +1,7 @@
 general:
   outdir: /outputs
   default_model: "Stable Diffusion v1.4"
-  default_model_path: /cache/models/model.ckpt
+  default_model_path: /data/StableDiffusion/model.ckpt
   outdir_txt2img: /outputs/txt2img-samples
   outdir_img2img: /outputs/img2img-samples
   optimized: True
