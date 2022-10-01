@@ -16,6 +16,8 @@ MOUNTS["${ROOT}/models/RealESRGAN"]="/data/RealESRGAN"
 MOUNTS["${ROOT}/models/SwinIR"]="/data/SwinIR"
 MOUNTS["${ROOT}/models/LDSR"]="/data/LDSR"
 
+MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
+
 # extra hacks
 MOUNTS["${ROOT}/repositories/CodeFormer/weights/facelib"]="/data/.cache"
 
