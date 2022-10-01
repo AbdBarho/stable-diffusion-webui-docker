@@ -1,0 +1,13 @@
+# for all of the stuff downloaded by transformers, pytorch, and others
+/.cache
+# for all stable diffusion models (main, waifu diffusion, etc..)
+/StableDiffusion
+# others
+/Codeformer
+/GFPGAN
+/ESRGAN
+/BSRGAN
+/RealESRGAN
+/SwinIR
+/LDSR
+# TODO: add the embeddings folder here

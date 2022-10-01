@@ -1,12 +1,12 @@
 https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media
-  out=model.ckpt
-https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth
-  out=GFPGANv1.3.pth
+  out=StableDiffusion/model.ckpt
+https://github.com/TencentARC/GFPGAN/releases/download/v1.3.4/GFPGANv1.4.pth
+  out=GFPGAN/GFPGANv1.4.pth
 https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
-  out=RealESRGAN_x4plus.pth
+  out=RealESRGAN/RealESRGAN_x4plus.pth
 https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
-  out=RealESRGAN_x4plus_anime_6B.pth
+  out=RealESRGAN/RealESRGAN_x4plus_anime_6B.pth
 https://heibox.uni-heidelberg.de/f/31a76b13ea27482981b4/?dl=1
-  out=LDSR.yaml
+  out=LDSR/project.yaml
 https://heibox.uni-heidelberg.de/f/578df07c8fc04ffbadf3/?dl=1
-  out=LDSR.ckpt
+  out=LDSR/model.ckpt
