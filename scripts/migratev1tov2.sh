@@ -25,5 +25,6 @@ cp -vf cache/weights/parsing_parsenet.pth data/.cache/
 
 cp -v embeddings/* data/embeddings/
 
+echo this script was created 10/2022
 echo Dont forget to run: docker compose --profile download up --build
 echo the cache and embeddings folders can be deleted, but its not necessary.
