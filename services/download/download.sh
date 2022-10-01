@@ -18,3 +18,6 @@ aria2c --input-file /docker/links.txt --dir /data --continue
 echo "Checking SHAs..."
 
 parallel --will-cite -a /docker/checksums.sha256 "echo -n {} | sha256sum -c"
+
+# fix potential permissions
+chmod -R 777 /data /output
