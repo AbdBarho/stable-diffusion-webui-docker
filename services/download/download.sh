@@ -20,4 +20,5 @@ echo "Checking SHAs..."
 parallel --will-cite -a /docker/checksums.sha256 "echo -n {} | sha256sum -c"
 
 # fix potential permissions
-chmod -R 777 /data /output
+# TODO: need something better than this:
+# chmod -R 777 /data /output
