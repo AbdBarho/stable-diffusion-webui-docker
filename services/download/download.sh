@@ -2,7 +2,7 @@
 
 set -Eeuo pipefail
 
-mkdir -p /data/.cache /data/StableDiffusion /data/Codeformer /data/GFPGAN /data/ESRGAN /data/BSRGAN /data/RealESRGAN /data/SwinIR /data/LDSR
+mkdir -p /data/.cache /data/StableDiffusion /data/Codeformer /data/GFPGAN /data/ESRGAN /data/BSRGAN /data/RealESRGAN /data/SwinIR /data/LDSR /data/ScuNET /data/embeddings
 
 cat <<EOF
 By using this software, you agree to the following licenses:

@@ -9,5 +9,6 @@
 /BSRGAN
 /RealESRGAN
 /SwinIR
+/ScuNET
 /LDSR
-# TODO: add the embeddings folder here
+/embeddings
