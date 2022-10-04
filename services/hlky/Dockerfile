@@ -25,7 +25,7 @@ EOF
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 # ARG BRANCH=master  SHA=d0bb60a139d60e6c2b9be4e18e0e29a86aa5af59
-ARG BRANCH=dev SHA=aaa3be16e0e66f07c63dbdb49b9b7cac8fef5cfb
+ARG BRANCH=dev SHA=1e7bdfe3f38a6dd37fc230f440ea1b0db0937240
 RUN <<EOF
 cd stable-diffusion
 git fetch
