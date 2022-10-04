@@ -14,6 +14,7 @@ MOUNTS["${ROOT}/models/ESRGAN"]="/data/ESRGAN"
 MOUNTS["${ROOT}/models/BSRGAN"]="/data/BSRGAN"
 MOUNTS["${ROOT}/models/RealESRGAN"]="/data/RealESRGAN"
 MOUNTS["${ROOT}/models/SwinIR"]="/data/SwinIR"
+MOUNTS["${ROOT}/models/ScuNET"]="/data/ScuNET"
 MOUNTS["${ROOT}/models/LDSR"]="/data/LDSR"
 
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
@@ -25,7 +26,8 @@ for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
   from_path="${MOUNTS[${to_path}]}"
   rm -rf "${to_path}"
-  mkdir -p "$(dirname "${to_path}")"
+  mkdir -vp "$from_path"
+  mkdir -vp "$(dirname "${to_path}")"
   ln -sT "${from_path}" "${to_path}"
   echo Mounted $(basename "${from_path}")
 done
