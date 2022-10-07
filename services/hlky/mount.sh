@@ -9,11 +9,14 @@ ROOT=/stable-diffusion/src
 # cache
 MOUNTS["/root/.cache"]=/data/.cache
 # ui specific
-MOUNTS["${ROOT}/gfpgan/experiments/pretrained_models/GFPGANv1.3.pth"]=/data/GFPGAN/GFPGANv1.4.pth
-MOUNTS["${ROOT}/realesrgan/experiments/pretrained_models"]=/data/RealESRGAN
-MOUNTS["${ROOT}/latent-diffusion/experiments/pretrained_models"]=/data/LDSR
-# hacks
-MOUNTS["/stable-diffusion/gfpgan/weights"]=/data/.cache
+MOUNTS["${PWD}/models/realesrgan"]=/data/RealESRGAN
+MOUNTS["${PWD}/models/ldsr"]=/data/LDSR
+MOUNTS["${PWD}/models/custom"]=/data/StableDiffusion
+
+# hack
+MOUNTS["${PWD}/models/gfpgan/GFPGANv1.3.pth"]=/data/GFPGAN/GFPGANv1.4.pth
+MOUNTS["${PWD}/models/gfpgan/GFPGANv1.4.pth"]=/data/GFPGAN/GFPGANv1.4.pth
+
 
 for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail

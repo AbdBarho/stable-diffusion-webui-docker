@@ -17,7 +17,7 @@ git reset --hard 24268930bf1dce879235a7fddd0b2355b84d7ea6
 rm -rf repositories/taming-transformers/data repositories/taming-transformers/assets
 EOF
 
-RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard 9e3002b7cd64df7870e08527b7664eb2f2f5f3f5
+RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard f4e99857772fc3a126ba886aadf795a332774878
 
 
 FROM continuumio/miniconda3:4.12.0
@@ -49,7 +49,7 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=1eb588cbf19924333b88beaa1ac0041904966640
+ARG SHA=2995107fa24cfd72b0a991e18271dcde148c2807
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
@@ -75,4 +75,3 @@ EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
   python3 -u ../../webui.py --listen --port 7860 --hide-ui-dir-config --ckpt-dir ${ROOT}/models/Stable-diffusion ${CLI_ARGS}
-#  --gfpgan-models-path /data/GFPGAN --codeformer-models-path /data/Codeformer --esrgan-models-path /data/ESRGAN --bsrgan-models-path /data/BSRGAN --realesrgan-models-path /data/RealESRGAN --swinir-models-path /data/SwinIR --ldsr-models-path /data/LDSR
