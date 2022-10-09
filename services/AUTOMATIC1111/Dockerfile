@@ -20,23 +20,22 @@ EOF
 RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard f4e99857772fc3a126ba886aadf795a332774878
 
 
-FROM continuumio/miniconda3:4.12.0
+FROM python:3.10-slim
 
 SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
-ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1 PIP_NO_CACHE_DIR=1
 
-RUN conda install python=3.8.5 && conda clean -a -y
-RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch && conda clean -a -y
+RUN pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
 
-RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
+RUN apt-get update && apt install fonts-dejavu-core rsync git -y && apt-get clean
 
 
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
 git reset --hard 1eb588cbf19924333b88beaa1ac0041904966640
-pip install --prefer-binary --no-cache-dir -r requirements_versions.txt
+pip install -r requirements_versions.txt
 EOF
 
 ENV ROOT=/stable-diffusion-webui \
@@ -49,7 +48,7 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=2995107fa24cfd72b0a991e18271dcde148c2807
+ARG SHA=050a6a798cec90ae2f881c2ddd3f0221e69907dc
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
@@ -61,6 +60,7 @@ EOF
 RUN pip install --prefer-binary --no-cache-dir opencv-python-headless \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1
+#xformers
 
 
 

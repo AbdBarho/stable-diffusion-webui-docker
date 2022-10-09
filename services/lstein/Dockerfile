@@ -25,7 +25,7 @@ conda clean -a -y
 EOF
 
 
-ARG BRANCH=development SHA=4f247a3672474bd9c46060bab6087dbf9e2531f3
+ARG BRANCH=development SHA=31869885d9d3ee1e62c1109fb141e828e9a0e833
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -50,8 +50,4 @@ WORKDIR /stable-diffusion
 EXPOSE 7860
 
 CMD /docker/mount.sh && \
-  # python3 -u backend/server.py --host 0.0.0.0 --port 7860 --cors http://localhost:7860
   python3 -u scripts/dream.py --outdir /output --web --host 0.0.0.0 --port 7860 ${CLI_ARGS}
-# echo The lstein webUI is currently deactivated due to implementation limitations: \
-# https://github.com/invoke-ai/InvokeAI/blob/8c9f2ae705cf723d4a8a73c416e8d8bf2d746977/backend/modules/create_cmd_parser.py#L26 \
-# Once the path the output is fixed, the UI will be activated again
