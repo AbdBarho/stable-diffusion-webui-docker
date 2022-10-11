@@ -7,14 +7,15 @@ RUN git clone https://github.com/CompVis/stable-diffusion.git repositories/stabl
 
 RUN git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer && cd repositories/CodeFormer && git reset --hard c5b4593074ba6214284d6acd5f1719b6c5d739af
 RUN git clone https://github.com/salesforce/BLIP.git repositories/BLIP && cd repositories/BLIP && git reset --hard 48211a1594f1321b00f14c9f7a5b4813144b2fb9
-RUN git clone https://github.com/Hafiidz/latent-diffusion.git repositories/latent-diffusion && cd repositories/latent-diffusion && git reset --hard abf33e7002d59d9085081bce93ec798dcabd49af
+# RUN git clone https://github.com/Hafiidz/latent-diffusion.git repositories/latent-diffusion && cd repositories/latent-diffusion && git reset --hard abf33e7002d59d9085081bce93ec798dcabd49af
 
 RUN <<EOF
 # because taming-transformers is huge
 git config --global http.postBuffer 1048576000
 git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers
+cd repositories/taming-transformers
 git reset --hard 24268930bf1dce879235a7fddd0b2355b84d7ea6
-rm -rf repositories/taming-transformers/data repositories/taming-transformers/assets
+rm -rf data assets
 EOF
 
 RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard f4e99857772fc3a126ba886aadf795a332774878
@@ -48,18 +49,18 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=050a6a798cec90ae2f881c2ddd3f0221e69907dc
+ARG SHA=6a9ea5b41cf92cd9e980349bb5034439f4e7a58b
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
 git reset --hard ${SHA}
 pip install --prefer-binary --no-cache-dir -r requirements_versions.txt
-pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
 RUN pip install --prefer-binary --no-cache-dir opencv-python-headless \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
-  git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1
+  git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
+  pyngrok
 #xformers
 
 

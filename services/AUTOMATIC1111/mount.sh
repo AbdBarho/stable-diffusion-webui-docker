@@ -16,6 +16,7 @@ MOUNTS["${ROOT}/models/RealESRGAN"]="/data/RealESRGAN"
 MOUNTS["${ROOT}/models/SwinIR"]="/data/SwinIR"
 MOUNTS["${ROOT}/models/ScuNET"]="/data/ScuNET"
 MOUNTS["${ROOT}/models/LDSR"]="/data/LDSR"
+MOUNTS["${ROOT}/models/hypernetworks"]="/data/Hypernetworks"
 
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
 
