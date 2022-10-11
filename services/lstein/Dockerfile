@@ -17,15 +17,14 @@ ENV PIP_EXISTS_ACTION=w
 RUN <<EOF
 git clone https://github.com/invoke-ai/InvokeAI.git stable-diffusion
 cd stable-diffusion
-git reset --hard 8a8be92eac17e0ef699528157596b2336bdee532
-sed -i -- 's/python=3.8.5/python=3.9/g' environment.yaml
+git reset --hard 79e79b78aaeedb49afcc795e0e00eebfdbedee96
 git config --global http.postBuffer 1048576000
-conda env update --file environment.yaml -n base
+conda env update --file environment.yml -n base
 conda clean -a -y
 EOF
 
 
-ARG BRANCH=development SHA=31869885d9d3ee1e62c1109fb141e828e9a0e833
+ARG BRANCH=main SHA=79e79b78aaeedb49afcc795e0e00eebfdbedee96
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -36,7 +35,7 @@ conda env update --file environment.yml -n base
 conda clean -a -y
 EOF
 
-RUN pip uninstall opencv-python -y && pip install --prefer-binary --force-reinstall --no-cache-dir opencv-python-headless transformers==4.19.2
+RUN pip uninstall opencv-python -y && pip install --prefer-binary --force-reinstall --no-cache-dir opencv-python-headless
 
 COPY . /docker/
 RUN <<EOF
@@ -50,4 +49,4 @@ WORKDIR /stable-diffusion
 EXPOSE 7860
 
 CMD /docker/mount.sh && \
-  python3 -u scripts/dream.py --outdir /output --web --host 0.0.0.0 --port 7860 ${CLI_ARGS}
+  python3 -u scripts/invoke.py --outdir /output --web --host 0.0.0.0 --port 7860 ${CLI_ARGS}
