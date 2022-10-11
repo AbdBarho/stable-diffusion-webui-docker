@@ -15,7 +15,7 @@ git config --global http.postBuffer 1048576000
 git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers
 cd repositories/taming-transformers
 git reset --hard 24268930bf1dce879235a7fddd0b2355b84d7ea6
-rm -rf repositories/taming-transformers/data repositories/taming-transformers/assets
+rm -rf data assets
 EOF
 
 RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard f4e99857772fc3a126ba886aadf795a332774878
