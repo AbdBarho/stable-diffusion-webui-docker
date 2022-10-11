@@ -31,3 +31,5 @@ for to_path in "${!MOUNTS[@]}"; do
   ln -sT "${from_path}" "${to_path}"
   echo Mounted $(basename "${from_path}")
 done
+
+mkdir -p /output/saved
