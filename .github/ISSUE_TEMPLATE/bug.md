@@ -7,30 +7,39 @@ assignees: ''
 
 ---
 
-**Has this issue been opened before? Check the [FAQ](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Main), the [issues](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues?q=is%3Aissue)**
+<!--  PLEASE FILL THIS OUT, IT WILL MAKE BOTH OF OUR LIVES EASIER -->
 
+**Has this issue been opened before?**
+
+- [ ] It is not in the [FAQ](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/FAQ), I checked.
+- [ ] It is not in the [issues](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues?q=), I searched.
 
 
 **Describe the bug**
+
+<!--  tried to run the app, my cat exploded -->
 
 
 **Which UI**
 
 hlky or auto or auto-cpu or lstein?
 
+
+**Hardware / Software**
+ - OS: [e.g. Windows 10 / Ubuntu ]
+ - OS version: <!--  on windows, use the command `winver` to find out, on ubuntu `lsb_release -d`  -->
+ - WSL version (if applicable): <!-- get using `wsl -l -v` -->
+ - Docker Version: <!--  get using `docker version` -->
+ - Docker compose version: <!--  get using `docker compose version` -->
+ - Repo version: <!-- tag, commit sha, or "from master" -->
+ - RAM:
+ - GPU/VRAM:
+
 **Steps to Reproduce**
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
-
-**Hardware / Software:**
- - OS: [e.g. Windows / Ubuntu and version]
- - RAM:
- - GPU: [Nvidia 1660 / No GPU]
- - VRAM:
- - Docker Version, Docker compose version
- - Release version [e.g. 1.0.1]
 
 **Additional context**
 Any other context about the problem here. If applicable, add screenshots to help explain your problem.
