@@ -53,5 +53,5 @@ services:
     profiles: ["lstein"]
     build: ./services/lstein/
     environment:
-      - PRELOAD=false
+      - PRELOAD=true
       - CLI_ARGS=
