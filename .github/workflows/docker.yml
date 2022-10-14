@@ -13,7 +13,9 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
         XFORMERS_DISABLE_FLASH_ATTN: 1
         FORCE_CUDA: 1
-        TORCH_CUDA_ARCH_LIST: "3.7;5.0;5.2;6.0;6.1+PTX;7.0;7.5+PTX;8.0;8.6+PTX"
+        # TORCH_CUDA_ARCH_LIST: "3.7;5.0;5.2;6.0;6.1+PTX;7.0;7.5+PTX;8.0;8.6+PTX"
+        TORCH_CUDA_ARCH_LIST: "6.1"
+        NVCC_FLAGS: "--use_fast_math -DXFORMERS_MEM_EFF_ATTENTION_DISABLE_BACKWARD"
     steps:
       - run: |
           apt-get update
