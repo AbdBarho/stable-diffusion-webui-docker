@@ -20,6 +20,10 @@ EOF
 
 RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard f4e99857772fc3a126ba886aadf795a332774878
 
+FROM python:3.10-slim as xformers
+SHELL ["/bin/bash", "-ceuxo", "pipefail"]
+RUN pip install gdown
+RUN gdown https://drive.google.com/uc?id=1SqwicrLx1TrG_sbbEoIF_3TUHd4EYSmw -O /wheel.whl
 
 FROM python:3.10-slim
 
@@ -66,7 +70,7 @@ RUN pip install --prefer-binary --no-cache-dir opencv-python-headless \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
   pyngrok
 
-COPY xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl .
+COPY --from=xformers /wheel.whl xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
 RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
 
 COPY . /docker
@@ -80,4 +84,4 @@ WORKDIR ${WORKDIR}
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
-  python3 -u ../../webui.py --listen --port 7860 --hide-ui-dir-config --ckpt-dir ${ROOT}/models/Stable-diffusion ${CLI_ARGS}
+  python3 -u ../../webui.py --listen --port 7860 --hide-ui-dir-config --ckpt-dir ${ROOT}/models/Stable-diffusion --xformers ${CLI_ARGS}

@@ -1,12 +1,12 @@
 name: Build Xformers
 
-on: [push]
-  # workflow_dispatch: {}
+on:
+  workflow_dispatch: {}
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 180
     container:
       image: python:3.10-slim
       env:
@@ -14,6 +14,8 @@ jobs:
         XFORMERS_DISABLE_FLASH_ATTN: 1
         FORCE_CUDA: 1
         TORCH_CUDA_ARCH_LIST: "6.0;6.1;6.2;7.0;7.2;7.5;8.0;8.6"
+        NVCC_FLAGS: --use_fast_math -DXFORMERS_MEM_EFF_ATTENTION_DISABLE_BACKWARD
+        MAX_JOBS: 4
     steps:
       - run: |
           apt-get update
@@ -26,7 +28,7 @@ jobs:
           export PIP_CACHE_DIR=$(pwd)/cache
           pip install ninja install torch --extra-index-url https://download.pytorch.org/whl/cu113
 
-          pip wheel --wheel-dir=data git+https://github.com/facebookresearch/xformers.git@ba93c5012d00bd1b010514a7bc9bd938c1ad6149#egg=xformers
+          pip wheel --wheel-dir=data git+https://github.com/facebookresearch/xformers.git@3633e1afc7bffbe61957f04e7bb1a742ee910ace#egg=xformers
       - name: Artifacts
         uses: actions/upload-artifact@v3
         with:
