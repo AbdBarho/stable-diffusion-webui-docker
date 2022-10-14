@@ -24,7 +24,7 @@ jobs:
           apt-get install cuda-nvcc-11-8 cuda-libraries-dev-11-8 -y
 
           export PIP_CACHE_DIR=$(pwd)/cache
-          pip install install torch --extra-index-url https://download.pytorch.org/whl/cu113
+          pip install ninja install torch --extra-index-url https://download.pytorch.org/whl/cu113
 
           pip wheel --wheel-dir=data git+https://github.com/facebookresearch/xformers.git@ba93c5012d00bd1b010514a7bc9bd938c1ad6149#egg=xformers
       - name: Artifacts
