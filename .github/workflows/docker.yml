@@ -7,7 +7,7 @@ jobs:
     runs-on: pytorch/manylinux-cuda113
     steps:
       - run: |
-      git clone https://github.com/facebookresearch/xformers /x
-      cd /x
-      export CU_VERSION=cu113 PYTHON_VERSION=3.10 PYTORCH_VERSION=1.12
-      ./packaging/build_wheel.sh
+          git clone https://github.com/facebookresearch/xformers /x
+          cd /x
+          export CU_VERSION=cu113 PYTHON_VERSION=3.10 PYTORCH_VERSION=1.12
+          ./packaging/build_wheel.sh
