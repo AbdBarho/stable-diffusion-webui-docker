@@ -8,13 +8,15 @@ jobs:
     # container:
     #   image: pytorch/manylinux-cuda113
     container:
-      image: debian:stable-slim
+      image: python:3.10-slim
       env:
         CU_VERSION: cu113
         PYTHON_VERSION: "3.10"
         PYTORCH_VERSION: "1.12"
     steps:
       - run: |
+          apt-get update
+          apt-get install git
           git clone https://github.com/facebookresearch/xformers x
           cd x
           ./packaging/build_wheel.sh
