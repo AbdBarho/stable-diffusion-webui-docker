@@ -8,10 +8,10 @@ jobs:
     # container:
     #   image: pytorch/manylinux-cuda113
     container:
-      image: python:3.10-slim
+      image: python:3.9-slim
       env:
         CU_VERSION: cu113
-        PYTHON_VERSION: "3.10"
+        PYTHON_VERSION: "3.9"
         PYTORCH_VERSION: "1.12"
         DEBIAN_FRONTEND: noninteractive
     steps:
