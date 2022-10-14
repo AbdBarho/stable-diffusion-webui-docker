@@ -9,10 +9,11 @@ MOUNTS["/root/.cache"]=/data/.cache
 # ui specific
 MOUNTS["${PWD}/models/ldm/stable-diffusion-v1/model.ckpt"]=/data/StableDiffusion/model.ckpt
 MOUNTS["${PWD}/src/gfpgan/experiments/pretrained_models/GFPGANv1.4.pth"]=/data/GFPGAN/GFPGANv1.4.pth
-MOUNTS["${PWD}/ldm/invoke/restoration/codeformer/weights"]=/data/CodeFormer
+MOUNTS["${PWD}/ldm/invoke/restoration/codeformer/weights"]=/data/Codeformer
 # hacks
 MOUNTS["/opt/conda/lib/python3.9/site-packages/facexlib/weights"]=/data/.cache
 MOUNTS["/opt/conda/lib/python3.9/site-packages/realesrgan/weights"]=/data/RealESRGAN
+MOUNTS["${PWD}/gfpgan/weights"]=/data/.cache
 
 for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
