@@ -8,16 +8,14 @@ jobs:
     # container:
     #   image: pytorch/manylinux-cuda113
     container:
-      image: python:3.9-slim
+      image: python:3.10-slim
       env:
-        CU_VERSION: cu113
-        PYTHON_VERSION: "3.9"
-        PYTORCH_VERSION: "1.12"
         DEBIAN_FRONTEND: noninteractive
     steps:
       - run: |
+          apt-get install gpg wget -y
+          wget https://developer.download.nvidia.com/compute/cuda/repos/debian11/x86_64/cuda-keyring_1.0-1_all.deb
+          dpkg -i cuda-keyring_1.0-1_all.deb
           apt-get update
-          apt-get install git -y
-          git clone https://github.com/facebookresearch/xformers x
-          cd x
-          ./packaging/build_wheel.sh
+          apt-get install cuda-nvcc-11-8 cuda-libraries-dev-11-8 -y
+          FORCE_CUDA=1 TORCH_CUDA_ARCH_LIST="3.7;5.0;5.2;6.0;6.1+PTX;7.0;7.5+PTX;8.0;8.6+PTX" pip wheel --wheel-dir=/data git+https://github.com/facebookresearch/xformers.git@ba93c5012d00bd1b010514a7bc9bd938c1ad6149#egg=xformers
