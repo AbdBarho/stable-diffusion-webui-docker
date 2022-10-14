@@ -11,6 +11,9 @@ jobs:
       image: python:3.10-slim
       env:
         DEBIAN_FRONTEND: noninteractive
+        XFORMERS_DISABLE_FLASH_ATTN: 1
+        FORCE_CUDA: 1
+        TORCH_CUDA_ARCH_LIST: "3.7;5.0;5.2;6.0;6.1+PTX;7.0;7.5+PTX;8.0;8.6+PTX"
     steps:
       - run: |
           apt-get update
@@ -19,4 +22,5 @@ jobs:
           dpkg -i cuda-keyring_1.0-1_all.deb
           apt-get update
           apt-get install cuda-nvcc-11-8 cuda-libraries-dev-11-8 -y
-          FORCE_CUDA=1 TORCH_CUDA_ARCH_LIST="3.7;5.0;5.2;6.0;6.1+PTX;7.0;7.5+PTX;8.0;8.6+PTX" pip wheel --wheel-dir=/data git+https://github.com/facebookresearch/xformers.git@ba93c5012d00bd1b010514a7bc9bd938c1ad6149#egg=xformers
+          pip install ninja
+          pip wheel --wheel-dir=/data git+https://github.com/facebookresearch/xformers.git@ba93c5012d00bd1b010514a7bc9bd938c1ad6149#egg=xformers
