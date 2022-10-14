@@ -4,10 +4,15 @@ on: [push]
 
 jobs:
   build:
-    runs-on: pytorch/manylinux-cuda113
+    runs-on: ubuntu-latest
+    # container:
+    #   image: pytorch/manylinux-cuda113
+    env:
+      CU_VERSION: cu113
+      PYTHON_VERSION: "3.10"
+      PYTORCH_VERSION: "1.12"
     steps:
       - run: |
           git clone https://github.com/facebookresearch/xformers /x
           cd /x
-          export CU_VERSION=cu113 PYTHON_VERSION=3.10 PYTORCH_VERSION=1.12
           ./packaging/build_wheel.sh
