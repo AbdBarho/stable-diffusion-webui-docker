@@ -1,5 +1,7 @@
 # for all of the stuff downloaded by transformers, pytorch, and others
 /.cache
+# for UIs
+/config
 # for all stable diffusion models (main, waifu diffusion, etc..)
 /StableDiffusion
 # others

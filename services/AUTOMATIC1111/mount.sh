@@ -2,6 +2,10 @@
 
 set -Eeuo pipefail
 
+mkdir -p /data/config/auto/
+cp -n /docker/config.json /data/config/auto/config.json
+jq '. * input' /data/config/auto/config.json /docker/config.json | sponge /data/config/auto/config.json
+
 declare -A MOUNTS
 
 MOUNTS["/root/.cache"]="/data/.cache"
@@ -19,6 +23,7 @@ MOUNTS["${ROOT}/models/LDSR"]="/data/LDSR"
 MOUNTS["${ROOT}/models/hypernetworks"]="/data/Hypernetworks"
 
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
+MOUNTS["${ROOT}/config.json"]="/data/config/auto/config.json"
 
 # extra hacks
 MOUNTS["${ROOT}/repositories/CodeFormer/weights/facelib"]="/data/.cache"
@@ -27,10 +32,12 @@ for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
   from_path="${MOUNTS[${to_path}]}"
   rm -rf "${to_path}"
-  mkdir -vp "$from_path"
+  if [ -d "$from_path" ]; then
+    mkdir -vp "$from_path"
+  fi
   mkdir -vp "$(dirname "${to_path}")"
   ln -sT "${from_path}" "${to_path}"
   echo Mounted $(basename "${from_path}")
 done
 
-mkdir -p /output/saved
+mkdir -p /output/saved /output/txt2img-images/ /output/img2img-images /output/extras-images/ /output/grids/ /output/txt2img-grids/ /output/img2img-grids/
