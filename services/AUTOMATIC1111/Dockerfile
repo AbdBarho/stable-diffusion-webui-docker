@@ -46,10 +46,14 @@ ENV ROOT=/stable-diffusion-webui \
 COPY --from=download /git/ ${ROOT}
 RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
+# TODO: move to top
+RUN apt-get install jq moreutils -y
+
+
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=9b75ab144f5fa3669166374dacd5ffc340984078
+ARG SHA=03d62538aebeff51713619fe808c953bdb70193d
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
@@ -63,8 +67,6 @@ RUN pip install --prefer-binary --no-cache-dir opencv-python-headless \
   pyngrok
 
 
-# TODO: move to top
-RUN apt-get install jq moreutils -y
 
 COPY . /docker
 RUN <<EOF
