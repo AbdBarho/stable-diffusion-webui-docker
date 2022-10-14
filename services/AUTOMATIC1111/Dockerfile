@@ -46,10 +46,14 @@ ENV ROOT=/stable-diffusion-webui \
 COPY --from=download /git/ ${ROOT}
 RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
+# TODO: move to top
+RUN apt-get install jq moreutils -y
+
+
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=6a9ea5b41cf92cd9e980349bb5034439f4e7a58b
+ARG SHA=03d62538aebeff51713619fe808c953bdb70193d
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
@@ -61,7 +65,6 @@ RUN pip install --prefer-binary --no-cache-dir opencv-python-headless \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
   pyngrok
-#xformers
 
 
 
@@ -69,6 +72,7 @@ COPY . /docker
 RUN <<EOF
 chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 EOF
+
 
 ENV CLI_ARGS=""
 WORKDIR ${WORKDIR}
