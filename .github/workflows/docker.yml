@@ -13,10 +13,11 @@ jobs:
         CU_VERSION: cu113
         PYTHON_VERSION: "3.10"
         PYTORCH_VERSION: "1.12"
+        DEBIAN_FRONTEND: noninteractive
     steps:
       - run: |
           apt-get update
-          apt-get install git
+          apt-get install git -y
           git clone https://github.com/facebookresearch/xformers x
           cd x
           ./packaging/build_wheel.sh
