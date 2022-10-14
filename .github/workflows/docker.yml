@@ -33,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dist-without-markdown
-          path: data
+          path: data/xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
