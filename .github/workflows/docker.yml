@@ -1,19 +1,13 @@
-name: Build Images
+name: Build Xformers
 
 on: [push]
 
 jobs:
   build:
-    strategy:
-      matrix:
-        profile:
-          - auto
-          - hlky
-          - lstein
-          - download
-    runs-on: ubuntu-latest
-    name: ${{ matrix.profile }}
+    runs-on: pytorch/manylinux-cuda113
     steps:
-      - uses: actions/checkout@v3
-      # better caching?
-      - run: docker compose --profile ${{ matrix.profile }} build --progress plain
+      - run: |
+      git clone https://github.com/facebookresearch/xformers /x
+      cd /x
+      export CU_VERSION=cu113 PYTHON_VERSION=3.10 PYTORCH_VERSION=1.12
+      ./packaging/build_wheel.sh
