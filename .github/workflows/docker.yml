@@ -13,6 +13,6 @@ jobs:
       PYTORCH_VERSION: "1.12"
     steps:
       - run: |
-          git clone https://github.com/facebookresearch/xformers /x
-          cd /x
+          git clone https://github.com/facebookresearch/xformers x
+          cd x
           ./packaging/build_wheel.sh
