@@ -23,10 +23,11 @@ jobs:
           wget https://developer.download.nvidia.com/compute/cuda/repos/debian11/x86_64/cuda-keyring_1.0-1_all.deb
           dpkg -i cuda-keyring_1.0-1_all.deb
           apt-get update
-          apt-get install cuda-nvcc-11-8 cuda-libraries-dev-11-8 -y
+          apt-get install cuda-nvcc-11-3 cuda-libraries-dev-11-3 -y
 
-          export PIP_CACHE_DIR=$(pwd)
-          pip install ninja torch==1.12.1+cu113
+          export PIP_CACHE_DIR=$(pwd)/cache
+          pip install ninja install torch --extra-index-url https://download.pytorch.org/whl/cu113
+
           pip wheel --wheel-dir=data git+https://github.com/facebookresearch/xformers.git@ba93c5012d00bd1b010514a7bc9bd938c1ad6149#egg=xformers
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
