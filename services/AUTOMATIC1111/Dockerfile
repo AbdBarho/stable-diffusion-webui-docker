@@ -20,12 +20,6 @@ EOF
 
 RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard f4e99857772fc3a126ba886aadf795a332774878
 
-# FROM pytorch/manylinux-cuda113 as xformers
-
-# RUN git clone https://github.com/facebookresearch/xformers /x
-# WORKDIR /x
-# ENV CU_VERSION=cu113 PYTHON_VERSION=3.10 PYTORCH_VERSION=1.12
-# RUN ./packaging/build_wheel.sh
 
 FROM python:3.10-slim
 
@@ -72,7 +66,8 @@ RUN pip install --prefer-binary --no-cache-dir opencv-python-headless \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
   pyngrok
 
-# COPY --from=xformers /x/wheels /wheels
+COPY xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl .
+RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
 
 COPY . /docker
 RUN <<EOF

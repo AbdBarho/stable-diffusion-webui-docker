@@ -1,21 +1,18 @@
 name: Build Xformers
 
-on: [push]
+on:
+  workflow_dispatch: {}
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # container:
-    #   image: pytorch/manylinux-cuda113
     container:
       image: python:3.10-slim
       env:
         DEBIAN_FRONTEND: noninteractive
         XFORMERS_DISABLE_FLASH_ATTN: 1
         FORCE_CUDA: 1
-        # TORCH_CUDA_ARCH_LIST: "3.7;5.0;5.2;6.0;6.1+PTX;7.0;7.5+PTX;8.0;8.6+PTX"
-        TORCH_CUDA_ARCH_LIST: "6.1"
-        NVCC_FLAGS: "--use_fast_math -DXFORMERS_MEM_EFF_ATTENTION_DISABLE_BACKWARD"
+        TORCH_CUDA_ARCH_LIST: "3.7;5.0;5.2;6.0;6.1+PTX;7.0;7.5+PTX;8.0;8.6+PTX"
     steps:
       - run: |
           apt-get update
@@ -29,8 +26,8 @@ jobs:
           pip install ninja install torch --extra-index-url https://download.pytorch.org/whl/cu113
 
           pip wheel --wheel-dir=data git+https://github.com/facebookresearch/xformers.git@ba93c5012d00bd1b010514a7bc9bd938c1ad6149#egg=xformers
-      - name: Archive production artifacts
+      - name: Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: dist-without-markdown
+          name: xformers
           path: data/xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
