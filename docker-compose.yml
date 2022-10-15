@@ -35,7 +35,7 @@ services:
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
     environment:
-      - CLI_ARGS=--allow-code --medvram
+      - CLI_ARGS=--allow-code --medvram --xformers
 
   auto-cpu:
     <<: *automatic
