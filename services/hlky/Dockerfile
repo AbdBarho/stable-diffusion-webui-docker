@@ -22,7 +22,7 @@ conda clean -a -y
 EOF
 
 
-ARG BRANCH=dev SHA=fd51bab1ec03543eb57faa954caab879ef2bafe7
+ARG BRANCH=dev SHA=bd57d22f2e0ec7eed084bdf2a4c0dcc0ed745daf
 RUN <<EOF
 cd stable-diffusion
 git fetch
@@ -34,12 +34,15 @@ EOF
 
 # add info
 COPY . /docker/
-RUN python /docker/info.py /stable-diffusion/frontend/frontend.py && chmod +x /docker/mount.sh
+RUN <<EOF
+python /docker/info.py /stable-diffusion/frontend/frontend.py
+chmod +x /docker/mount.sh /docker/run.sh
+# streamlit
+sed -i -- 's/8501/7860/g' /stable-diffusion/.streamlit/config.toml
+EOF
 
 WORKDIR /stable-diffusion
-ENV PYTHONPATH="${PYTHONPATH}:${PWD}" CLI_ARGS=""
+ENV PYTHONPATH="${PYTHONPATH}:${PWD}" STREAMLIT_SERVER_HEADLESS=true USE_STREAMLIT=0 CLI_ARGS=""
 EXPOSE 7860
 
-CMD /docker/mount.sh && \
-  python3 -u scripts/webui.py --outdir /output --ckpt /data/StableDiffusion/model.ckpt ${CLI_ARGS}
-# sed -i -- 's/8501/7860/g' .streamlit/config.toml && STREAMLIT_SERVER_HEADLESS=true python -u -m streamlit run scripts/webui_streamlit.py  --theme.base dark
+CMD /docker/mount.sh && /docker/run.sh
