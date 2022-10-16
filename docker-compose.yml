@@ -29,6 +29,7 @@ services:
     build: ./services/hlky/
     environment:
       - CLI_ARGS=--optimized-turbo
+      - USE_STREAMLIT=0
 
   auto: &automatic
     <<: *base_service
