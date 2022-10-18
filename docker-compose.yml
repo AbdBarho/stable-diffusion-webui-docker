@@ -38,16 +38,6 @@ services:
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers
 
-  auto-deepdanbooru:
-    <<: *automatic
-    profiles: ["auto-deepdanbooru"]
-    build:
-      context: ./services/AUTOMATIC1111
-      args:
-        - DEEPDANBOORU=1
-    environment:
-      - CLI_ARGS=--allow-code --medvram --xformers --deepdanbooru
-
   auto-cpu:
     <<: *automatic
     profiles: ["auto-cpu"]
