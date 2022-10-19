@@ -22,6 +22,7 @@ RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffus
 
 FROM python:3.10-slim as xformers
 SHELL ["/bin/bash", "-ceuxo", "pipefail"]
+RUN apt-get update && apt-get install -y wget && apt-get clean
 RUN pip install gdown
 RUN gdown https://drive.google.com/uc?id=1SqwicrLx1TrG_sbbEoIF_3TUHd4EYSmw -O /wheel.whl
 
