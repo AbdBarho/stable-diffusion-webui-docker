@@ -75,13 +75,13 @@ RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
 
 COPY . /docker
 RUN <<EOF
-chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
+chmod +x /docker/docker-entrypoint.sh /docker/docker-entrypoint.d/*.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 EOF
+ENTRYPOINT ["/docker/docker-entrypoint.sh"]
 
 
 ENV CLI_ARGS=""
 WORKDIR ${WORKDIR}
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
-CMD /docker/mount.sh && \
-  python3 -u ../../webui.py --listen --port 7860 --ckpt-dir ${ROOT}/models/Stable-diffusion ${CLI_ARGS}
+CMD python3 -u ../../webui.py --listen --port 7860 --ckpt-dir ${ROOT}/models/Stable-diffusion ${CLI_ARGS}
