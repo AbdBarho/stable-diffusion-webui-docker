@@ -8,6 +8,7 @@ RUN git clone https://github.com/CompVis/stable-diffusion.git repositories/stabl
 
 RUN git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer && cd repositories/CodeFormer && git reset --hard c5b4593074ba6214284d6acd5f1719b6c5d739af
 RUN git clone https://github.com/salesforce/BLIP.git repositories/BLIP && cd repositories/BLIP && git reset --hard 48211a1594f1321b00f14c9f7a5b4813144b2fb9
+RUN git clone https://github.com/pharmapsychotic/clip-interrogator repositories/clip-interrogator && cd repositories/clip-interrogator && git reset --hard 2486589f24165c8e3b303f84e9dbbea318df83e8
 
 RUN <<EOF
 # because taming-transformers is huge
@@ -78,6 +79,7 @@ RUN <<EOF
 chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 EOF
 
+RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/* ${ROOT}/interrogate
 
 ENV CLI_ARGS=""
 WORKDIR ${WORKDIR}
