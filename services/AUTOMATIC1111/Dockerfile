@@ -20,10 +20,10 @@ EOF
 
 RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard f4e99857772fc3a126ba886aadf795a332774878
 
-FROM python:3.10-slim as xformers
-SHELL ["/bin/bash", "-ceuxo", "pipefail"]
-RUN pip install gdown
-RUN gdown https://drive.google.com/uc?id=1SqwicrLx1TrG_sbbEoIF_3TUHd4EYSmw -O /wheel.whl
+
+FROM alpine:3 as xformers
+RUN apk add aria2
+RUN aria2c --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/2.1.0/xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl'
 
 FROM python:3.10-slim
 
