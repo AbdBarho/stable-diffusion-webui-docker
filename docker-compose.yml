@@ -27,6 +27,7 @@ services:
     <<: *base_service
     profiles: ["hlky"]
     build: ./services/hlky/
+    image: sd-hlky:1
     environment:
       - CLI_ARGS=--optimized-turbo
       - USE_STREAMLIT=0
@@ -35,6 +36,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
+    image: sd-auto:1
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers
 
@@ -49,6 +51,7 @@ services:
     <<: *base_service
     profiles: ["lstein"]
     build: ./services/lstein/
+    image: sd-lstein:1
     environment:
       - PRELOAD=true
       - CLI_ARGS=
