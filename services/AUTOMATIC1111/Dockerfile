@@ -20,6 +20,7 @@ EOF
 
 RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard f4e99857772fc3a126ba886aadf795a332774878
 
+RUN git clone https://github.com/pharmapsychotic/clip-interrogator repositories/clip-interrogator && cd repositories/clip-interrogator && git reset --hard 2486589f24165c8e3b303f84e9dbbea318df83e8
 
 FROM alpine:3 as xformers
 RUN apk add aria2
@@ -48,6 +49,7 @@ ENV ROOT=/stable-diffusion-webui \
 
 
 COPY --from=download /git/ ${ROOT}
+RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/* ${ROOT}/interrogate
 RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
 # TODO: move to top
@@ -74,10 +76,10 @@ COPY --from=xformers /wheel.whl xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.wh
 RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
 
 COPY . /docker
+
 RUN <<EOF
 chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 EOF
-
 
 ENV CLI_ARGS=""
 WORKDIR ${WORKDIR}
