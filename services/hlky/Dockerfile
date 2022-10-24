@@ -22,7 +22,7 @@ conda clean -a -y
 EOF
 
 
-ARG BRANCH=dev SHA=8d1e42b9c50c747d056b0a98f3c2eb7652fb73a7
+ARG BRANCH=dev SHA=bb7fce1a871cc434145d5a2114e5d70cbdafa34d
 RUN <<EOF
 cd stable-diffusion
 git fetch

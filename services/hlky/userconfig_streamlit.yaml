@@ -1,5 +1,5 @@
 general:
-  version: 1.20.0
+  version: 1.24.6
   outdir: /output
   default_model: "Stable Diffusion v1.5"
   default_model_path: /data/StableDiffusion/v1-5-pruned-emaonly.ckpt
