@@ -57,7 +57,7 @@ RUN apt-get install jq moreutils -y
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=f49c08ea566385db339c6628f65c3a121033f67c
+ARG SHA=df0a1f83815c771246a7b1bca85d63feaefad8d1
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
