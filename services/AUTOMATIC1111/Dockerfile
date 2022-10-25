@@ -80,11 +80,11 @@ RUN pip install opencv-python-headless \
 
 COPY . /docker
 
-RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
+RUN chmod +x /docker/entrypoint.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 
 WORKDIR ${ROOT}/repositories/stable-diffusion
 ENV CLI_ARGS=""
 EXPOSE 7860
+ENTRYPOINT ["/docker/entrypoint.sh"]
 # run, -u to not buffer stdout / stderr
-CMD /docker/mount.sh && \
-  python3 -u ../../webui.py --listen --port 7860 --ckpt-dir ${ROOT}/models/Stable-diffusion --theme dark ${CLI_ARGS}
+CMD python3 -u ../../webui.py --listen --port 7860 --ckpt-dir ${ROOT}/models/Stable-diffusion --theme dark ${CLI_ARGS}
