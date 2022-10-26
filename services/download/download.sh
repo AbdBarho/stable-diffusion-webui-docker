@@ -6,7 +6,7 @@ mkdir -p /data/.cache /data/StableDiffusion /data/Codeformer /data/GFPGAN /data/
 
 echo "Downloading, this might take a while..."
 
-aria2c --input-file /docker/links.txt --dir /data --continue
+aria2c --disable-ipv6 --input-file /docker/links.txt --dir /data --continue
 
 echo "Checking SHAs..."
 
