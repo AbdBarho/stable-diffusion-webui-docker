@@ -59,7 +59,7 @@ RUN apt-get install jq moreutils -y
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=f49c08ea566385db339c6628f65c3a121033f67c
+ARG SHA=df0a1f83815c771246a7b1bca85d63feaefad8d1
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
@@ -70,7 +70,9 @@ EOF
 RUN pip install opencv-python-headless \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
-  pyngrok
+  pyngrok \
+  gradio==3.4.1
+# gradio because #173 & https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/2858
 
 COPY --from=xformers /wheel.whl xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
 RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
