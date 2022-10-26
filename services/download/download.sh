@@ -4,14 +4,9 @@ set -Eeuo pipefail
 
 mkdir -p /data/.cache /data/StableDiffusion /data/Codeformer /data/GFPGAN /data/ESRGAN /data/BSRGAN /data/RealESRGAN /data/SwinIR /data/LDSR /data/ScuNET /data/embeddings
 
-ARIA2C_OPTS=""
-if [ "`ip -6 addr`" == "" ]; then
-    ARIA2C_OPTS="${ARIA2C_OPTS} --disable-ipv6"
-fi
-
 echo "Downloading, this might take a while..."
 
-aria2c ${ARIA2C_OPTS} --input-file /docker/links.txt --dir /data --continue
+aria2c --disable-ipv6 --input-file /docker/links.txt --dir /data --continue
 
 echo "Checking SHAs..."
 
