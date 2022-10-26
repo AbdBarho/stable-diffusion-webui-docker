@@ -23,16 +23,16 @@ This repository provides multiple UIs for you to play around with stable diffusi
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | ![](https://user-images.githubusercontent.com/24505302/189541954-46afd772-d0c8-4005-874c-e2eca40c02f2.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541956-5b528de7-1b5d-479f-a1db-d3f5a53afc59.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541957-cf78b352-a071-486d-8889-f26952779a61.jpg) |
 
-### hlky
+### hlky (sd-webui / sygil-webui)
 
-[hlky's fork](https://github.com/hlky/stable-diffusion-webui) is one of the most popular UIs, with many features:
+[hlky's fork](https://github.com/Sygil-Dev/sygil-webui) is one of the most popular UIs, with many features:
 
 - Text to image, with many samplers
 - Image to image, with masking, cropping, in-painting, variations.
 - GFPGAN, RealESRGAN, LDSR, GoBig, GoLatent
 - Loopback, prompt weighting
 - 6GB or even 4GB GPU support!
-- [Full feature list here](https://github.com/sd-webui/stable-diffusion-webui/blob/master/README.md)
+- [Full feature list here](https://github.com/Sygil-Dev/sygil-webui/blob/master/README.md)
 
 Screenshots:
 
@@ -42,7 +42,7 @@ Screenshots:
 
 
 
-### lstein
+### lstein (InvokeAI)
 
 [lstein's fork](https://github.com/invoke-ai/InvokeAI) is one of the earliest with a wonderful WebUI.
 - Text to image, with many samplers

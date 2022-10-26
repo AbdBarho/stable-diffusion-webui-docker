@@ -20,10 +20,11 @@ EOF
 
 RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard f4e99857772fc3a126ba886aadf795a332774878
 
-FROM python:3.10-slim as xformers
-SHELL ["/bin/bash", "-ceuxo", "pipefail"]
-RUN pip install gdown
-RUN gdown https://drive.google.com/uc?id=1SqwicrLx1TrG_sbbEoIF_3TUHd4EYSmw -O /wheel.whl
+RUN git clone https://github.com/pharmapsychotic/clip-interrogator repositories/clip-interrogator && cd repositories/clip-interrogator && git reset --hard 2486589f24165c8e3b303f84e9dbbea318df83e8
+
+FROM alpine:3 as xformers
+RUN apk add aria2
+RUN aria2c --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/2.1.0/xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl'
 
 FROM python:3.10-slim
 
@@ -48,6 +49,7 @@ ENV ROOT=/stable-diffusion-webui \
 
 
 COPY --from=download /git/ ${ROOT}
+RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/* ${ROOT}/interrogate
 RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
 # TODO: move to top
@@ -62,18 +64,20 @@ RUN [[ ${DEEPDANBOORU:-"0"} == "0" ]] && : || /docker/optional-deepdanbooru.sh
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=36a0ba357ab0742c3c4a28437b68fb29a235afbe
+ARG SHA=df0a1f83815c771246a7b1bca85d63feaefad8d1
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
 git reset --hard ${SHA}
-pip install --prefer-binary --no-cache-dir -r requirements_versions.txt
+pip install -r requirements_versions.txt
 EOF
 
-RUN pip install --prefer-binary --no-cache-dir opencv-python-headless \
+RUN pip install opencv-python-headless \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
-  pyngrok
+  pyngrok \
+  gradio==3.4.1
+# gradio because #173 & https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/2858
 
 COPY --from=xformers /wheel.whl xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
 RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
@@ -85,4 +89,4 @@ WORKDIR ${WORKDIR}
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
-  python3 -u ../../webui.py --listen --port 7860 --ckpt-dir ${ROOT}/models/Stable-diffusion ${CLI_ARGS}
+  python3 -u ../../webui.py --listen --port 7860 --ckpt-dir ${ROOT}/models/Stable-diffusion --theme dark ${CLI_ARGS}

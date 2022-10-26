@@ -1,8 +1,9 @@
 general:
-  outdir: /outputs
-  default_model: "Stable Diffusion v1.4"
-  default_model_path: /data/StableDiffusion/model.ckpt
-  outdir_txt2img: /outputs/txt2img-samples
-  outdir_img2img: /outputs/img2img-samples
-  optimized: True
+  version: 1.24.6
+  outdir: /output
+  default_model: "Stable Diffusion v1.5"
+  default_model_path: /data/StableDiffusion/v1-5-pruned-emaonly.ckpt
+  outdir_txt2img: /output/txt2img-samples
+  outdir_img2img: /output/img2img-samples
+  outdir_img2txt: /output/img2txt
   optimized_turbo: True
