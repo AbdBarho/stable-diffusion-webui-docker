@@ -4,23 +4,25 @@ FROM alpine/git:2.36.2 as download
 
 SHELL ["/bin/sh", "-ceuxo", "pipefail"]
 
-RUN git clone https://github.com/CompVis/stable-diffusion.git repositories/stable-diffusion && cd repositories/stable-diffusion && git reset --hard 69ae4b35e0a0f6ee1af8bb9a5d0016ccb27e36dc
-
-RUN git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer && cd repositories/CodeFormer && git reset --hard c5b4593074ba6214284d6acd5f1719b6c5d739af
-RUN git clone https://github.com/salesforce/BLIP.git repositories/BLIP && cd repositories/BLIP && git reset --hard 48211a1594f1321b00f14c9f7a5b4813144b2fb9
-
 RUN <<EOF
-# because taming-transformers is huge
-git config --global http.postBuffer 1048576000
-git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers
-cd repositories/taming-transformers
-git reset --hard 24268930bf1dce879235a7fddd0b2355b84d7ea6
-rm -rf data assets
+cat <<'EOE' > /clone.sh
+mkdir -p repositories/"$1" && cd repositories/"$1" && git init && git remote add origin "$2" && git fetch origin "$3" --depth=1 && git reset --hard "$3" && rm -rf .git
+EOE
 EOF
 
-RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard f4e99857772fc3a126ba886aadf795a332774878
+RUN . /clone.sh taming-transformers https://github.com/CompVis/taming-transformers.git 24268930bf1dce879235a7fddd0b2355b84d7ea6 \
+  && rm -rf data assets **/*.ipynb
 
-RUN git clone https://github.com/pharmapsychotic/clip-interrogator repositories/clip-interrogator && cd repositories/clip-interrogator && git reset --hard 2486589f24165c8e3b303f84e9dbbea318df83e8
+RUN . /clone.sh stable-diffusion https://github.com/CompVis/stable-diffusion.git 69ae4b35e0a0f6ee1af8bb9a5d0016ccb27e36dc \
+  && rm -rf assets data/**/*.png data/**/*.jpg data/**/*.gif
+
+RUN . /clone.sh CodeFormer https://github.com/sczhou/CodeFormer.git c5b4593074ba6214284d6acd5f1719b6c5d739af \
+  && rm -rf assets inputs
+
+RUN . /clone.sh BLIP https://github.com/salesforce/BLIP.git 48211a1594f1321b00f14c9f7a5b4813144b2fb9
+RUN . /clone.sh k-diffusion https://github.com/crowsonkb/k-diffusion.git f4e99857772fc3a126ba886aadf795a332774878
+RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interrogator 2486589f24165c8e3b303f84e9dbbea318df83e8
+
 
 FROM alpine:3 as xformers
 RUN apk add aria2
