@@ -10,6 +10,10 @@ if [ ! -f /data/config/auto/ui-config.json ]; then
   echo '{}' >/data/config/auto/ui-config.json
 fi
 
+if [ ! -f /data/config/auto/styles.csv ]; then
+  echo $'name,prompt,negative_prompt\nNone,,' >/data/config/auto/styles.csv
+fi
+
 declare -A MOUNTS
 
 MOUNTS["/root/.cache"]="/data/.cache"
