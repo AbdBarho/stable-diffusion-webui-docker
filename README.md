@@ -61,7 +61,9 @@ Visit the wiki for [Setup](https://github.com/AbdBarho/stable-diffusion-webui-do
 
 ## Contributing
 
-Contributions are welcome! create an issue first of what you want to contribute (before you implement anything) so we can talk about it.
+Contributions are welcome!
+
+### **Create an issue first of what you want to contribute (before you implement anything)**
 
 ## Disclaimer
 
