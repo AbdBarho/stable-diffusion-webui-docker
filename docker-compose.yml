@@ -51,7 +51,7 @@ services:
     <<: *base_service
     profiles: ["lstein"]
     build: ./services/lstein/
-    image: sd-lstein:3
+    image: sd-lstein:4
     environment:
       - PRELOAD=true
       - CLI_ARGS=
