@@ -36,35 +36,36 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1 PIP_NO_CACHE_DIR=1
 
 RUN pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
 
-RUN apt-get update && apt install fonts-dejavu-core rsync git -y && apt-get clean
+RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
 
 
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard 1eb588cbf19924333b88beaa1ac0041904966640
+git reset --hard d885a4a57b72152745ca76192ef1bdda29e6461d
 pip install -r requirements_versions.txt
 EOF
 
-ENV ROOT=/stable-diffusion-webui \
-  WORKDIR=/stable-diffusion-webui/repositories/stable-diffusion
+
+COPY --from=xformers /wheel.whl xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
+RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl && rm xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
+
+
+ENV ROOT=/stable-diffusion-webui
 
 
 COPY --from=download /git/ ${ROOT}
 RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/* ${ROOT}/interrogate
 RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
-# TODO: move to top
-RUN apt-get install jq moreutils -y
-
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=737eb28faca8be2bb996ee0930ec77d1f7ebd939
+ARG SHA=35c45df28b303a05d56a13cb56d4046f08cf8c25
 RUN <<EOF
 cd stable-diffusion-webui
-git pull --rebase
+git fetch
 git reset --hard ${SHA}
 pip install -r requirements_versions.txt
 EOF
@@ -76,17 +77,13 @@ RUN pip install opencv-python-headless \
   gradio==3.4.1
 # gradio because #173 & https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/2858
 
-COPY --from=xformers /wheel.whl xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
-RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
 
 COPY . /docker
 
-RUN <<EOF
-chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
-EOF
+RUN chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 
+WORKDIR ${ROOT}/repositories/stable-diffusion
 ENV CLI_ARGS=""
-WORKDIR ${WORKDIR}
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
