@@ -12,17 +12,20 @@ RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorc
 RUN apt-get update && apt install fonts-dejavu-core rsync gcc -y && apt-get clean
 
 
+ENV PIP_PREFER_BINARY=1 PIP_NO_CACHE_DIR=1
+
 RUN <<EOF
 git config --global http.postBuffer 1048576000
-git clone https://github.com/sd-webui/stable-diffusion-webui.git stable-diffusion
+git clone https://github.com/Sygil-Dev/sygil-webui.git stable-diffusion
 cd stable-diffusion
-git reset --hard 1a9c053cb7b6832695771db2555c0adc9b41e95f
+git reset --hard 091520bed06f913c9f432f9f47ccbe22b46068d7
 conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
 
+RUN apt-get update && apt install libsndfile1 ffmpeg -y && apt-get clean
 
-ARG BRANCH=dev SHA=5f6141ae7c8520b250896c80ac938396164f78df
+ARG BRANCH=master SHA=091520bed06f913c9f432f9f47ccbe22b46068d7
 RUN <<EOF
 cd stable-diffusion
 git fetch
