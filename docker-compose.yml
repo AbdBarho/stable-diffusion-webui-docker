@@ -23,15 +23,6 @@ services:
     volumes:
       - *v1
 
-  hlky:
-    <<: *base_service
-    profiles: ["hlky"]
-    build: ./services/hlky/
-    image: sd-hlky:4
-    environment:
-      - CLI_ARGS=--optimized-turbo
-      - USE_STREAMLIT=0
-
   auto: &automatic
     <<: *base_service
     profiles: ["auto"]
@@ -46,6 +37,15 @@ services:
     deploy: {}
     environment:
       - CLI_ARGS=--no-half --precision full
+
+  hlky:
+    <<: *base_service
+    profiles: ["hlky"]
+    build: ./services/hlky/
+    image: sd-hlky:5
+    environment:
+      - CLI_ARGS=--optimized-turbo
+      - USE_STREAMLIT=0
 
   lstein:
     <<: *base_service
