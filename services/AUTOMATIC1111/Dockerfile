@@ -62,7 +62,7 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=35c45df28b303a05d56a13cb56d4046f08cf8c25
+ARG SHA=dd02889124b2f89aa1d9acafedfa8774e53c98cb
 RUN <<EOF
 cd stable-diffusion-webui
 git fetch
