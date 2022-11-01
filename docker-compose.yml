@@ -36,7 +36,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:7
+    image: sd-auto:8
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers
 
