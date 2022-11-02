@@ -62,7 +62,7 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=dd02889124b2f89aa1d9acafedfa8774e53c98cb
+ARG SHA=cd5eafaf03a25d2b0e35154666947b9489078af9
 RUN <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -73,9 +73,7 @@ EOF
 RUN pip install opencv-python-headless \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
-  pyngrok \
-  gradio==3.4.1
-# gradio because #173 & https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/2858
+  pyngrok
 
 
 COPY . /docker
