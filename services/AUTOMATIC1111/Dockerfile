@@ -81,9 +81,7 @@ RUN pip install opencv-python-headless \
 
 COPY . /docker
 
-RUN <<EOF
-chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
-EOF
+RUN chmod +x /docker/entrypoint.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 
 WORKDIR ${ROOT}/repositories/stable-diffusion
 ENV CLI_ARGS=""
