@@ -57,11 +57,8 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # TODO: move to top
 RUN apt-get install jq moreutils -y
 
-COPY . /docker
-RUN chmod +x /docker/*.sh
-
 ARG DEEPDANBOORU="0"
-RUN [[ ${DEEPDANBOORU:-"0"} == "0" ]] && : || /docker/optional-deepdanbooru.sh
+RUN [[ ${DEEPDANBOORU:-"0"} == "0" ]] && : || pip install tensorflow-cpu==2.10 tensorflow-io==0.27.0 git+https://github.com/KichangKim/DeepDanbooru.git@edf73df4cdaeea2cf00e9ac08bd8a9026b7a7b26#egg=deepdanbooru
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
@@ -84,7 +81,10 @@ RUN pip install opencv-python-headless \
 COPY --from=xformers /wheel.whl xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
 RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
 
-RUN python3 /docker/info.py ${ROOT}/modules/ui.py
+COPY . /docker
+RUN <<EOF
+chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
+EOF
 
 ENV CLI_ARGS=""
 WORKDIR ${WORKDIR}
