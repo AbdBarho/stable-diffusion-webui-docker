@@ -36,26 +36,28 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1 PIP_NO_CACHE_DIR=1
 
 RUN pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
 
-RUN apt-get update && apt install fonts-dejavu-core rsync git -y && apt-get clean
+RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
 
 
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard 1eb588cbf19924333b88beaa1ac0041904966640
+git reset --hard d885a4a57b72152745ca76192ef1bdda29e6461d
 pip install -r requirements_versions.txt
 EOF
 
-ENV ROOT=/stable-diffusion-webui \
-  WORKDIR=/stable-diffusion-webui/repositories/stable-diffusion
+
+COPY --from=xformers /wheel.whl xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
+RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl && rm xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
+
+
+ENV ROOT=/stable-diffusion-webui
 
 
 COPY --from=download /git/ ${ROOT}
 RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/* ${ROOT}/interrogate
 RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
-# TODO: move to top
-RUN apt-get install jq moreutils -y
 
 ARG DEEPDANBOORU="0"
 RUN [[ ${DEEPDANBOORU:-"0"} == "0" ]] && : || pip install tensorflow-cpu==2.10 tensorflow-io==0.27.0 git+https://github.com/KichangKim/DeepDanbooru.git@edf73df4cdaeea2cf00e9ac08bd8a9026b7a7b26#egg=deepdanbooru
@@ -63,10 +65,10 @@ RUN [[ ${DEEPDANBOORU:-"0"} == "0" ]] && : || pip install tensorflow-cpu==2.10 t
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=737eb28faca8be2bb996ee0930ec77d1f7ebd939
+ARG SHA=cd5eafaf03a25d2b0e35154666947b9489078af9
 RUN <<EOF
 cd stable-diffusion-webui
-git pull --rebase
+git fetch
 git reset --hard ${SHA}
 pip install -r requirements_versions.txt
 EOF
@@ -74,21 +76,18 @@ EOF
 RUN pip install opencv-python-headless \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
-  pyngrok \
-  gradio==3.4.1
-# gradio because #173 & https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/2858
+  pyngrok
 
-COPY --from=xformers /wheel.whl xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
-RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
 
 COPY . /docker
+
 RUN <<EOF
 chmod +x /docker/mount.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
 EOF
 
+WORKDIR ${ROOT}/repositories/stable-diffusion
 ENV CLI_ARGS=""
-WORKDIR ${WORKDIR}
 EXPOSE 7860
+ENTRYPOINT ["/docker/entrypoint.sh"]
 # run, -u to not buffer stdout / stderr
-CMD /docker/mount.sh && \
-  python3 -u ../../webui.py --listen --port 7860 --ckpt-dir ${ROOT}/models/Stable-diffusion --theme dark ${CLI_ARGS}
+CMD python3 -u ../../webui.py --listen --port 7860 --ckpt-dir ${ROOT}/models/Stable-diffusion --theme dark ${CLI_ARGS}

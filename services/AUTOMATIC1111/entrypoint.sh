@@ -2,13 +2,17 @@
 
 set -Eeuo pipefail
 
-mkdir -p /data/config/auto/
+# TODO: move all mkdir -p ?
+mkdir -p /data/config/auto/scripts/
 cp -n /docker/config.json /data/config/auto/config.json
 jq '. * input' /data/config/auto/config.json /docker/config.json | sponge /data/config/auto/config.json
 
 if [ ! -f /data/config/auto/ui-config.json ]; then
   echo '{}' >/data/config/auto/ui-config.json
 fi
+
+# copy scripts, we cannot just mount the directory because it will override the already provided scripts in the repo
+cp -rfT /data/config/auto/scripts/ "${ROOT}/scripts"
 
 declare -A MOUNTS
 
@@ -29,6 +33,7 @@ MOUNTS["${ROOT}/models/hypernetworks"]="/data/Hypernetworks"
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
 MOUNTS["${ROOT}/config.json"]="/data/config/auto/config.json"
 MOUNTS["${ROOT}/ui-config.json"]="/data/config/auto/ui-config.json"
+MOUNTS["${ROOT}/extensions"]="/data/config/auto/extensions"
 
 # extra hacks
 MOUNTS["${ROOT}/repositories/CodeFormer/weights/facelib"]="/data/.cache"
@@ -46,3 +51,12 @@ for to_path in "${!MOUNTS[@]}"; do
 done
 
 mkdir -p /output/saved /output/txt2img-images/ /output/img2img-images /output/extras-images/ /output/grids/ /output/txt2img-grids/ /output/img2img-grids/
+
+if [ -f "/data/config/auto/startup.sh" ]; then
+  pushd ${ROOT}
+  . /data/config/auto/startup.sh
+  popd
+fi
+
+
+exec "$@"
