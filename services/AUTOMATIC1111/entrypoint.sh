@@ -29,6 +29,7 @@ MOUNTS["${ROOT}/models/SwinIR"]="/data/SwinIR"
 MOUNTS["${ROOT}/models/ScuNET"]="/data/ScuNET"
 MOUNTS["${ROOT}/models/LDSR"]="/data/LDSR"
 MOUNTS["${ROOT}/models/hypernetworks"]="/data/Hypernetworks"
+MOUNTS["${ROOT}/models/deepbooru"]="/data/Deepdanbooru"
 
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
 MOUNTS["${ROOT}/config.json"]="/data/config/auto/config.json"
@@ -57,6 +58,5 @@ if [ -f "/data/config/auto/startup.sh" ]; then
   . /data/config/auto/startup.sh
   popd
 fi
-
 
 exec "$@"
