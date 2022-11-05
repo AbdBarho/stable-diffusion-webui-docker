@@ -84,6 +84,7 @@ COPY . /docker
 RUN <<EOF
 python3 /docker/info.py ${ROOT}/modules/ui.py
 mv  ${ROOT}/style.css ${ROOT}/user.css
+sed -i 's/os.rename(tmpdir, target_dir)/shutil.move(tmpdir,target_dir)/' ${ROOT}/modules/ui_extensions.py
 EOF
 
 WORKDIR ${ROOT}/repositories/stable-diffusion
