@@ -27,7 +27,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:11
+    image: sd-auto:12
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers
 
@@ -42,7 +42,7 @@ services:
     <<: *base_service
     profiles: ["hlky"]
     build: ./services/hlky/
-    image: sd-hlky:6
+    image: sd-hlky:7
     environment:
       - CLI_ARGS=--optimized-turbo
       - USE_STREAMLIT=0

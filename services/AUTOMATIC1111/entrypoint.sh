@@ -20,6 +20,7 @@ MOUNTS["/root/.cache"]="/data/.cache"
 
 # main
 MOUNTS["${ROOT}/models/Stable-diffusion"]="/data/StableDiffusion"
+MOUNTS["${ROOT}/models/VAE"]="/data/VAE"
 MOUNTS["${ROOT}/models/Codeformer"]="/data/Codeformer"
 MOUNTS["${ROOT}/models/GFPGAN"]="/data/GFPGAN"
 MOUNTS["${ROOT}/models/ESRGAN"]="/data/ESRGAN"
