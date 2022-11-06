@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Feature request? Questions regarding some extension?
+    url: https://github.com/AbdBarho/stable-diffusion-webui-docker/discussions
+    about: Please use the discussions tab
