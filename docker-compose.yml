@@ -42,7 +42,7 @@ services:
     <<: *base_service
     profiles: ["hlky"]
     build: ./services/hlky/
-    image: sd-hlky:7
+    image: sd-hlky:8
     environment:
       - CLI_ARGS=--optimized-turbo
       - USE_STREAMLIT=0
