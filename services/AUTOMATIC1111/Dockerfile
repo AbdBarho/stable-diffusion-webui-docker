@@ -65,7 +65,7 @@ RUN [[ "${DEEPDANBOORU:-0}" == "0" ]] && : || pip install tensorflow-cpu==2.10 t
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=804d9fb83d0c63ca3acd36378707ce47b8f12599
+ARG SHA=ac085628540d0ec6a988fad93f5b8f2154209571
 RUN <<EOF
 cd stable-diffusion-webui
 git fetch
