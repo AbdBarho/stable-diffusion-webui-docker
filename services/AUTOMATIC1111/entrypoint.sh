@@ -13,6 +13,8 @@ fi
 
 # copy scripts, we cannot just mount the directory because it will override the already provided scripts in the repo
 cp -rfT /data/config/auto/scripts/ "${ROOT}/scripts"
+# Copy extensions as well to prevent issues with Dreambooth and the like, dependencies still need handled normally.
+cp -rfT /data/config/auto/extensions/ "${ROOT}/extensions"
 
 declare -A MOUNTS
 
