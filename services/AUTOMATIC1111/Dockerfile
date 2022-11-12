@@ -34,8 +34,8 @@ SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1 PIP_NO_CACHE_DIR=1
 
-RUN pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
-
+ARG TORCH_COMMAND="pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113"
+RUN ${TORCH_COMMAND}
 RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
 
 
