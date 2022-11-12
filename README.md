@@ -7,6 +7,10 @@ Run Stable Diffusion on your machine with a nice UI without any hassle!
 
 Visit the wiki for [Setup](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Setup) and [Usage](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Usage) instructions, checkout the [FAQ](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/FAQ) page if you face any problems, or create a new issue!
 
+
+## Contributing
+
+Contributions are welcome! **Create a discussion first of what the problem is and what you want to contribute (before you implement anything)**
 ## Features
 
 This repository provides multiple UIs for you to play around with stable diffusion:
@@ -60,11 +64,6 @@ Screenshots:
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | ![](https://user-images.githubusercontent.com/24505302/195158552-39f58cb6-cfcc-4141-9995-a626e3760752.jpg) | ![](https://user-images.githubusercontent.com/24505302/195158553-152a0ab8-c0fd-4087-b121-4823bcd8d6b5.jpg) | ![](https://user-images.githubusercontent.com/24505302/195158548-e118206e-c519-4915-85d6-4c248eb10fc0.jpg) |
 
-## Contributing
-
-Contributions are welcome!
-
-### **Create an issue first of what you want to contribute (before you implement anything)**
 
 ## Disclaimer
 
