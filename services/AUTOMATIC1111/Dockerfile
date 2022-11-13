@@ -34,7 +34,7 @@ SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1 PIP_NO_CACHE_DIR=1
 
-RUN pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
+RUN pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116
 
 RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
 
@@ -42,7 +42,7 @@ RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y &&
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard d885a4a57b72152745ca76192ef1bdda29e6461d
+git reset --hard 98947d173e3f1667eba29c904f681047dea9de90
 pip install -r requirements_versions.txt
 EOF
 
@@ -56,16 +56,21 @@ ENV ROOT=/stable-diffusion-webui
 
 COPY --from=download /git/ ${ROOT}
 RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/* ${ROOT}/interrogate
-RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
+RUN pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
 
 ARG DEEPDANBOORU="0"
 RUN [[ "${DEEPDANBOORU:-0}" == "0" ]] && : || pip install tensorflow-cpu==2.10 tensorflow-io==0.27.0 git+https://github.com/KichangKim/DeepDanbooru.git@edf73df4cdaeea2cf00e9ac08bd8a9026b7a7b26#egg=deepdanbooru
 
+RUN pip install opencv-python-headless \
+  git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
+  git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
+  pyngrok
+
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=ac085628540d0ec6a988fad93f5b8f2154209571
+ARG SHA=98947d173e3f1667eba29c904f681047dea9de90
 RUN <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -73,11 +78,7 @@ git reset --hard ${SHA}
 pip install -r requirements_versions.txt
 EOF
 
-RUN pip install opencv-python-headless \
-  git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
-  git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
-  pyngrok
-
+RUN pip install opencv-python-headless
 
 COPY . /docker
 
