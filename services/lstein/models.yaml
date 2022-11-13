@@ -6,10 +6,18 @@
 # and the width and height of the images it
 # was trained on.
 stable-diffusion-1.5:
-  description: The newest Stable Diffusion version 1.5 weight file (4.27 GB)
+  description: Stable Diffusion version 1.5
   weights: /data/StableDiffusion/v1-5-pruned-emaonly.ckpt
+  vae: /data/VAE/vae-ft-mse-840000-ema-pruned.ckpt
   config: ./configs/stable-diffusion/v1-inference.yaml
   width: 512
   height: 512
-  vae: /data/VAE/vae-ft-mse-840000-ema-pruned.ckpt
   default: true
+inpainting-1.5:
+  description: RunwayML SD 1.5 model optimized for inpainting
+  weights: /data/StableDiffusion/sd-v1-5-inpainting.ckpt
+  vae: /data/VAE/vae-ft-mse-840000-ema-pruned.ckpt
+  config: ./configs/stable-diffusion/v1-inpainting-inference.yaml
+  width: 512
+  height: 512
+  default: false
