@@ -13,6 +13,7 @@ MOUNTS["${PWD}/configs/models.yaml"]=/docker/models.yaml
 # hacks
 MOUNTS["/opt/conda/lib/python3.9/site-packages/facexlib/weights"]=/data/.cache
 MOUNTS["/opt/conda/lib/python3.9/site-packages/realesrgan/weights"]=/data/RealESRGAN
+MOUNTS["${PWD}/src/realesrgan/weights"]=/data/RealESRGAN
 MOUNTS["${PWD}/gfpgan/weights"]=/data/.cache
 
 for to_path in "${!MOUNTS[@]}"; do
