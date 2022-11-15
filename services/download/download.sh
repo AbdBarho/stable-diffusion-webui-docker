@@ -13,8 +13,6 @@ echo "Checking SHAs..."
 
 parallel --will-cite -a /docker/checksums.sha256 "echo -n {} | sha256sum -c"
 
-# aria2c already does hash check
-# cc6cb27103417325ff94f52b7a5d2dde45a7515b25c255d8e396c90014281516  /data/StableDiffusion/v1-5-pruned-emaonly.ckpt
 cat <<EOF
 By using this software, you agree to the following licenses:
 https://github.com/CompVis/stable-diffusion/blob/main/LICENSE
