@@ -31,6 +31,7 @@ MOUNTS["${ROOT}/models/ScuNET"]="/data/ScuNET"
 MOUNTS["${ROOT}/models/LDSR"]="/data/LDSR"
 MOUNTS["${ROOT}/models/hypernetworks"]="/data/Hypernetworks"
 MOUNTS["${ROOT}/models/deepbooru"]="/data/Deepdanbooru"
+MOUNTS["${ROOT}/models/Deforum"]="/data/Deforum"
 
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
 MOUNTS["${ROOT}/config.json"]="/data/config/auto/config.json"
