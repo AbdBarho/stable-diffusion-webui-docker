@@ -70,7 +70,7 @@ RUN pip install opencv-python-headless \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=98947d173e3f1667eba29c904f681047dea9de90
+ARG SHA=47a44c7e421b98ca07e92dbf88769b04c9e28f86
 RUN <<EOF
 cd stable-diffusion-webui
 git fetch
