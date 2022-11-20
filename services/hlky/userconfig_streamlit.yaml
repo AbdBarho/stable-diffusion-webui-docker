@@ -6,4 +6,5 @@ general:
   outdir_txt2img: /output/txt2img-samples
   outdir_img2img: /output/img2img-samples
   outdir_img2txt: /output/img2txt
+  optimized: True
   optimized_turbo: True
