@@ -51,7 +51,7 @@ services:
     <<: *base_service
     profiles: ["lstein"]
     build: ./services/lstein/
-    image: sd-lstein:6
+    image: sd-lstein:7
     environment:
       - PRELOAD=true
       - CLI_ARGS=--max_loaded_models=1

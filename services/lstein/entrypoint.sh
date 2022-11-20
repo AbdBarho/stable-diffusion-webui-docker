@@ -6,21 +6,36 @@ declare -A MOUNTS
 
 # cache
 MOUNTS["/root/.cache"]=/data/.cache
+
 # ui specific
-MOUNTS["${PWD}/src/gfpgan/experiments/pretrained_models/GFPGANv1.4.pth"]=/data/GFPGAN/GFPGANv1.4.pth
-MOUNTS["${PWD}/ldm/invoke/restoration/codeformer/weights"]=/data/Codeformer
-MOUNTS["${PWD}/configs/models.yaml"]=/docker/models.yaml
+MOUNTS["${ROOT}/models/codeformer"]=/data/Codeformer/
+
+MOUNTS["${ROOT}/models/gfpgan/GFPGANv1.4.pth"]=/data/GFPGAN/GFPGANv1.4.pth
+MOUNTS["${ROOT}/models/gfpgan/weights"]=/data/.cache/
+
+MOUNTS["${ROOT}/models/realesrgan"]=/data/RealESRGAN/
+
+MOUNTS["${ROOT}/models/bert-base-uncased"]=/data/.cache/huggingface/transformers
+MOUNTS["${ROOT}/models/openai/clip-vit-large-patch14"]=/data/.cache/huggingface/transformers
+MOUNTS["${ROOT}/models/CompVis/stable-diffusion-safety-checker"]=/data/.cache/huggingface/transformers
+
+MOUNTS["${ROOT}/configs/models.yaml"]=/docker/models.yaml
 # hacks
-MOUNTS["/opt/conda/lib/python3.9/site-packages/facexlib/weights"]=/data/.cache
-MOUNTS["/opt/conda/lib/python3.9/site-packages/realesrgan/weights"]=/data/RealESRGAN
-MOUNTS["${PWD}/src/realesrgan/weights"]=/data/RealESRGAN
-MOUNTS["${PWD}/gfpgan/weights"]=/data/.cache
+MOUNTS["/opt/conda/lib/python3.10/site-packages/facexlib/weights"]=/data/.cache/
+MOUNTS["${ROOT}/models/clipseg"]=/data/.cache/invoke/clipseg/
+
+# MOUNTS["/opt/conda/lib/python3.9/site-packages/realesrgan/weights"]=/data/RealESRGAN
 
 for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
   from_path="${MOUNTS[${to_path}]}"
   rm -rf "${to_path}"
   mkdir -p "$(dirname "${to_path}")"
+  # ends with slash, make it!
+  if [[ "$from_path" == */ ]]; then
+    mkdir -vp "$from_path"
+  fi
+
   ln -sT "${from_path}" "${to_path}"
   echo Mounted $(basename "${from_path}")
 done
