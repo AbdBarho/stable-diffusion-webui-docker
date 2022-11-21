@@ -1,5 +1,5 @@
 {
-  "outdir_samples": "/output",
+  "outdir_samples": "",
   "outdir_txt2img_samples": "/output/txt2img-images",
   "outdir_img2img_samples": "/output/img2img-images",
   "outdir_extras_samples": "/output/extras-images",
