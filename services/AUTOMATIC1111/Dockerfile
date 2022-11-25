@@ -26,7 +26,7 @@ RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interr
 
 FROM alpine:3 as xformers
 RUN apk add aria2
-RUN aria2c --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/2.1.0/xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl'
+RUN aria2c -x 10 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/3.1.0/xformers-0.0.15.dev0+4e3631d.d20221125-cp310-cp310-linux_x86_64.whl'
 
 FROM python:3.10-slim
 
@@ -47,8 +47,8 @@ pip install -r requirements_versions.txt
 EOF
 
 
-COPY --from=xformers /wheel.whl xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
-RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl && rm xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
+COPY --from=xformers /wheel.whl xformers-0.0.15-cp310-cp310-linux_x86_64.whl
+RUN pip install xformers-0.0.15-cp310-cp310-linux_x86_64.whl && rm xformers-0.0.15-cp310-cp310-linux_x86_64.whl
 
 
 ENV ROOT=/stable-diffusion-webui
