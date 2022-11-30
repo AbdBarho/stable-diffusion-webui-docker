@@ -19,12 +19,11 @@ MOUNTS["${ROOT}/models/bert-base-uncased"]=/data/.cache/huggingface/transformers
 MOUNTS["${ROOT}/models/openai/clip-vit-large-patch14"]=/data/.cache/huggingface/transformers
 MOUNTS["${ROOT}/models/CompVis/stable-diffusion-safety-checker"]=/data/.cache/huggingface/transformers
 
-MOUNTS["${ROOT}/configs/models.yaml"]=/docker/models.yaml
+
 # hacks
 MOUNTS["/opt/conda/lib/python3.10/site-packages/facexlib/weights"]=/data/.cache/
 MOUNTS["${ROOT}/models/clipseg"]=/data/.cache/invoke/clipseg/
 
-# MOUNTS["/opt/conda/lib/python3.9/site-packages/realesrgan/weights"]=/data/RealESRGAN
 
 for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
@@ -41,7 +40,7 @@ for to_path in "${!MOUNTS[@]}"; do
 done
 
 if "${PRELOAD}" == "true"; then
-  python3 -u scripts/preload_models.py --no-interactive
+  python3 -u scripts/preload_models.py --no-interactive --root . --config_file /docker/models.yaml
 fi
 
 exec "$@"

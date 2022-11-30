@@ -42,7 +42,7 @@ services:
     <<: *base_service
     profiles: ["hlky"]
     build: ./services/hlky/
-    image: sd-hlky:9
+    image: sd-hlky:10
     environment:
       - CLI_ARGS=--optimized-turbo
       - USE_STREAMLIT=0
@@ -51,7 +51,7 @@ services:
     <<: *base_service
     profiles: ["lstein"]
     build: ./services/lstein/
-    image: sd-lstein:7
+    image: sd-lstein:8
     environment:
       - PRELOAD=true
       - CLI_ARGS=--max_loaded_models=1
