@@ -78,7 +78,7 @@ git reset --hard ${SHA}
 pip install -r requirements_versions.txt
 EOF
 
-RUN pip install opencv-python-headless
+RUN pip install opencv-python-headless transformers==4.24.0
 
 COPY . /docker
 

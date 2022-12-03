@@ -35,6 +35,8 @@ conda env update --file environment.yaml -n base
 conda clean -a -y
 EOF
 
+RUN pip install transformers==4.24.0
+
 # add info
 COPY . /docker/
 RUN <<EOF
