@@ -21,9 +21,7 @@ MOUNTS["${ROOT}/models/CompVis/stable-diffusion-safety-checker"]=/data/.cache/hu
 
 
 # hacks
-MOUNTS["/opt/conda/lib/python3.10/site-packages/facexlib/weights"]=/data/.cache/
 MOUNTS["${ROOT}/models/clipseg"]=/data/.cache/invoke/clipseg/
-
 
 for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
@@ -40,7 +38,8 @@ for to_path in "${!MOUNTS[@]}"; do
 done
 
 if "${PRELOAD}" == "true"; then
-  python3 -u scripts/preload_models.py --no-interactive --root . --config_file /docker/models.yaml
+  set -Eeuo pipefail
+  python3 -u scripts/preload_models.py --no-interactive --root ${ROOT} --config_file /docker/models.yaml
 fi
 
 exec "$@"
