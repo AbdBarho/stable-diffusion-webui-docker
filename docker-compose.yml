@@ -1,20 +1,20 @@
 version: '3.9'
 
-x-base_service: &base_service
-    ports:
-      - "7860:7860"
-    volumes:
-      - &v1 ./data:/data
-      - &v2 ./output:/output
-    deploy:
-      resources:
-        reservations:
-          devices:
-              - driver: nvidia
-                device_ids: ['0']
-                capabilities: [gpu]
-
 name: webui-docker
+
+x-base_service: &base_service
+  ports:
+    - "7860:7860"
+  volumes:
+    - &v1 ./data:/data
+    - &v2 ./output:/output
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            device_ids: ['0']
+            capabilities: [gpu]
 
 services:
   download:
@@ -29,7 +29,7 @@ services:
     build: ./services/AUTOMATIC1111
     image: sd-auto:19
     environment:
-      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access
+      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api --cors-allow-origins=https://www.painthua.com
 
   auto-cpu:
     <<: *automatic
