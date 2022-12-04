@@ -52,8 +52,6 @@ for to_path in "${!MOUNTS[@]}"; do
   echo Mounted $(basename "${from_path}")
 done
 
-mkdir -p /output/saved /output/txt2img-images/ /output/img2img-images /output/extras-images/ /output/grids/ /output/txt2img-grids/ /output/img2img-grids/
-
 if [ -f "/data/config/auto/startup.sh" ]; then
   pushd ${ROOT}
   . /data/config/auto/startup.sh

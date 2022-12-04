@@ -20,6 +20,8 @@ MOUNTS["${ROOT}/models/openai/clip-vit-large-patch14"]=/data/.cache/huggingface/
 MOUNTS["${ROOT}/models/CompVis/stable-diffusion-safety-checker"]=/data/.cache/huggingface/transformers/
 
 
+MOUNTS["${ROOT}/embeddings"]=/data/embeddings/
+
 # hacks
 MOUNTS["${ROOT}/models/clipseg"]=/data/.cache/invoke/clipseg/
 

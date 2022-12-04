@@ -27,7 +27,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:19
+    image: sd-auto:20
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access
 
@@ -38,20 +38,26 @@ services:
     environment:
       - CLI_ARGS=--no-half --precision full
 
-  hlky:
+  sygil: &sygil
     <<: *base_service
-    profiles: ["hlky"]
-    build: ./services/hlky/
-    image: sd-hlky:11
+    profiles: ["sygil"]
+    build: ./services/sygil/
+    image: sd-sygil:12
     environment:
       - CLI_ARGS=--optimized-turbo
       - USE_STREAMLIT=0
 
-  lstein:
+  sygil-sl:
+    <<: *sygil
+    environment:
+      - USE_STREAMLIT=1
+
+
+  invoke:
     <<: *base_service
-    profiles: ["lstein"]
-    build: ./services/lstein/
-    image: sd-lstein:9
+    profiles: ["invoke"]
+    build: ./services/invoke/
+    image: sd-invoke:10
     environment:
       - PRELOAD=true
       - CLI_ARGS=
