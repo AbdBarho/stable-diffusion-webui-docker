@@ -5,7 +5,7 @@ set -Eeuo pipefail
 declare -A MOUNTS
 
 # cache
-MOUNTS["/root/.cache"]=/data/.cache
+MOUNTS["/root/.cache"]=/data/.cache/
 
 # ui specific
 MOUNTS["${ROOT}/models/codeformer"]=/data/Codeformer/
@@ -15,9 +15,9 @@ MOUNTS["${ROOT}/models/gfpgan/weights"]=/data/.cache/
 
 MOUNTS["${ROOT}/models/realesrgan"]=/data/RealESRGAN/
 
-MOUNTS["${ROOT}/models/bert-base-uncased"]=/data/.cache/huggingface/transformers
-MOUNTS["${ROOT}/models/openai/clip-vit-large-patch14"]=/data/.cache/huggingface/transformers
-MOUNTS["${ROOT}/models/CompVis/stable-diffusion-safety-checker"]=/data/.cache/huggingface/transformers
+MOUNTS["${ROOT}/models/bert-base-uncased"]=/data/.cache/huggingface/transformers/
+MOUNTS["${ROOT}/models/openai/clip-vit-large-patch14"]=/data/.cache/huggingface/transformers/
+MOUNTS["${ROOT}/models/CompVis/stable-diffusion-safety-checker"]=/data/.cache/huggingface/transformers/
 
 
 # hacks
