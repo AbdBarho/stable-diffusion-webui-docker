@@ -32,7 +32,7 @@ cd /usr/lib/x86_64-linux-gnu/pkgconfig/
 ln -sf opencv4.pc opencv.pc
 EOF
 
-ARG BRANCH=main SHA=5c31feb3a1096d437c94b6e1c3224eb7a7224a85
+ARG BRANCH=main SHA=38cd968130e386d188bdef68f9fbfbbbfabb2da0
 RUN <<EOF
 git fetch
 git reset --hard
@@ -54,6 +54,5 @@ EOF
 ENV ROOT=/stable-diffusion PYTHONPATH="${PYTHONPATH}:${ROOT}" PRELOAD=false CLI_ARGS=""
 EXPOSE 7860
 
-
 ENTRYPOINT ["/docker/entrypoint.sh"]
-CMD python3 -u scripts/invoke.py --web --host 0.0.0.0 --port 7860 --config /docker/models.yaml --root_dir ${ROOT} --outdir /output ${CLI_ARGS}
+CMD python3 -u scripts/invoke.py --web --host 0.0.0.0 --port 7860 --config /docker/models.yaml --root_dir ${ROOT} --outdir /output/invoke ${CLI_ARGS}

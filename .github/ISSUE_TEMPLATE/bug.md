@@ -1,10 +1,9 @@
 ---
 name: Bug
 about: Report a bug
-title: ''
+title: ""
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
 <!--  PLEASE FILL THIS OUT, IT WILL MAKE BOTH OF OUR LIVES EASIER -->
@@ -14,28 +13,27 @@ assignees: ''
 - [ ] It is not in the [FAQ](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/FAQ), I checked.
 - [ ] It is not in the [issues](https://github.com/AbdBarho/stable-diffusion-webui-docker/issues?q=), I searched.
 
-
 **Describe the bug**
 
 <!--  tried to run the app, my cat exploded -->
 
-
 **Which UI**
 
-hlky or auto or auto-cpu or lstein?
-
+auto or auto-cpu or invoke or sygil?
 
 **Hardware / Software**
- - OS: [e.g. Windows 10 / Ubuntu ]
- - OS version: <!--  on windows, use the command `winver` to find out, on ubuntu `lsb_release -d`  -->
- - WSL version (if applicable): <!-- get using `wsl -l -v` -->
- - Docker Version: <!--  get using `docker version` -->
- - Docker compose version: <!--  get using `docker compose version` -->
- - Repo version: <!-- tag, commit sha, or "from master" -->
- - RAM:
- - GPU/VRAM:
+
+- OS: [e.g. Windows 10 / Ubuntu 22.04]
+- OS version: <!--  on windows, use the command `winver` to find out, on ubuntu `lsb_release -d`  -->
+- WSL version (if applicable): <!-- get using `wsl -l -v` -->
+- Docker Version: <!--  get using `docker version` -->
+- Docker compose version: <!--  get using `docker compose version` -->
+- Repo version: <!-- tag, commit sha, or "from master" -->
+- RAM:
+- GPU/VRAM:
 
 **Steps to Reproduce**
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
