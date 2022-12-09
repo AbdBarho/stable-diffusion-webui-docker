@@ -71,7 +71,7 @@ RUN pip install opencv-python-headless \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=9e78d2c419732711e984c4478af15ece121d64fd
+ARG SHA=44c46f0ed395967cd3830dd481a2db759fda5b3b
 RUN <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -93,5 +93,4 @@ WORKDIR ${ROOT}
 ENV CLI_ARGS=""
 EXPOSE 7860
 ENTRYPOINT ["/docker/entrypoint.sh"]
-# run, -u to not buffer stdout / stderr
 CMD python3 -u webui.py --listen --port 7860 ${CLI_ARGS}
