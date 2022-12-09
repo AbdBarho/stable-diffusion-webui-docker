@@ -1,41 +1,34 @@
 # syntax=docker/dockerfile:1
 
-FROM continuumio/miniconda3:4.12.0
+FROM python:3.8-slim
 
 SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
-ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
-RUN conda install python=3.8.5 && conda clean -a -y
-RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch && conda clean -a -y
+RUN --mount=type=cache,target=/root/.cache/pip pip install torch==1.13.0 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117
 
-RUN apt-get update && apt install fonts-dejavu-core rsync gcc -y && apt-get clean
+RUN apt-get update && apt install gcc libsndfile1 ffmpeg build-essential zip unzip git -y && apt-get clean
 
-
-ENV PIP_PREFER_BINARY=1 PIP_NO_CACHE_DIR=1
-
-RUN <<EOF
+RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git config --global http.postBuffer 1048576000
 git clone https://github.com/Sygil-Dev/sygil-webui.git stable-diffusion
 cd stable-diffusion
-git reset --hard 091520bed06f913c9f432f9f47ccbe22b46068d7
-conda env update --file environment.yaml -n base
-conda clean -a -y
+git reset --hard 5291437085bddd16d752f811b6552419a2044d12
+pip install -r requirements.txt
 EOF
 
-RUN apt-get update && apt install libsndfile1 ffmpeg -y && apt-get clean
 
-ARG BRANCH=dev SHA=18a3b809275c395b9a2730c78d6bc0f9b06671e1
-RUN <<EOF
+ARG BRANCH=master SHA=5291437085bddd16d752f811b6552419a2044d12
+RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion
 git fetch
 git checkout ${BRANCH}
 git reset --hard ${SHA}
-conda env update --file environment.yaml -n base
-conda clean -a -y
+pip install -r requirements.txt
 EOF
 
-RUN pip install transformers==4.24.0
+RUN --mount=type=cache,target=/root/.cache/pip pip install transformers==4.24.0
 
 # add info
 COPY . /docker/

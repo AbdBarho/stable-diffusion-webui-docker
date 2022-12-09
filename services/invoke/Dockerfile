@@ -3,10 +3,11 @@
 FROM python:3.10-slim
 SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
-ENV DEBIAN_FRONTEND=noninteractive PIP_EXISTS_ACTION=w  PIP_PREFER_BINARY=1 PIP_NO_CACHE_DIR=1
+ENV DEBIAN_FRONTEND=noninteractive PIP_EXISTS_ACTION=w  PIP_PREFER_BINARY=1
 
 
-RUN pip install torch==1.12.0+cu116 --extra-index-url https://download.pytorch.org/whl/cu116
+RUN --mount=type=cache,target=/root/.cache/pip \
+  pip install torch==1.12.0+cu116 --extra-index-url https://download.pytorch.org/whl/cu116
 
 RUN apt-get update && apt-get install git -y && apt-get clean
 
@@ -14,7 +15,7 @@ RUN git clone https://github.com/invoke-ai/InvokeAI.git /stable-diffusion
 
 WORKDIR /stable-diffusion
 
-RUN <<EOF
+RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git reset --hard 5c31feb3a1096d437c94b6e1c3224eb7a7224a85
 git config --global http.postBuffer 1048576000
 pip install -r binary_installer/py3.10-linux-x86_64-cuda-reqs.txt
@@ -32,8 +33,8 @@ cd /usr/lib/x86_64-linux-gnu/pkgconfig/
 ln -sf opencv4.pc opencv.pc
 EOF
 
-ARG BRANCH=main SHA=38cd968130e386d188bdef68f9fbfbbbfabb2da0
-RUN <<EOF
+ARG BRANCH=main SHA=ed9186b09950f2652a0b07c93a08490f475435f7
+RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
 git checkout ${BRANCH}
@@ -41,7 +42,8 @@ git reset --hard ${SHA}
 pip install -r binary_installer/py3.10-linux-x86_64-cuda-reqs.txt
 EOF
 
-RUN pip install --force-reinstall opencv-python-headless && python3 -c "from patchmatch import patch_match"
+RUN --mount=type=cache,target=/root/.cache/pip \
+  pip install --force-reinstall opencv-python-headless && python3 -c "from patchmatch import patch_match"
 
 
 COPY . /docker/
