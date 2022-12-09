@@ -87,16 +87,3 @@ processes, such as predicting an individual will commit fraud/crime
 commitment (e.g. by text profiling, drawing causal relationships between
 assertions made in documents, indiscriminate and arbitrarily-targeted
 use).
-
-
-
-By using this software, you also agree to the following licenses:
-https://github.com/CompVis/stable-diffusion/blob/main/LICENSE
-https://github.com/sd-webui/stable-diffusion-webui/blob/master/LICENSE
-https://github.com/invoke-ai/InvokeAI/blob/main/LICENSE
-https://github.com/cszn/BSRGAN/blob/main/LICENSE
-https://github.com/sczhou/CodeFormer/blob/master/LICENSE
-https://github.com/TencentARC/GFPGAN/blob/master/LICENSE
-https://github.com/xinntao/Real-ESRGAN/blob/master/LICENSE
-https://github.com/xinntao/ESRGAN/blob/master/LICENSE
-https://github.com/cszn/SCUNet/blob/main/LICENSE

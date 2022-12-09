@@ -5,7 +5,7 @@ set -Eeuo pipefail
 declare -A MOUNTS
 
 # cache
-MOUNTS["/root/.cache"]=/data/.cache
+MOUNTS["/root/.cache"]=/data/.cache/
 
 # ui specific
 MOUNTS["${ROOT}/models/codeformer"]=/data/Codeformer/
@@ -15,15 +15,15 @@ MOUNTS["${ROOT}/models/gfpgan/weights"]=/data/.cache/
 
 MOUNTS["${ROOT}/models/realesrgan"]=/data/RealESRGAN/
 
-MOUNTS["${ROOT}/models/bert-base-uncased"]=/data/.cache/huggingface/transformers
-MOUNTS["${ROOT}/models/openai/clip-vit-large-patch14"]=/data/.cache/huggingface/transformers
-MOUNTS["${ROOT}/models/CompVis/stable-diffusion-safety-checker"]=/data/.cache/huggingface/transformers
+MOUNTS["${ROOT}/models/bert-base-uncased"]=/data/.cache/huggingface/transformers/
+MOUNTS["${ROOT}/models/openai/clip-vit-large-patch14"]=/data/.cache/huggingface/transformers/
+MOUNTS["${ROOT}/models/CompVis/stable-diffusion-safety-checker"]=/data/.cache/huggingface/transformers/
 
+
+MOUNTS["${ROOT}/embeddings"]=/data/embeddings/
 
 # hacks
-MOUNTS["/opt/conda/lib/python3.10/site-packages/facexlib/weights"]=/data/.cache/
 MOUNTS["${ROOT}/models/clipseg"]=/data/.cache/invoke/clipseg/
-
 
 for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
@@ -40,7 +40,8 @@ for to_path in "${!MOUNTS[@]}"; do
 done
 
 if "${PRELOAD}" == "true"; then
-  python3 -u scripts/preload_models.py --no-interactive --root . --config_file /docker/models.yaml
+  set -Eeuo pipefail
+  python3 -u scripts/preload_models.py --no-interactive --root ${ROOT} --config_file /docker/models.yaml
 fi
 
 exec "$@"
