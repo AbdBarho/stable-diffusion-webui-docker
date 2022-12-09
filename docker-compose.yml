@@ -42,13 +42,14 @@ services:
     <<: *base_service
     profiles: ["sygil"]
     build: ./services/sygil/
-    image: sd-sygil:12
+    image: sd-sygil:13
     environment:
       - CLI_ARGS=--optimized-turbo
       - USE_STREAMLIT=0
 
   sygil-sl:
     <<: *sygil
+    profiles: ["sygil-sl"]
     environment:
       - USE_STREAMLIT=1
 
@@ -57,7 +58,7 @@ services:
     <<: *base_service
     profiles: ["invoke"]
     build: ./services/invoke/
-    image: sd-invoke:10
+    image: sd-invoke:11
     environment:
       - PRELOAD=true
       - CLI_ARGS=
