@@ -1,8 +1,8 @@
-https://huggingface.co/ZeroCool94/stable-diffusion-v1-5/resolve/main/Stable%20Diffusion%20v1-5-Pruned-ema%20only.ckpt
+https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt
   out=StableDiffusion/v1-5-pruned-emaonly.ckpt
 https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.ckpt
   out=VAE/vae-ft-mse-840000-ema-pruned.ckpt
-https://huggingface.co/ZeroCool94/stable-diffusion-v1-5/resolve/main/Stable%20Diffusion-v1-5-Inpainting.ckpt
+https://huggingface.co/runwayml/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.ckpt
   out=StableDiffusion/sd-v1-5-inpainting.ckpt
 https://github.com/TencentARC/GFPGAN/releases/download/v1.3.4/GFPGANv1.4.pth
   out=GFPGAN/GFPGANv1.4.pth
