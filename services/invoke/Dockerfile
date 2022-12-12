@@ -33,7 +33,7 @@ cd /usr/lib/x86_64-linux-gnu/pkgconfig/
 ln -sf opencv4.pc opencv.pc
 EOF
 
-ARG BRANCH=main SHA=ed9186b09950f2652a0b07c93a08490f475435f7
+ARG BRANCH=main SHA=e159bb3dceb26d1bc3ab12f249e4ef4669fa1584
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
@@ -49,7 +49,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 COPY . /docker/
 RUN <<EOF
 python3 /docker/info.py /stable-diffusion/frontend/dist/index.html
-touch ~/.invokeai
+touch invokeai.init
 EOF
 
 
