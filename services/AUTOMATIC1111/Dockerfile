@@ -46,12 +46,9 @@ git reset --hard 98947d173e3f1667eba29c904f681047dea9de90
 pip install -r requirements_versions.txt
 EOF
 
-
-COPY --from=xformers /wheel.whl xformers-0.0.15-cp310-cp310-linux_x86_64.whl
-RUN --mount=type=cache,target=/root/.cache/pip <<EOF
-pip install triton ./xformers-0.0.15-cp310-cp310-linux_x86_64.whl
-rm xformers-0.0.15-cp310-cp310-linux_x86_64.whl
-EOF
+RUN --mount=type=cache,target=/root/.cache/pip  \
+  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.15-cp310-cp310-linux_x86_64.whl \
+  pip install triton /xformers-0.0.15-cp310-cp310-linux_x86_64.whl
 
 ENV ROOT=/stable-diffusion-webui
 
