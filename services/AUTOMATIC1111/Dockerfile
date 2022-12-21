@@ -26,7 +26,7 @@ RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interr
 
 FROM alpine:3 as xformers
 RUN apk add aria2
-RUN aria2c -x 10 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/3.1.0/xformers-0.0.15.dev0+4e3631d.d20221125-cp310-cp310-linux_x86_64.whl'
+RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/4.0.0/xformers-0.0.16rc393-cp310-cp310-manylinux2014_x86_64.whl'
 
 FROM python:3.10-slim
 
@@ -48,8 +48,10 @@ EOF
 
 
 COPY --from=xformers /wheel.whl xformers-0.0.15-cp310-cp310-linux_x86_64.whl
-RUN pip install xformers-0.0.15-cp310-cp310-linux_x86_64.whl && rm xformers-0.0.15-cp310-cp310-linux_x86_64.whl
-
+RUN --mount=type=cache,target=/root/.cache/pip <<EOF
+pip install triton ./xformers-0.0.15-cp310-cp310-linux_x86_64.whl
+rm xformers-0.0.15-cp310-cp310-linux_x86_64.whl
+EOF
 
 ENV ROOT=/stable-diffusion-webui
 
