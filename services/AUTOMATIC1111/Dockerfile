@@ -77,7 +77,7 @@ pip install -r requirements_versions.txt
 EOF
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install opencv-python-headless transformers==4.24
+  pip install -U opencv-python-headless transformers>=4.24
 
 COPY . /docker
 
