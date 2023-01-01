@@ -33,7 +33,7 @@ cd /usr/lib/x86_64-linux-gnu/pkgconfig/
 ln -sf opencv4.pc opencv.pc
 EOF
 
-ARG BRANCH=main SHA=ffa54f4a35ed1aa5a574f911de9dab777cf01f3e
+ARG BRANCH=main SHA=caf7caddf7230b36f793af52c2bc97332c025a07
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
@@ -43,14 +43,12 @@ pip install -r binary_installer/py3.10-linux-x86_64-cuda-reqs.txt
 EOF
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install --force-reinstall opencv-python-headless && python3 -c "from patchmatch import patch_match"
+  pip install -U --force-reinstall opencv-python-headless huggingface_hub && \
+  python3 -c "from patchmatch import patch_match"
 
 
+RUN touch invokeai.init
 COPY . /docker/
-RUN <<EOF
-python3 /docker/info.py /stable-diffusion/frontend/dist/index.html
-touch invokeai.init
-EOF
 
 
 ENV ROOT=/stable-diffusion PYTHONPATH="${PYTHONPATH}:${ROOT}" PRELOAD=false CLI_ARGS=""
