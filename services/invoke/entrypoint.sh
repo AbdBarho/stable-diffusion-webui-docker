@@ -19,7 +19,6 @@ MOUNTS["${ROOT}/models/bert-base-uncased"]=/data/.cache/huggingface/transformers
 MOUNTS["${ROOT}/models/openai/clip-vit-large-patch14"]=/data/.cache/huggingface/transformers/
 MOUNTS["${ROOT}/models/CompVis/stable-diffusion-safety-checker"]=/data/.cache/huggingface/transformers/
 
-
 MOUNTS["${ROOT}/embeddings"]=/data/embeddings/
 
 # hacks
