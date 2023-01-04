@@ -33,7 +33,7 @@ cd /usr/lib/x86_64-linux-gnu/pkgconfig/
 ln -sf opencv4.pc opencv.pc
 EOF
 
-ARG BRANCH=main SHA=caf7caddf7230b36f793af52c2bc97332c025a07
+ARG BRANCH=main SHA=21bf512056eb7bc883174a4203011105fc1b8b50
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
