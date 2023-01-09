@@ -19,7 +19,7 @@ pip install -r requirements.txt
 EOF
 
 
-ARG BRANCH=dev SHA=e48482823bb73697a6f1e39b3a7e47fe2ba1d697
+ARG BRANCH=master SHA=571fb897edd58b714bb385dfaa1ad59aecef8bc7
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion
 git fetch
