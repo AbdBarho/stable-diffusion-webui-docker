@@ -26,7 +26,7 @@ RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interr
 
 FROM alpine:3.17 as xformers
 RUN apk add --no-cache aria2
-RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/4.1.0/xformers-0.0.16.dev420-cp310-cp310-manylinux2014_x86_64.whl'
+RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/4.1.0/xformers-0.0.16.dev421-cp310-cp310-manylinux2014_x86_64.whl'
 
 FROM python:3.10.9-slim
 
@@ -68,7 +68,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=d7aec59c4eb02f723b3d55c6f927a42e97acd679
+ARG SHA=82725f0ac439f7e3b67858d55900e95330bbd326
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion-webui
 git fetch
