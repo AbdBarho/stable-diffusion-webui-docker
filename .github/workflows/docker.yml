@@ -13,7 +13,8 @@ jobs:
     strategy:
       matrix:
         profile:
-          - auto
+          - auto0
+          - auto1
           - sygil
           - invoke
           - download
