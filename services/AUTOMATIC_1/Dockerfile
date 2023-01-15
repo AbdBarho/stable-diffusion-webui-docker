@@ -90,4 +90,4 @@ WORKDIR ${ROOT}
 ENV CLI_ARGS=""
 EXPOSE 7861
 ENTRYPOINT ["/docker/entrypoint.sh"]
-CMD python3 -u webui.py --listen --port 7860 ${CLI_ARGS}
+CMD python3 -u webui.py --listen --port 7861 ${CLI_ARGS}
