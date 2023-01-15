@@ -5,13 +5,6 @@ x-base_service: &base_service
       - &v1 ./data:/data
       - &v2 ./output0:/output0
       - &v3 ./output1:/output1
-    deploy:
-      resources:
-        reservations:
-          devices:
-              - driver: nvidia
-                device_ids: ['0,1']
-                capabilities: [gpu]
 
 name: webui-docker-multi-gpu
 
@@ -29,6 +22,13 @@ services:
     image: sd-auto-0:33
     ports:
       - "7860:7860"
+    deploy:
+      resources:
+        reservations:
+          devices:
+              - driver: nvidia
+                device_ids: ['0']
+                capabilities: [gpu]
     environment:
       - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --device-id 0 --port 7860
       
@@ -39,5 +39,12 @@ services:
     image: sd-auto-1:33
     ports:
       - "7861:7861"
+    deploy:
+      resources:
+        reservations:
+          devices:
+              - driver: nvidia
+                device_ids: ['1']
+                capabilities: [gpu]
     environment:
       - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --device-id 1 --port 7861
