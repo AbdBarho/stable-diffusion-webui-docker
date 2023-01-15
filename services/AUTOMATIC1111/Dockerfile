@@ -36,7 +36,7 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
 RUN PIP_NO_CACHE_DIR=1 pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
 
-RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
+RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils ffmpeg -y && apt-get clean
 
 
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
