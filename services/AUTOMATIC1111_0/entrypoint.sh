@@ -3,16 +3,16 @@
 set -Eeuo pipefail
 
 # TODO: move all mkdir -p ?
-mkdir -p /data/config/auto/scripts/
-cp -n /docker/config.json /data/config/auto/config.json
-jq '. * input' /data/config/auto/config.json /docker/config.json | sponge /data/config/auto/config.json
+mkdir -p /data/config/auto0/scripts/
+cp -n /docker/config.json /data/config/auto0/config.json
+jq '. * input' /data/config/auto0/config.json /docker/config.json | sponge /data/config/auto0/config.json
 
-if [ ! -f /data/config/auto/ui-config.json ]; then
-  echo '{}' >/data/config/auto/ui-config.json
+if [ ! -f /data/config/auto0/ui-config.json ]; then
+  echo '{}' >/data/config/auto0/ui-config.json
 fi
 
 # copy scripts, we cannot just mount the directory because it will override the already provided scripts in the repo
-cp -rfT /data/config/auto/scripts/ "${ROOT}/scripts"
+cp -rfT /data/config/auto0/scripts/ "${ROOT}/scripts"
 
 declare -A MOUNTS
 
@@ -35,9 +35,9 @@ MOUNTS["${ROOT}/models/BLIP"]="/data/BLIP"
 MOUNTS["${ROOT}/models/midas"]="/data/MiDaS"
 
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
-MOUNTS["${ROOT}/config.json"]="/data/config/auto/config.json"
-MOUNTS["${ROOT}/ui-config.json"]="/data/config/auto/ui-config.json"
-MOUNTS["${ROOT}/extensions"]="/data/config/auto/extensions"
+MOUNTS["${ROOT}/config.json"]="/data/config/auto0/config.json"
+MOUNTS["${ROOT}/ui-config.json"]="/data/config/auto0/ui-config.json"
+MOUNTS["${ROOT}/extensions"]="/data/config/auto0/extensions"
 
 # extra hacks
 MOUNTS["${ROOT}/repositories/CodeFormer/weights/facelib"]="/data/.cache"
@@ -54,9 +54,9 @@ for to_path in "${!MOUNTS[@]}"; do
   echo Mounted $(basename "${from_path}")
 done
 
-if [ -f "/data/config/auto/startup.sh" ]; then
+if [ -f "/data/config/auto0/startup.sh" ]; then
   pushd ${ROOT}
-  . /data/config/auto/startup.sh
+  . /data/config/auto0/startup.sh
   popd
 fi
 

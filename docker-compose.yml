@@ -7,6 +7,8 @@ x-base_service: &base_service
     volumes:
       - &v1 ./data:/data
       - &v2 ./output:/output
+      - &v3 ./output0:/output0
+      - &v4 ./output1:/output1
     deploy:
       resources:
         reservations:
