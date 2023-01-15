@@ -27,7 +27,7 @@ services:
   auto0: &automatic0
     <<: *base_service
     profiles: ["auto0"]
-    build: ./services/AUTOMATIC1111
+    build: ./services/AUTOMATIC1111_0
     image: sd-auto0:33
     environment:
       - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api
@@ -35,7 +35,7 @@ services:
   auto1: &automatic1
     <<: *base_service
     profiles: ["auto1"]
-    build: ./services/AUTOMATIC1111
+    build: ./services/AUTOMATIC1111_1
     image: sd-auto1:33
     environment:
       - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api
