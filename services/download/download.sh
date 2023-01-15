@@ -15,10 +15,11 @@ parallel --will-cite -a /docker/checksums.sha256 "echo -n {} | sha256sum -c"
 
 cat <<EOF
 By using this software, you agree to the following licenses:
-https://github.com/CompVis/stable-diffusion/blob/main/LICENSE
 https://github.com/AbdBarho/stable-diffusion-webui-docker/blob/master/LICENSE
-https://github.com/sd-webui/stable-diffusion-webui/blob/master/LICENSE
+https://github.com/CompVis/stable-diffusion/blob/main/LICENSE
+https://github.com/AUTOMATIC1111/stable-diffusion-webui/blob/master/LICENSE.txt
 https://github.com/invoke-ai/InvokeAI/blob/main/LICENSE
+https://github.com/sd-webui/stable-diffusion-webui/blob/master/LICENSE
 https://github.com/cszn/BSRGAN/blob/main/LICENSE
 https://github.com/sczhou/CodeFormer/blob/master/LICENSE
 https://github.com/TencentARC/GFPGAN/blob/master/LICENSE
