@@ -2,6 +2,8 @@
 
 set -Eeuo pipefail
 
+# mount scripts individually
+cp -vrTs /data/config/auto/scripts/ "${ROOT}/scripts/"
 # TODO: move all mkdir -p ?
 mkdir -p /data/config/auto/scripts/
 cp -n /docker/config.json /data/config/auto/config.json
@@ -10,9 +12,6 @@ jq '. * input' /data/config/auto/config.json /docker/config.json | sponge /data/
 if [ ! -f /data/config/auto/ui-config.json ]; then
   echo '{}' >/data/config/auto/ui-config.json
 fi
-
-# copy scripts, we cannot just mount the directory because it will override the already provided scripts in the repo
-cp -rfT /data/config/auto/scripts/ "${ROOT}/scripts"
 
 declare -A MOUNTS
 
