@@ -1,13 +1,18 @@
 # syntax=docker/dockerfile:1
 
+FROM alpine:3.17 as xformers
+RUN apk add --no-cache aria2
+RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/4.1.0/xformers-0.0.16.dev421-cp310-cp310-manylinux2014_x86_64.whl'
+
+
+
 FROM python:3.10-slim
 SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_EXISTS_ACTION=w  PIP_PREFER_BINARY=1
 
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install torch==1.12.0+cu116 --extra-index-url https://download.pytorch.org/whl/cu116
+RUN pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
 
 RUN apt-get update && apt-get install git -y && apt-get clean
 
@@ -16,9 +21,11 @@ RUN git clone https://github.com/invoke-ai/InvokeAI.git /stable-diffusion
 WORKDIR /stable-diffusion
 
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
-git reset --hard 5c31feb3a1096d437c94b6e1c3224eb7a7224a85
+git reset --hard f232068ab89bd80e4f5f3133dcdb62ea78f1d0f7
 git config --global http.postBuffer 1048576000
-pip install -r binary_installer/py3.10-linux-x86_64-cuda-reqs.txt
+egrep -v '^-e .' environments-and-requirements/requirements-lin-cuda.txt > req.txt
+pip install -r req.txt
+rm req.txt
 EOF
 
 
@@ -33,17 +40,25 @@ cd /usr/lib/x86_64-linux-gnu/pkgconfig/
 ln -sf opencv4.pc opencv.pc
 EOF
 
-ARG BRANCH=main SHA=26e413ae9cf8dc04c617ca451a91a1624bfdf0c0
+
+RUN --mount=type=cache,target=/root/.cache/pip  \
+  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.15-cp310-cp310-linux_x86_64.whl \
+  pip install triton /xformers-0.0.15-cp310-cp310-linux_x86_64.whl
+
+
+ARG BRANCH=main SHA=f232068ab89bd80e4f5f3133dcdb62ea78f1d0f7
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
 git checkout ${BRANCH}
 git reset --hard ${SHA}
-pip install -r binary_installer/py3.10-linux-x86_64-cuda-reqs.txt
+egrep -v '^-e .' environments-and-requirements/requirements-lin-cuda.txt > req.txt
+pip install -r req.txt
+rm req.txt
 EOF
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install -U --force-reinstall opencv-python-headless huggingface_hub && \
+  pip install -U --force-reinstall opencv-python-headless huggingface_hub transformers>=4.24 && \
   python3 -c "from patchmatch import patch_match"
 
 
@@ -51,7 +66,7 @@ RUN touch invokeai.init
 COPY . /docker/
 
 
-ENV ROOT=/stable-diffusion PYTHONPATH="${PYTHONPATH}:${ROOT}" PRELOAD=false CLI_ARGS=""
+ENV ROOT=/stable-diffusion PYTHONPATH="${PYTHONPATH}:${ROOT}" PRELOAD=false CLI_ARGS="" HF_HOME=/root/.cache/huggingface
 EXPOSE 7860
 
 ENTRYPOINT ["/docker/entrypoint.sh"]
