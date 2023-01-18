@@ -59,16 +59,15 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install opencv-python-headless \
+  pip install opencv-python-headless pyngrok accelerate \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
-  git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b \
-  pyngrok
+  git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=d97f467c0d27695d23edad5e4f8898a57e0ccb00
+ARG SHA=6faae2323963f9b0e0086a85b9d0472a24fbaa73
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -87,7 +86,7 @@ mv ${ROOT}/style.css ${ROOT}/user.css
 EOF
 
 WORKDIR ${ROOT}
-ENV CLI_ARGS=""
+ENV CLI_ARGS="" PYTHONUNBUFFERED=1
 EXPOSE 7860
 ENTRYPOINT ["/docker/entrypoint.sh"]
-CMD python3 -u webui.py --listen --port 7860 ${CLI_ARGS}
+CMD accelerate launch --num_cpu_threads_per_process=`nproc` webui.py --listen --port 7860 ${CLI_ARGS}
