@@ -2,10 +2,11 @@
 
 set -Eeuo pipefail
 
-# mount scripts individually
-cp -vrTs /data/config/auto/scripts/ "${ROOT}/scripts/"
 # TODO: move all mkdir -p ?
 mkdir -p /data/config/auto/scripts/
+# mount scripts individually
+cp -vrTs /data/config/auto/scripts/ "${ROOT}/scripts/"
+
 cp -n /docker/config.json /data/config/auto/config.json
 jq '. * input' /data/config/auto/config.json /docker/config.json | sponge /data/config/auto/config.json
 
