@@ -28,7 +28,7 @@ git reset --hard ${SHA}
 pip install -r requirements.txt
 EOF
 
-RUN --mount=type=cache,target=/root/.cache/pip pip install transformers==4.24.0
+RUN --mount=type=cache,target=/root/.cache/pip pip install -U 'transformers>=4.24'
 
 # add info
 COPY . /docker/
