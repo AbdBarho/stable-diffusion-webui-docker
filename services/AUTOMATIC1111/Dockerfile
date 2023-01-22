@@ -67,7 +67,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=6faae2323963f9b0e0086a85b9d0472a24fbaa73
+ARG SHA=c98cb0f8ecc904666f47684e238dd022039ca16f
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -76,7 +76,7 @@ pip install -r requirements_versions.txt
 EOF
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install -U opencv-python-headless transformers>=4.24
+  pip install -U opencv-python-headless 'transformers>=4.24'
 
 COPY . /docker
 
