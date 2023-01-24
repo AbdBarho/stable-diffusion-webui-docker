@@ -55,6 +55,7 @@ for to_path in "${!MOUNTS[@]}"; do
 done
 
 sync_bidirectional() {
+  mkdir -p /data/config/auto/extensions "${ROOT}/extensions"
   rsync -cau /data/config/auto/extensions/ "${ROOT}/extensions"
   rsync -cau "${ROOT}/extensions/" /data/config/auto/extensions
 }
