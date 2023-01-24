@@ -38,7 +38,6 @@ MOUNTS["${ROOT}/models/Lora"]="/data/Lora"
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
 MOUNTS["${ROOT}/config.json"]="/data/config/auto/config.json"
 MOUNTS["${ROOT}/ui-config.json"]="/data/config/auto/ui-config.json"
-MOUNTS["${ROOT}/extensions"]="/data/config/auto/extensions"
 
 # extra hacks
 MOUNTS["${ROOT}/repositories/CodeFormer/weights/facelib"]="/data/.cache"
@@ -54,6 +53,21 @@ for to_path in "${!MOUNTS[@]}"; do
   ln -sT "${from_path}" "${to_path}"
   echo Mounted $(basename "${from_path}")
 done
+
+sync_bidirectional() {
+  rsync -cau /data/config/auto/extensions/ "${ROOT}/extensions"
+  rsync -cau "${ROOT}/extensions/" /data/config/auto/extensions
+}
+sync_extensions() {
+  # I don't have any better ideas:
+  while true; do
+    set -Eeuo pipefail
+    sync_bidirectional
+    sleep 2s
+  done
+}
+sync_bidirectional
+sync_extensions &
 
 if [ -f "/data/config/auto/startup.sh" ]; then
   pushd ${ROOT}
