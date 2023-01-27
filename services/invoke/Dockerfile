@@ -46,7 +46,7 @@ RUN --mount=type=cache,target=/root/.cache/pip  \
   pip install triton /xformers-0.0.15-cp310-cp310-linux_x86_64.whl
 
 
-ARG BRANCH=main SHA=89791d91e84abfc127ffecca21db68920781709f
+ARG BRANCH=main SHA=e4cd66216e0b941de7f27b4e2e260aa4f8c956e7
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
@@ -58,7 +58,7 @@ rm req.txt
 EOF
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install -U --force-reinstall opencv-python-headless huggingface_hub 'transformers>=4.24' && \
+  pip install -U --force-reinstall opencv-python-headless huggingface_hub && \
   python3 -c "from patchmatch import patch_match"
 
 
