@@ -46,7 +46,7 @@ RUN --mount=type=cache,target=/root/.cache/pip  \
   pip install triton /xformers-0.0.15-cp310-cp310-linux_x86_64.whl
 
 
-ARG BRANCH=main SHA=e4cd66216e0b941de7f27b4e2e260aa4f8c956e7
+ARG BRANCH=main SHA=07e03b31b7610a27d709b366a491e57085d9b393
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
