@@ -41,12 +41,7 @@ ln -sf opencv4.pc opencv.pc
 EOF
 
 
-RUN --mount=type=cache,target=/root/.cache/pip  \
-  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.15-cp310-cp310-linux_x86_64.whl \
-  pip install triton /xformers-0.0.15-cp310-cp310-linux_x86_64.whl
-
-
-ARG BRANCH=main SHA=07e03b31b7610a27d709b366a491e57085d9b393
+ARG BRANCH=main SHA=80c5322cccc6f9c6f77aaea80b4bb95e25bc05ba
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
@@ -57,8 +52,10 @@ pip install -r req.txt
 rm req.txt
 EOF
 
+
 RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install -U --force-reinstall opencv-python-headless huggingface_hub && \
+  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.15-cp310-cp310-linux_x86_64.whl \
+  pip install -U opencv-python-headless huggingface_hub triton /xformers-0.0.15-cp310-cp310-linux_x86_64.whl && \
   python3 -c "from patchmatch import patch_match"
 
 
