@@ -43,7 +43,7 @@ services:
     <<: *base_service
     profiles: ["invoke"]
     build: ./services/invoke/
-    image: sd-invoke:21
+    image: sd-invoke:22
     environment:
       - PRELOAD=true
       - CLI_ARGS=
