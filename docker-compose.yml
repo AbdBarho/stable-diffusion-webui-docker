@@ -28,7 +28,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:42
+    image: sd-auto:43
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
 
@@ -37,7 +37,7 @@ services:
     profiles: ["auto-cpu"]
     deploy: {}
     environment:
-      - CLI_ARGS=--no-half --precision full
+      - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
 
   invoke:
     <<: *base_service
