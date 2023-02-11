@@ -75,7 +75,7 @@ git reset --hard ${SHA}
 pip install -r requirements_versions.txt
 EOF
 
-RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless
+RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless fastapi==0.90.1
 
 COPY . /docker
 
