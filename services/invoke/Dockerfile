@@ -2,7 +2,7 @@
 
 FROM alpine:3.17 as xformers
 RUN apk add --no-cache aria2
-RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/4.1.0/xformers-0.0.16.dev421-cp310-cp310-manylinux2014_x86_64.whl'
+RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/5.0.0/xformers-0.0.17.dev449-cp310-cp310-manylinux2014_x86_64.whl'
 
 
 
@@ -12,7 +12,7 @@ SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 ENV DEBIAN_FRONTEND=noninteractive PIP_EXISTS_ACTION=w  PIP_PREFER_BINARY=1
 
 
-RUN pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+RUN --mount=type=cache,target=/root/.cache/pip pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
 
 RUN apt-get update && apt-get install git -y && apt-get clean
 
@@ -41,15 +41,16 @@ ln -sf opencv4.pc opencv.pc
 EOF
 
 
-ARG BRANCH=main SHA=80c5322cccc6f9c6f77aaea80b4bb95e25bc05ba
+ARG BRANCH=main SHA=6551527fe249dc7a44e3fab9db9451c0dc3ad851
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
 git checkout ${BRANCH}
 git reset --hard ${SHA}
-egrep -v '^-e .' environments-and-requirements/requirements-lin-cuda.txt > req.txt
-pip install -r req.txt
-rm req.txt
+pip install .
+# egrep -v '^-e .' environments-and-requirements/requirements-lin-cuda.txt > req.txt
+# pip install -r req.txt
+# rm req.txt
 EOF
 
 
@@ -62,9 +63,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN touch invokeai.init
 COPY . /docker/
 
+# mkdir configs && cp invokeai/configs/INITIAL_MODELS.yaml configs/models.yaml
 
-ENV ROOT=/stable-diffusion PYTHONPATH="${PYTHONPATH}:${ROOT}" PRELOAD=false CLI_ARGS="" HF_HOME=/root/.cache/huggingface
+ENV PYTHONUNBUFFERED=1 ROOT=/stable-diffusion PYTHONPATH="${PYTHONPATH}:${ROOT}" PRELOAD=false CLI_ARGS="" HF_HOME=/root/.cache/huggingface
 EXPOSE 7860
 
 ENTRYPOINT ["/docker/entrypoint.sh"]
-CMD python3 -u scripts/invoke.py --web --host 0.0.0.0 --port 7860 --config /docker/models.yaml --root_dir ${ROOT} --outdir /output/invoke ${CLI_ARGS}
+CMD invokeai --web --host 0.0.0.0 --port 7860 --config /docker/models.yaml --root_dir ${ROOT} --outdir /output/invoke ${CLI_ARGS}

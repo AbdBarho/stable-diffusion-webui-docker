@@ -38,9 +38,9 @@ for to_path in "${!MOUNTS[@]}"; do
   echo Mounted $(basename "${from_path}")
 done
 
-if "${PRELOAD}" == "true"; then
-  set -Eeuo pipefail
-  python3 -u scripts/preload_models.py --skip-sd-weights --root ${ROOT} --config_file /docker/models.yaml
-fi
+# if "${PRELOAD}" == "true"; then
+#   set -Eeuo pipefail
+#   python3 -u scripts/preload_models.py --skip-sd-weights --root ${ROOT} --config_file /docker/models.yaml
+# fi
 
 exec "$@"

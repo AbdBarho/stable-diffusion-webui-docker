@@ -28,7 +28,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:44
+    image: sd-auto:45
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
 
@@ -43,7 +43,7 @@ services:
     <<: *base_service
     profiles: ["invoke"]
     build: ./services/invoke/
-    image: sd-invoke:22
+    image: sd-invoke:23
     environment:
       - PRELOAD=true
       - CLI_ARGS=

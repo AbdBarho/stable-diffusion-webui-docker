@@ -26,7 +26,7 @@ RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interr
 
 FROM alpine:3.17 as xformers
 RUN apk add --no-cache aria2
-RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/4.1.0/xformers-0.0.16.dev421-cp310-cp310-manylinux2014_x86_64.whl'
+RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/5.0.0/xformers-0.0.17.dev449-cp310-cp310-manylinux2014_x86_64.whl'
 
 FROM python:3.10.9-slim
 
@@ -67,7 +67,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=3993aa43e95bb60b9df977946af988f119525a71
+ARG SHA=3715ece0adce7bf7c5e9c5ab3710b2fdc3848f39
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -75,7 +75,7 @@ git reset --hard ${SHA}
 pip install -r requirements_versions.txt
 EOF
 
-RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless fastapi==0.90.1
+RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless
 
 COPY . /docker
 
