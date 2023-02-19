@@ -9,7 +9,7 @@ stable-diffusion-1.5:
   description: Stable Diffusion version 1.5
   weights: /data/StableDiffusion/v1-5-pruned-emaonly.ckpt
   vae: /data/VAE/vae-ft-mse-840000-ema-pruned.ckpt
-  config: /stable-diffusion/invokeai/configs/stable-diffusion/v1-inference.yaml
+  config: ./invokeai/configs/stable-diffusion/v1-inference.yaml
   width: 512
   height: 512
   default: true
@@ -17,7 +17,7 @@ inpainting-1.5:
   description: RunwayML SD 1.5 model optimized for inpainting
   weights: /data/StableDiffusion/sd-v1-5-inpainting.ckpt
   vae: /data/VAE/vae-ft-mse-840000-ema-pruned.ckpt
-  config: /stable-diffusion/invokeai/configs/stable-diffusion/v1-inpainting-inference.yaml
+  config: ./invokeai/configs/stable-diffusion/v1-inpainting-inference.yaml
   width: 512
   height: 512
   default: false

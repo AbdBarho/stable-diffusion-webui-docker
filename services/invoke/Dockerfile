@@ -41,16 +41,13 @@ ln -sf opencv4.pc opencv.pc
 EOF
 
 
-ARG BRANCH=main SHA=6551527fe249dc7a44e3fab9db9451c0dc3ad851
+ARG BRANCH=main SHA=d3c1b747ee1632c6fab81ba9f89314e9fbdd55e4
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
 git checkout ${BRANCH}
 git reset --hard ${SHA}
 pip install .
-# egrep -v '^-e .' environments-and-requirements/requirements-lin-cuda.txt > req.txt
-# pip install -r req.txt
-# rm req.txt
 EOF
 
 
@@ -63,7 +60,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN touch invokeai.init
 COPY . /docker/
 
-# mkdir configs && cp invokeai/configs/INITIAL_MODELS.yaml configs/models.yaml
 
 ENV PYTHONUNBUFFERED=1 ROOT=/stable-diffusion PYTHONPATH="${PYTHONPATH}:${ROOT}" PRELOAD=false CLI_ARGS="" HF_HOME=/root/.cache/huggingface
 EXPOSE 7860
