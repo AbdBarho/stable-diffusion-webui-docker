@@ -67,7 +67,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=076d624a297532d6e4abebe5807fd7c7504d7a73
+# TODO: either remove if fixed in A1111 (unlikely) or move to the top with other apt stuff
+RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
+ENV LD_PRELOAD=libtcmalloc.so
+
+ARG SHA=0cc0ee1bcb4c24a8c9715f66cede06601bfc00c8
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion-webui
 git fetch
