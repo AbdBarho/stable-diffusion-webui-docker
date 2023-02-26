@@ -41,7 +41,7 @@ ln -sf opencv4.pc opencv.pc
 EOF
 
 
-ARG BRANCH=main SHA=d3c1b747ee1632c6fab81ba9f89314e9fbdd55e4
+ARG BRANCH=main SHA=6e0c6d9cc9f6bdbdefc4b9e94bc1ccde1b04aa42
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
