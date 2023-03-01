@@ -62,4 +62,10 @@ if [ -f "/data/config/auto/startup.sh" ]; then
   popd
 fi
 
+# Override cudnn lib files from /data/cudnn
+if [ -f "/data/cudnn/libcudnn.so.8" ]; then
+  PYTORCH_PATH=$(python -c "import torch; print(torch.__path__[0])")
+  cp /data/cudnn/lib* "$PYTORCH_PATH"/lib/
+fi
+
 exec "$@"
