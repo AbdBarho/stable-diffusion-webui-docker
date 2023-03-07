@@ -40,7 +40,7 @@ done
 
 if "${PRELOAD}" == "true"; then
   set -Eeuo pipefail
-  invokeai-configure --skip-sd-weights --root ${ROOT} --yes
+  # invokeai-configure --skip-sd-weights --root ${ROOT} --yes
 fi
-
+sleep 100
 exec "$@"
