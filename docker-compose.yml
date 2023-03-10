@@ -7,13 +7,11 @@ x-base_service: &base_service
       - &v1 ./data:/data
       - &v2 ./output:/output
     stop_signal: SIGINT
-    deploy:
-      resources:
-        reservations:
-          devices:
-              - driver: nvidia
-                device_ids: ['0']
-                capabilities: [gpu]
+    group_add:
+      - video
+    devices:
+      - "/dev/dri"
+      - "/dev/kfd"
 
 name: webui-docker
 
@@ -30,7 +28,7 @@ services:
     build: ./services/AUTOMATIC1111
     image: sd-auto:47
     environment:
-      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
+      - CLI_ARGS=--allow-code --medvram --enable-insecure-extension-access --api
 
   auto-cpu:
     <<: *automatic
