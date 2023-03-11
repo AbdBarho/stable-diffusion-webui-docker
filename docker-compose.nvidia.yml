@@ -1,0 +1,76 @@
+version: '3.9'
+
+x-base_service:
+  &base_service
+  ports:
+    - "7860:7860"
+  volumes:
+    - &v1 ./data:/data
+    - &v2 ./output:/output
+  stop_signal: SIGINT
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            device_ids: [ '0' ]
+            capabilities: [ gpu ]
+
+name: webui-docker
+
+services:
+  download:
+    build: ./services/download/
+    profiles: [ "download" ]
+    volumes:
+      - *v1
+
+  auto:
+    &automatic
+    <<: *base_service
+    profiles: [ "auto" ]
+    build: ./services/AUTOMATIC1111
+    image: sd-auto:47
+    environment:
+      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
+
+  auto-amd:
+    &automatic
+    <<: *base_service
+    profiles: [ "auto-amd" ]
+    build: ./services/AUTOMATIC1111-AMD
+    image: sd-auto:47
+    environment:
+      - CLI_ARGS=--allow-code --medvram --enable-insecure-extension-access --api --no-half --precision full --opt-sub-quad-attention
+
+  auto-cpu:
+    <<: *automatic
+    profiles: [ "auto-cpu" ]
+    deploy: {}
+    environment:
+      - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
+
+  invoke:
+    <<: *base_service
+    profiles: [ "invoke" ]
+    build: ./services/invoke/
+    image: sd-invoke:26
+    environment:
+      - PRELOAD=true
+      - CLI_ARGS=
+
+  sygil:
+    &sygil
+    <<: *base_service
+    profiles: [ "sygil" ]
+    build: ./services/sygil/
+    image: sd-sygil:16
+    environment:
+      - CLI_ARGS=--optimized-turbo
+      - USE_STREAMLIT=0
+
+  sygil-sl:
+    <<: *sygil
+    profiles: [ "sygil-sl" ]
+    environment:
+      - USE_STREAMLIT=1

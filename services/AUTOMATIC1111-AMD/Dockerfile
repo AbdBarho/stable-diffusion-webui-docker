@@ -24,19 +24,15 @@ RUN . /clone.sh k-diffusion https://github.com/crowsonkb/k-diffusion.git 5b3af03
 RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interrogator 2486589f24165c8e3b303f84e9dbbea318df83e8
 
 
-FROM alpine:3.17 as xformers
-RUN apk add --no-cache aria2
-RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/5.0.0/xformers-0.0.17.dev449-cp310-cp310-manylinux2014_x86_64.whl'
-
 FROM python:3.10.9-slim
 
 SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
-RUN PIP_NO_CACHE_DIR=1 pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+RUN PIP_NO_CACHE_DIR=1 pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/rocm5.2 
 
-RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
+RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils bash -y && apt-get clean
 
 
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
@@ -45,10 +41,6 @@ cd stable-diffusion-webui
 git reset --hard d7aec59c4eb02f723b3d55c6f927a42e97acd679
 pip install -r requirements_versions.txt
 EOF
-
-RUN --mount=type=cache,target=/root/.cache/pip  \
-  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.15-cp310-cp310-linux_x86_64.whl \
-  pip install triton /xformers-0.0.15-cp310-cp310-linux_x86_64.whl
 
 ENV ROOT=/stable-diffusion-webui
 
@@ -71,7 +63,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
-ARG SHA=27e319dc4f09a2f040043948e5c52965976f8491
+ARG SHA=0cc0ee1bcb4c24a8c9715f66cede06601bfc00c8
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -94,4 +86,5 @@ WORKDIR ${ROOT}
 ENV CLI_ARGS=""
 EXPOSE 7860
 ENTRYPOINT ["/docker/entrypoint.sh"]
+ENV HSA_OVERRIDE_GFX_VERSION=10.3.0
 CMD python -u webui.py --listen --port 7860 ${CLI_ARGS}
