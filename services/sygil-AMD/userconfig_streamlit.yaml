@@ -1,0 +1,11 @@
+# https://github.com/Sygil-Dev/sygil-webui/blob/master/configs/webui/webui_streamlit.yaml
+general:
+  version: 1.24.6
+  outdir: /output
+  default_model: "Stable Diffusion v1.5"
+  default_model_path: /data/StableDiffusion/v1-5-pruned-emaonly.ckpt
+  outdir_txt2img: /output/txt2img
+  outdir_img2img: /output/img2img
+  outdir_img2txt: /output/img2txt
+  optimized: True
+  optimized_turbo: True

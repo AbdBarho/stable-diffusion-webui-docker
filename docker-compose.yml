@@ -1,56 +1,102 @@
 version: '3.9'
 
-x-base_service: &base_service
-    ports:
-      - "7860:7860"
-    volumes:
-      - &v1 ./data:/data
-      - &v2 ./output:/output
-    stop_signal: SIGINT
-    group_add:
-      - video
-    devices:
-      - "/dev/dri"
-      - "/dev/kfd"
+x-base_service:
+  &base_service
+  ports:
+    - "7860:7860"
+  volumes:
+    - &v1 ./data:/data
+    - &v2 ./output:/output
+  stop_signal: SIGINT
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            device_ids: [ '0' ]
+            capabilities: [ gpu ]
+
+x-base_service_amd:
+  &base_service_amd
+  ports:
+    - "7860:7860"
+  volumes:
+    - &v1 ./data:/data
+    - &v2 ./output:/output
+  stop_signal: SIGINT
+  group_add:
+    - video
+  devices:
+    - "/dev/dri"
+    - "/dev/kfd"
 
 name: webui-docker
 
 services:
   download:
     build: ./services/download/
-    profiles: ["download"]
+    profiles: [ "download" ]
     volumes:
       - *v1
 
-  auto: &automatic
+  auto:
+    &automatic
     <<: *base_service
-    profiles: ["auto"]
+    profiles: [ "auto" ]
     build: ./services/AUTOMATIC1111
     image: sd-auto:48
     environment:
       - CLI_ARGS=--allow-code --medvram --enable-insecure-extension-access --api
 
+  auto-amd:
+    &automatic
+    <<: *base_service_amd
+    profiles: [ "auto-amd" ]
+    build: ./services/AUTOMATIC1111-AMD
+    image: sd-auto:48
+    environment:
+      - CLI_ARGS=--allow-code --medvram --no-half --precision full --enable-insecure-extension-access --api
+
   auto-cpu:
     <<: *automatic
-    profiles: ["auto-cpu"]
+    profiles: [ "auto-cpu" ]
     deploy: {}
     environment:
       - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
 
   invoke:
     <<: *base_service
-    profiles: ["invoke"]
+    profiles: [ "invoke" ]
     build: ./services/invoke/
     image: sd-invoke:26
     environment:
       - PRELOAD=true
       - CLI_ARGS=
 
+  invoke-amd:
+    <<: *base_service_amd
+    profiles: [ "invoke-amd" ]
+    build: ./services/invoke-AMD/
+    image: sd-invoke:26
+    environment:
+      - PRELOAD=true
+      - CLI_ARGS=
 
-  sygil: &sygil
+  sygil:
+    &sygil
     <<: *base_service
-    profiles: ["sygil"]
+    profiles: [ "sygil" ]
     build: ./services/sygil/
+    image: sd-sygil:16
+    environment:
+      - CLI_ARGS=--optimized-turbo
+      - USE_STREAMLIT=0
+
+  sygil-amd:
+    &sygil
+    <<: *base_service_amd
+    profiles: [ "sygil-amd" ]
+    build: ./services/sygil-AMD/
     image: sd-sygil:16
     environment:
       - CLI_ARGS=--optimized-turbo
@@ -58,6 +104,6 @@ services:
 
   sygil-sl:
     <<: *sygil
-    profiles: ["sygil-sl"]
+    profiles: [ "sygil-sl" ]
     environment:
       - USE_STREAMLIT=1
