@@ -11,3 +11,4 @@ Closes issue #
 - auto: https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/
 - sygil: https://github.com/Sygil-Dev/sygil-webui/commit/
 - invoke: https://github.com/invoke-ai/InvokeAI/commit/
+- comfy: https://github.com/comfyanonymous/ComfyUI/commit/

@@ -63,3 +63,11 @@ services:
     profiles: ["sygil-sl"]
     environment:
       - USE_STREAMLIT=1
+
+  comfy: &comfy
+    <<: *base_service
+    profiles: ["comfy"]
+    build: ./services/comfy/
+    image: sd-comfy:1
+    environment:
+      - CLI_ARGS=
