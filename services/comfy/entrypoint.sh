@@ -20,7 +20,7 @@ MOUNTS["${ROOT}/models/t2i_adapter"]="/data/comfy/t2i_adapter"
 MOUNTS["${ROOT}/models/upscale_models"]="/data/comfy/upscale_models"
 MOUNTS["${ROOT}/models/vae"]="/data/VAE"
 
-MOUNTS["${ROOT}/output"]="/output/comfy"
+MOUNTS["${ROOT}/output"]="/output"
 
 for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
