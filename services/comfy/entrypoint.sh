@@ -6,6 +6,8 @@ declare -A MOUNTS
 
 ROOT=/stable-diffusion
 
+sed -i 's/this\.allow_searchbox = true;/this.allow_searchbox = false;/' /stable-diffusion/web/lib/litegraph.core.js
+
 # cache
 MOUNTS["/root/.cache"]=/data/.cache
 # ui specific

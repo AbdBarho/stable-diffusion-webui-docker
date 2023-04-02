@@ -4,16 +4,16 @@ x-base_service: &base_service
     ports:
       - "7860:7860"
     volumes:
-      - &v1 ./data:/data
-      - &v2 ./output:/output
+      - &v1 ./data/:/data/
+      - &v2 ./output/:/output/
     stop_signal: SIGINT
     deploy:
       resources:
         reservations:
           devices:
-              - driver: nvidia
-                device_ids: ['0']
-                capabilities: [gpu]
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
 
 name: webui-docker
 
@@ -71,3 +71,5 @@ services:
     image: sd-comfy:1
     environment:
       - CLI_ARGS=
+    volumes:
+      - *v2
