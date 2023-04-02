@@ -14,24 +14,24 @@ This repository provides multiple UIs for you to play around with stable diffusi
 
 [Full feature list here](https://github.com/AUTOMATIC1111/stable-diffusion-webui-feature-showcase), Screenshots:
 
-| Text to image                                                                                              | Image to image                                                                                             | Extras                                                                                                     |
-| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Text to image | Image to image | Extras |
+| - | - | - |
 | ![](https://user-images.githubusercontent.com/24505302/189541954-46afd772-d0c8-4005-874c-e2eca40c02f2.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541956-5b528de7-1b5d-479f-a1db-d3f5a53afc59.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541957-cf78b352-a071-486d-8889-f26952779a61.jpg) |
 
 ### [InvokeAI (lstein)](https://github.com/invoke-ai/InvokeAI)
 
 [Full feature list here](https://github.com/invoke-ai/InvokeAI#features), Screenshots:
 
-| Text to image                                                                                              | Image to image                                                                                             | Extras                                                                                                     |
-| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Text to image | Image to image | Extras |
+| - | - | - |
 | ![](https://user-images.githubusercontent.com/24505302/195158552-39f58cb6-cfcc-4141-9995-a626e3760752.jpg) | ![](https://user-images.githubusercontent.com/24505302/195158553-152a0ab8-c0fd-4087-b121-4823bcd8d6b5.jpg) | ![](https://user-images.githubusercontent.com/24505302/195158548-e118206e-c519-4915-85d6-4c248eb10fc0.jpg) |
 
 ### [Sygil (sd-webui / hlky)](https://github.com/Sygil-Dev/sygil-webui)
 
 [Full feature list here](https://github.com/Sygil-Dev/sygil-webui/blob/master/README.md), Screenshots:
 
-| Text to image                                                                                              | Image to image                                                                                             | Image Lab                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Text to image | Image to image | Image Lab |
+| - | - | - |
 | ![](https://user-images.githubusercontent.com/24505302/189541298-f902b021-a1eb-4e4b-b2eb-b6a696a8ec80.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541295-7d7f2162-2189-4e0a-abbd-703f4779e1cd.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541294-aa7f7735-a973-4e17-ada0-1fe3acbb1772.jpg) |
 
 ### [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
@@ -39,7 +39,7 @@ This repository provides multiple UIs for you to play around with stable diffusi
 [Full feature list here](https://github.com/comfyanonymous/ComfyUI#features), Screenshot:
 
 | Text to image |
-| -|
+| - |
 |![](https://github.com/comfyanonymous/ComfyUI/raw/master/comfyui_screenshot.png)|
 
 ## Contributing
