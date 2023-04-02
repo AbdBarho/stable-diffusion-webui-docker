@@ -40,7 +40,7 @@ This repository provides multiple UIs for you to play around with stable diffusi
 
 | Text to image |
 | - |
-|![](https://github.com/comfyanonymous/ComfyUI/raw/master/comfyui_screenshot.png)|
+| ![](https://github.com/comfyanonymous/ComfyUI/raw/master/comfyui_screenshot.png) |
 
 ## Contributing
 
