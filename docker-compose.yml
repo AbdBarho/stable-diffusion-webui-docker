@@ -6,6 +6,7 @@ x-base_service: &base_service
     volumes:
       - &v1 ./data:/data
       - &v2 ./output:/output
+      - &v3 ./styles.csv:/stable-diffusion-webui/styles.csv
     stop_signal: SIGINT
     deploy:
       resources:
