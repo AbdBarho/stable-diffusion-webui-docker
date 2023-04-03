@@ -4,6 +4,8 @@
 /config
 # for all stable diffusion models (main, waifu diffusion, etc..)
 /StableDiffusion
+# styles
+/styles.csv
 # others
 /Codeformer
 /GFPGAN
