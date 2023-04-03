@@ -11,22 +11,22 @@ x-base_service: &base_service
       resources:
         reservations:
           devices:
-            - driver: nvidia
-              device_ids: ['0']
-              capabilities: [gpu]
+              - driver: nvidia
+                device_ids: ['0']
+                capabilities: [gpu]
 
 name: webui-docker
 
 services:
   download:
     build: ./services/download/
-    profiles: [ "download" ]
+    profiles: ["download"]
     volumes:
       - *v1
 
   auto: &automatic
     <<: *base_service
-    profiles: [ "auto" ]
+    profiles: ["auto"]
     build: ./services/AUTOMATIC1111
     image: sd-auto:49
     environment:
@@ -34,14 +34,14 @@ services:
 
   auto-cpu:
     <<: *automatic
-    profiles: [ "auto-cpu" ]
+    profiles: ["auto-cpu"]
     deploy: {}
     environment:
       - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
 
   invoke:
     <<: *base_service
-    profiles: [ "invoke" ]
+    profiles: ["invoke"]
     build: ./services/invoke/
     image: sd-invoke:26
     environment:
@@ -50,7 +50,7 @@ services:
 
   sygil: &sygil
     <<: *base_service
-    profiles: [ "sygil" ]
+    profiles: ["sygil"]
     build: ./services/sygil/
     image: sd-sygil:16
     environment:
@@ -59,13 +59,13 @@ services:
 
   sygil-sl:
     <<: *sygil
-    profiles: [ "sygil-sl" ]
+    profiles: ["sygil-sl"]
     environment:
       - USE_STREAMLIT=1
 
   comfy: &comfy
     <<: *base_service
-    profiles: [ "comfy" ]
+    profiles: ["comfy"]
     build: ./services/comfy/
     image: sd-comfy:1
     volumes:
