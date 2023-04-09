@@ -46,7 +46,7 @@ services:
     image: sd-invoke:27
     environment:
       - PRELOAD=true
-      - CLI_ARGS=
+      - CLI_ARGS=--no-nsfw_checker --no-safety_checker --xformers
 
 
   sygil: &sygil

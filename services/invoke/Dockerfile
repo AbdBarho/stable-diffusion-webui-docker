@@ -11,38 +11,34 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_EXISTS_ACTION=w  PIP_PREFER_BINARY=1
 
 RUN --mount=type=cache,target=/root/.cache/pip pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
 
-RUN apt-get update && apt-get install git -y && apt-get clean
-
-RUN git clone https://github.com/invoke-ai/InvokeAI.git /stable-diffusion
-
-WORKDIR /stable-diffusion
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-  git reset --hard f232068ab89bd80e4f5f3133dcdb62ea78f1d0f7 && \
-  git config --global http.postBuffer 1048576000 && \
-  egrep -v '^-e .' environments-and-requirements/requirements-lin-cuda.txt > req.txt && \
-  pip install -r req.txt && \
-  rm req.txt
-
 
 # patch match:
 # https://github.com/invoke-ai/InvokeAI/blob/main/docs/installation/INSTALL_PATCHMATCH.md
-RUN \
+RUN --mount=type=cache,target=/var/cache/apt \
   apt-get update && \
-  # apt-get install build-essential python3-opencv libopencv-dev -y && \
-  apt-get install make g++ libopencv-dev -y && \
+  apt-get install make g++ git libopencv-dev -y && \
   apt-get clean && \
   cd /usr/lib/x86_64-linux-gnu/pkgconfig/ && \
   ln -sf opencv4.pc opencv.pc
 
 
-ARG BRANCH=main SHA=8762069b37f996c4a61757e0283bc5d88e275907
+
+ENV ROOT=/InvokeAI
+RUN git clone https://github.com/invoke-ai/InvokeAI.git ${ROOT}
+WORKDIR ${ROOT}
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+  git reset --hard 4463124bddd221c333d4c70e73aa2949ad35453d && \
+  pip install .
+
+
+ARG BRANCH=main SHA=4463124bddd221c333d4c70e73aa2949ad35453d
 RUN --mount=type=cache,target=/root/.cache/pip \
   git fetch && \
   git reset --hard && \
   git checkout ${BRANCH} && \
   git reset --hard ${SHA} && \
-  pip install .
+  pip install -U .
 
 
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -51,13 +47,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   python3 -c "from patchmatch import patch_match"
 
 
-RUN touch invokeai.init
 COPY . /docker/
 
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 ENV NVIDIA_VISIBLE_DEVICES=all
-ENV PYTHONUNBUFFERED=1 ROOT=/stable-diffusion PYTHONPATH="${PYTHONPATH}:${ROOT}" PRELOAD=false CLI_ARGS="" HF_HOME=/root/.cache/huggingface
+ENV PYTHONUNBUFFERED=1 PYTHONPATH="${PYTHONPATH}:${ROOT}" PRELOAD=false HF_HOME=/root/.cache/huggingface CLI_ARGS=""
 EXPOSE 7860
 
 ENTRYPOINT ["/docker/entrypoint.sh"]
-CMD invokeai --web --host 0.0.0.0 --port 7860 --config /docker/models.yaml --root_dir ${ROOT} --outdir /output/invoke ${CLI_ARGS}
+CMD invokeai --web --host 0.0.0.0 --port 7860 --root_dir ${ROOT} --outdir /output/invoke ${CLI_ARGS}
+# TODO: make sure the config is persisted between sessions
