@@ -85,6 +85,7 @@ services:
       image: ngrok/ngrok:latest
       container_name: ngrok
       restart: unless-stopped
+      profiles: ["ngrok"]
       command:
         - "start"
         - "--all"

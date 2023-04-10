@@ -20,10 +20,11 @@ build:
 # Web UI: http://localhost:7860/
 start:
 	@docker compose --profile auto up -d
+	@docker compose --profile ngrok up -d
 
 # Stop the docker container
 stop:
-	@docker compose --profile auto down
+	@docker compose down
 
 run: start
 
