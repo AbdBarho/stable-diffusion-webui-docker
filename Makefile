@@ -5,7 +5,6 @@
 # docker compose --profile download up --build
 build:
 	@docker compose --profile download up --build
-	@docker compose --profile auto up --build
 
 # Start the docker container
 #
