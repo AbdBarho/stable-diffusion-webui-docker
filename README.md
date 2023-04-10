@@ -2,6 +2,9 @@
 
 Run Stable Diffusion on your machine with a nice UI without any hassle!
 
+- [Local Web UI](http://localhost:7860/)
+- [Ngrok Dashboard](http://localhost:4040/)
+
 ## Setup & Usage
 
 Visit the wiki for [Setup](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Setup) and [Usage](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Usage) instructions, checkout the [FAQ](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/FAQ) page if you face any problems, or create a new issue!

@@ -20,7 +20,7 @@ build:
 # docker compose --profile auto up -d
 # Web UI: http://localhost:7860/
 start:
-	@docker compose --profile auto up
+	@docker compose --profile auto up -d
 
 # Stop the docker container
 stop:
