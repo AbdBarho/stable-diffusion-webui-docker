@@ -19,21 +19,29 @@ name: webui-docker
 
 services:
   download:
+    container_name: download
+    restart: on-failure
     build: ./services/download/
     profiles: ["download"]
+    mem_limit: 16g
     volumes:
       - *v1
 
   auto: &automatic
     <<: *base_service
+    container_name: auto
+    restart: on-failure
     profiles: ["auto"]
+    mem_limit: 16g
     build: ./services/AUTOMATIC1111
     image: sd-auto:51
     environment:
-      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
+      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api --listen
 
   auto-cpu:
     <<: *automatic
+    container_name: auto-cpu
+    restart: on-failure
     profiles: ["auto-cpu"]
     deploy: {}
     environment:
@@ -41,6 +49,8 @@ services:
 
   invoke:
     <<: *base_service
+    container_name: invoke
+    restart: on-failure
     profiles: ["invoke"]
     build: ./services/invoke/
     image: sd-invoke:26
@@ -51,6 +61,8 @@ services:
 
   sygil: &sygil
     <<: *base_service
+    container_name: sygil
+    restart: on-failure
     profiles: ["sygil"]
     build: ./services/sygil/
     image: sd-sygil:16
@@ -60,6 +72,25 @@ services:
 
   sygil-sl:
     <<: *sygil
+    container_name: sygil-sl
+    restart: on-failure
     profiles: ["sygil-sl"]
     environment:
       - USE_STREAMLIT=1
+
+  # Web access to the docker containers
+  # https://ngrok.com/docs/using-ngrok-with/docker/
+  # http://127.0.0.1:4040/inspect/http
+  ngrok:
+      image: ngrok/ngrok:latest
+      container_name: ngrok
+      restart: unless-stopped
+      command:
+        - "start"
+        - "--all"
+        - "--config"
+        - "/etc/ngrok.yml"
+      volumes:
+        - ./data/ngrok/ngrok.yml:/etc/ngrok.yml
+      ports:
+        - 4040:4040
