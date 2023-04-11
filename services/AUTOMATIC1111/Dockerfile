@@ -36,7 +36,7 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
 RUN PIP_NO_CACHE_DIR=1 pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
 
-RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
+RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils ffmpeg -y && apt-get clean
 
 
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
@@ -89,10 +89,6 @@ mv ${ROOT}/style.css ${ROOT}/user.css
 # one of the ugliest hacks I ever wrote
 sed -i 's/in_app_dir = .*/in_app_dir = True/g' /usr/local/lib/python3.10/site-packages/gradio/routes.py
 EOF
-
-RUN apt-get -y update
-RUN apt-get -y upgrade
-RUN apt-get install -y ffmpeg
 
 WORKDIR ${ROOT}
 ENV CLI_ARGS=""
