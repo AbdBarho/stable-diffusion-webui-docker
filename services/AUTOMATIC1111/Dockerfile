@@ -1,14 +1,10 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine/git:2.36.2 as download
+FROM alpine:3.17 as download
 
-SHELL ["/bin/sh", "-ceuxo", "pipefail"]
+RUN apk add git
 
-RUN <<EOF
-cat <<'EOE' > /clone.sh
-mkdir -p repositories/"$1" && cd repositories/"$1" && git init && git remote add origin "$2" && git fetch origin "$3" --depth=1 && git reset --hard "$3" && rm -rf .git
-EOE
-EOF
+COPY clone.sh /clone.sh
 
 RUN . /clone.sh taming-transformers https://github.com/CompVis/taming-transformers.git 24268930bf1dce879235a7fddd0b2355b84d7ea6 \
   && rm -rf data assets **/*.ipynb
@@ -30,8 +26,6 @@ RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diff
 
 FROM python:3.10.9-slim
 
-SHELL ["/bin/bash", "-ceuxo", "pipefail"]
-
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
 RUN PIP_NO_CACHE_DIR=1 pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
@@ -39,12 +33,11 @@ RUN PIP_NO_CACHE_DIR=1 pip install torch==1.13.1+cu117 torchvision --extra-index
 RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
 
 
-RUN --mount=type=cache,target=/root/.cache/pip <<EOF
-git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
-cd stable-diffusion-webui
-git reset --hard d7aec59c4eb02f723b3d55c6f927a42e97acd679
-pip install -r requirements_versions.txt
-EOF
+RUN --mount=type=cache,target=/root/.cache/pip \
+  git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
+  cd stable-diffusion-webui && \
+  git reset --hard d7aec59c4eb02f723b3d55c6f927a42e97acd679 && \
+  pip install -r requirements_versions.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip  \
   --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.15-cp310-cp310-linux_x86_64.whl \
@@ -72,25 +65,25 @@ RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
 ARG SHA=a9fed7c364061ae6efb37f797b6b522cb3cf7aa2
-RUN --mount=type=cache,target=/root/.cache/pip <<EOF
-cd stable-diffusion-webui
-git fetch
-git reset --hard ${SHA}
-pip install -r requirements_versions.txt
-EOF
+RUN --mount=type=cache,target=/root/.cache/pip \
+  cd stable-diffusion-webui && \
+  git fetch && \
+  git reset --hard ${SHA} && \
+  pip install -r requirements_versions.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless
 
 COPY . /docker
 
-RUN <<EOF
-python3 /docker/info.py ${ROOT}/modules/ui.py
-mv ${ROOT}/style.css ${ROOT}/user.css
-# one of the ugliest hacks I ever wrote
-sed -i 's/in_app_dir = .*/in_app_dir = True/g' /usr/local/lib/python3.10/site-packages/gradio/routes.py
-EOF
+RUN \
+  python3 /docker/info.py ${ROOT}/modules/ui.py && \
+  mv ${ROOT}/style.css ${ROOT}/user.css && \
+  # one of the ugliest hacks I ever wrote \
+  sed -i 's/in_app_dir = .*/in_app_dir = True/g' /usr/local/lib/python3.10/site-packages/gradio/routes.py
 
 WORKDIR ${ROOT}
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ENV NVIDIA_VISIBLE_DEVICES=all
 ENV CLI_ARGS=""
 EXPOSE 7860
 ENTRYPOINT ["/docker/entrypoint.sh"]

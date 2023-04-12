@@ -7,6 +7,9 @@ x-base_service: &base_service
       - &v1 ./data:/data
       - &v2 ./output:/output
     stop_signal: SIGINT
+    security_opt:
+      - label=type:nvidia_container_t
+    runtime: nvidia
     deploy:
       resources:
         reservations:
