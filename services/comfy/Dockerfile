@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
 RUN --mount=type=cache,target=/root/.cache/pip pip install torch==1.13.0 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117
 
-RUN apt update && apt install -y git && apt clean
+RUN apt-get update && apt-get install -y git && apt-get clean
 
 ARG BRANCH=master SHA=ee46bef03a98903831c01d31094a0c30ea411b28
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
