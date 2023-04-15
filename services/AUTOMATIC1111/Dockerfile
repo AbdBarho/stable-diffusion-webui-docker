@@ -26,7 +26,7 @@ RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interr
 
 FROM alpine:3.17 as xformers
 RUN apk add --no-cache aria2
-RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/5.0.0/xformers-0.0.17.dev449-cp310-cp310-manylinux2014_x86_64.whl'
+RUN aria2c -x 5 --dir / --out xformers-0.0.18-cp310-cp310-manylinux2014_x86_64.whl 'https://files.pythonhosted.org/packages/7e/b6/a51ff1c6432e33a194feb53971b5daf6832123d102ac4556c6508ca37278/xformers-0.0.18-cp310-cp310-manylinux2014_x86_64.whl'
 
 FROM python:3.10.9-slim
 
@@ -34,7 +34,7 @@ SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
-RUN PIP_NO_CACHE_DIR=1 pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+RUN PIP_NO_CACHE_DIR=1 pip install torch==2.0.0+cu118 torchvision --index-url https://download.pytorch.org/whl/cu118
 
 RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
 
@@ -47,8 +47,8 @@ pip install -r requirements_versions.txt
 EOF
 
 RUN --mount=type=cache,target=/root/.cache/pip  \
-  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.15-cp310-cp310-linux_x86_64.whl \
-  pip install triton /xformers-0.0.15-cp310-cp310-linux_x86_64.whl
+  --mount=type=bind,from=xformers,source=/xformers-0.0.18-cp310-cp310-manylinux2014_x86_64.whl,target=/xformers-0.0.18-cp310-cp310-manylinux2014_x86_64.whl \
+  pip install triton /xformers-0.0.18-cp310-cp310-manylinux2014_x86_64.whl
 
 ENV ROOT=/stable-diffusion-webui
 
