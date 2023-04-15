@@ -1,9 +1,9 @@
 #!/bin/bash
 
-set -Eeuo pipefail
+set -Eeuox pipefail
 
-mkdir -p git/repositories/"$1"
-cd git/repositories/"$1"
+mkdir -p /repositories/"$1"
+cd /repositories/"$1"
 git init
 git remote add origin "$2"
 git fetch origin "$3" --depth=1

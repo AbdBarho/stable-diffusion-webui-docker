@@ -1,8 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.17 as download
-
-RUN apk add git
+FROM alpine/git:2.36.2 as download
 
 COPY clone.sh /clone.sh
 
@@ -46,7 +44,7 @@ RUN --mount=type=cache,target=/root/.cache/pip  \
 ENV ROOT=/stable-diffusion-webui
 
 
-COPY --from=download /git/ ${ROOT}
+COPY --from=download /repositories/ ${ROOT}/repositories/
 RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/* ${ROOT}/interrogate
 RUN --mount=type=cache,target=/root/.cache/pip \
   pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt

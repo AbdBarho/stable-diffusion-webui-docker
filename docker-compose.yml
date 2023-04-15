@@ -7,9 +7,6 @@ x-base_service: &base_service
       - &v1 ./data:/data
       - &v2 ./output:/output
     stop_signal: SIGINT
-    security_opt:
-      - label=type:nvidia_container_t
-    runtime: nvidia
     deploy:
       resources:
         reservations:
@@ -17,6 +14,11 @@ x-base_service: &base_service
               - driver: nvidia
                 device_ids: ['0']
                 capabilities: [gpu]
+
+x-gpu-config: &gpu_config
+    security_opt:
+      - label=type:nvidia_container_t
+    runtime: nvidia
 
 name: webui-docker
 
@@ -27,23 +29,25 @@ services:
     volumes:
       - *v1
 
-  auto: &automatic
+  auto-cpu: &automatic
     <<: *base_service
-    profiles: ["auto"]
+    profiles: ["auto-cpu"]
     build: ./services/AUTOMATIC1111
     image: sd-auto:51
     environment:
-      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
+      - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
 
-  auto-cpu:
+  auto:
     <<: *automatic
-    profiles: ["auto-cpu"]
+    <<: *gpu_config
+    profiles: ["auto"]
     deploy: {}
     environment:
-      - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
+      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
 
   invoke:
     <<: *base_service
+    <<: *gpu_config
     profiles: ["invoke"]
     build: ./services/invoke/
     image: sd-invoke:26
@@ -54,6 +58,7 @@ services:
 
   sygil: &sygil
     <<: *base_service
+    <<: *gpu_config
     profiles: ["sygil"]
     build: ./services/sygil/
     image: sd-sygil:16
