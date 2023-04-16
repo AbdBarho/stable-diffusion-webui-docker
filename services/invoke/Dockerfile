@@ -32,7 +32,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   pip install .
 
 
-ARG BRANCH=main SHA=f05095770c0b41fefc85f486a60b8df4f86de354
+ARG BRANCH=main SHA=50eb02f68be912276a9c106d5e8038a5671a0386
 RUN --mount=type=cache,target=/root/.cache/pip \
   git fetch && \
   git reset --hard && \
