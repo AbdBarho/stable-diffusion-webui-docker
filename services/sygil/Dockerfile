@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 FROM python:3.8-slim
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
@@ -28,8 +26,7 @@ RUN --mount=type=cache,target=/root/.cache/pip pip install -U 'transformers>=4.2
 
 # add info
 COPY . /docker/
-RUN \
-  python /docker/info.py /stable-diffusion/frontend/frontend.py && \
+RUN python /docker/info.py /stable-diffusion/frontend/frontend.py && \
   chmod +x /docker/mount.sh /docker/run.sh && \
   # streamlit \
   sed -i -- 's/8501/7860/g' /stable-diffusion/.streamlit/config.toml

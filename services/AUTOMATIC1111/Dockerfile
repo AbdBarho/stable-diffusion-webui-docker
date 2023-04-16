@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 FROM alpine/git:2.36.2 as download
 
 COPY clone.sh /clone.sh
@@ -26,7 +24,8 @@ FROM python:3.10.9-slim
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
-RUN PIP_NO_CACHE_DIR=1 pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+RUN --mount=type=cache,target=/root/.cache/pip \
+  pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
 
 RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
 
