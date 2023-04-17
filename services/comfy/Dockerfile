@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   git clone https://github.com/comfyanonymous/ComfyUI.git stable-diffusion && \
   cd stable-diffusion && \
   git checkout ${BRANCH} && \
-  git reset --hard 884ea653c8d6fe19b3724f45a04a0d74cd881f2f && \
+  git reset --hard ee46bef03a98903831c01d31094a0c30ea411b28 && \
   pip install -r requirements.txt
 
 ARG SHA=
