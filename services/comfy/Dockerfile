@@ -1,8 +1,4 @@
-# syntax=docker/dockerfile:1
-
 FROM python:3.10.9-slim
-
-SHELL ["/bin/bash", "-ceuxo", "pipefail"]
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
@@ -10,25 +6,30 @@ RUN --mount=type=cache,target=/root/.cache/pip pip install torch==1.13.0 torchvi
 
 RUN apt-get update && apt-get install -y git && apt-get clean
 
-ARG BRANCH=master SHA=ee46bef03a98903831c01d31094a0c30ea411b28
-RUN --mount=type=cache,target=/root/.cache/pip <<EOF
-git config --global http.postBuffer 1048576000
-git clone https://github.com/comfyanonymous/ComfyUI.git stable-diffusion
-cd stable-diffusion
-git checkout ${BRANCH}
-git reset --hard ${SHA}
-pip install -r requirements.txt
-EOF
+RUN --mount=type=cache,target=/root/.cache/pip \
+  git clone https://github.com/comfyanonymous/ComfyUI.git stable-diffusion && \
+  cd stable-diffusion && \
+  git checkout master && \
+  git reset --hard 884ea653c8d6fe19b3724f45a04a0d74cd881f2f && \
+  pip install -r requirements.txt
+
+ARG BRANCH=master SHA=884ea653c8d6fe19b3724f45a04a0d74cd881f2f
+RUN --mount=type=cache,target=/root/.cache/pip \
+  cd stable-diffusion && \
+  git fetch && \
+  git checkout ${BRANCH} && \
+  git reset --hard ${SHA} && \
+  pip install -r requirements.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip pip install -U 'transformers>=4.24'
 
 # add info
 COPY . /docker/
-RUN <<EOF
-chmod +x /docker/entrypoint.sh
-EOF
+RUN chmod +x /docker/entrypoint.sh
 
 WORKDIR /stable-diffusion
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ENV NVIDIA_VISIBLE_DEVICES=all
 ENV PYTHONPATH="${PYTHONPATH}:${PWD}" CLI_ARGS=""
 EXPOSE 7860
 ENTRYPOINT ["/docker/entrypoint.sh"]
