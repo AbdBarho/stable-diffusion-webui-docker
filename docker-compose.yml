@@ -28,7 +28,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:49
+    image: sd-auto:51
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
 
@@ -43,10 +43,10 @@ services:
     <<: *base_service
     profiles: ["invoke"]
     build: ./services/invoke/
-    image: sd-invoke:26
+    image: sd-invoke:27
     environment:
       - PRELOAD=true
-      - CLI_ARGS=
+      - CLI_ARGS=--no-nsfw_checker --no-safety_checker --xformers
 
   sygil: &sygil
     <<: *base_service
@@ -67,7 +67,7 @@ services:
     <<: *base_service
     profiles: ["comfy"]
     build: ./services/comfy/
-    image: sd-comfy:1
+    image: sd-comfy:6
     volumes:
       - *v2
     environment:
