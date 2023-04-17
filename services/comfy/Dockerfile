@@ -6,15 +6,14 @@ RUN --mount=type=cache,target=/root/.cache/pip pip install torch==1.13.0 torchvi
 
 RUN apt-get update && apt-get install -y git && apt-get clean
 
-ARG BRANCH=master
 RUN --mount=type=cache,target=/root/.cache/pip \
   git clone https://github.com/comfyanonymous/ComfyUI.git stable-diffusion && \
   cd stable-diffusion && \
-  git checkout ${BRANCH} && \
+  git checkout master && \
   git reset --hard 884ea653c8d6fe19b3724f45a04a0d74cd881f2f && \
   pip install -r requirements.txt
 
-ARG SHA=
+ARG BRANCH=master SHA=884ea653c8d6fe19b3724f45a04a0d74cd881f2f
 RUN --mount=type=cache,target=/root/.cache/pip \
   cd stable-diffusion && \
   git fetch && \
@@ -34,5 +33,4 @@ ENV NVIDIA_VISIBLE_DEVICES=all
 ENV PYTHONPATH="${PYTHONPATH}:${PWD}" CLI_ARGS=""
 EXPOSE 7860
 ENTRYPOINT ["/docker/entrypoint.sh"]
-
 CMD python -u main.py --listen --port 7860 ${CLI_ARGS}
