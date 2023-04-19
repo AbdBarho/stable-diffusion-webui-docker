@@ -4,26 +4,33 @@ set -Eeuo pipefail
 
 declare -A MOUNTS
 
-ROOT=/stable-diffusion
+
+mkdir -vp /data/config/comfy/
 
 # cache
 MOUNTS["/root/.cache"]=/data/.cache
 # ui specific
 MOUNTS["${ROOT}/models/checkpoints"]="/data/StableDiffusion"
-MOUNTS["${ROOT}/models/clip"]="/data/comfy/clip"
-MOUNTS["${ROOT}/models/clip_vision"]="/data/comfy/clip_vision"
-MOUNTS["${ROOT}/models/controlnet"]="/data/config/auto/extensions/sd-webui-controlnet/models"
-MOUNTS["${ROOT}/models/custom_nodes"]="/data/comfy/custom_nodes"
-MOUNTS["${ROOT}/models/embeddings"]="/data/embeddings"
-MOUNTS["${ROOT}/models/loras"]="/data/Lora"
-MOUNTS["${ROOT}/models/style_models"]="/data/comfy/style_models"
-MOUNTS["${ROOT}/models/t2i_adapter"]="/data/comfy/t2i_adapter"
+MOUNTS["${ROOT}/models/controlnet"]="/data/ControlNet"
 MOUNTS["${ROOT}/models/upscale_models/RealESRGAN"]="/data/RealESRGAN"
-MOUNTS["${ROOT}/models/upscale_models/SwinIR"]="/data/SwinIR"
 MOUNTS["${ROOT}/models/upscale_models/GFPGAN"]="/data/GFPGAN"
+MOUNTS["${ROOT}/models/upscale_models/SwinIR"]="/data/SwinIR"
 MOUNTS["${ROOT}/models/vae"]="/data/VAE"
 
-MOUNTS["${ROOT}/output"]="/output"
+# data
+MOUNTS["${ROOT}/models/loras"]="/data/Lora"
+MOUNTS["${ROOT}/models/embeddings"]="/data/embeddings"
+
+# config
+# TODO: I am not sure if this is final, maybe it should change in the future
+MOUNTS["${ROOT}/models/clip"]="/data/config/comfy/clip"
+MOUNTS["${ROOT}/models/clip_vision"]="/data/config/comfy/clip_vision"
+MOUNTS["${ROOT}/models/custom_nodes"]="/data/config/comfy/custom_nodes"
+MOUNTS["${ROOT}/models/style_models"]="/data/config/comfy/style_models"
+MOUNTS["${ROOT}/models/t2i_adapter"]="/data/config/comfy/t2i_adapter"
+
+# output
+MOUNTS["${ROOT}/output"]="/output/comfy"
 
 for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
