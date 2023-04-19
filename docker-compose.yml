@@ -67,8 +67,14 @@ services:
     <<: *base_service
     profiles: ["comfy"]
     build: ./services/comfy/
-    image: sd-comfy:6
-    volumes:
-      - *v2
+    image: sd-comfy:1
     environment:
       - CLI_ARGS=
+
+
+  comfy-cpu:
+    <<: *comfy
+    profiles: ["comfy-cpu"]
+    deploy: {}
+    environment:
+      - CLI_ARGS=--cpu
