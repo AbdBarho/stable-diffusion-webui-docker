@@ -38,7 +38,7 @@ This repository provides multiple UIs for you to play around with stable diffusi
 
 [Full feature list here](https://github.com/comfyanonymous/ComfyUI#features), Screenshot:
 
-| Text to image                                                                    |
+| Workflow                                                                         |
 | -------------------------------------------------------------------------------- |
 | ![](https://github.com/comfyanonymous/ComfyUI/raw/master/comfyui_screenshot.png) |
 
