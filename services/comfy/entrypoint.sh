@@ -23,8 +23,8 @@ MOUNTS["${ROOT}/models/embeddings"]="/data/embeddings"
 
 # config
 # TODO: I am not sure if this is final, maybe it should change in the future
-MOUNTS["${ROOT}/models/clip"]="/data/config/comfy/clip"
-MOUNTS["${ROOT}/models/clip_vision"]="/data/config/comfy/clip_vision"
+MOUNTS["${ROOT}/models/clip"]="/data/.cache/comfy/clip"
+MOUNTS["${ROOT}/models/clip_vision"]="/data/.cache/comfy/clip_vision"
 MOUNTS["${ROOT}/models/custom_nodes"]="/data/config/comfy/custom_nodes"
 MOUNTS["${ROOT}/models/style_models"]="/data/config/comfy/style_models"
 MOUNTS["${ROOT}/models/t2i_adapter"]="/data/config/comfy/t2i_adapter"
