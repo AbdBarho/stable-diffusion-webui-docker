@@ -21,6 +21,7 @@ services:
   download:
     build: ./services/download/
     profiles: ["download"]
+    image: cbolich/webui-docker-download
     volumes:
       - *v1
 
@@ -28,9 +29,9 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:51
+    image: cbolich/sd-auto
     environment:
-      - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api
+      - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --listen
 
   auto-cpu:
     <<: *automatic
