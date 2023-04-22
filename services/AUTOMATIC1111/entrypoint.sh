@@ -9,7 +9,7 @@ find "${ROOT}/scripts/" -maxdepth 1 -type l -delete
 cp -vrfTs /data/config/auto/scripts/ "${ROOT}/scripts/"
 
 cp -n /docker/config.json /data/config/auto/config.json
-jq '. * input' /data/config/auto/config.json /docker/config.json | sponge /data/config/auto/config.json
+jq '. * input' /docker/config.json /data/config/auto/config.json | sponge /data/config/auto/config.json
 
 if [ ! -f /data/config/auto/ui-config.json ]; then
   echo '{}' >/data/config/auto/ui-config.json
