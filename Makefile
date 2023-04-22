@@ -32,5 +32,7 @@ refresh: start
 
 restart: stop start
 
+download: build
+
 shell:
 	@docker exec -it $(shell docker ps -qf "name=auto") /bin/bash
