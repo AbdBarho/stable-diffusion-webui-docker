@@ -34,6 +34,14 @@ This repository provides multiple UIs for you to play around with stable diffusi
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | ![](https://user-images.githubusercontent.com/24505302/189541298-f902b021-a1eb-4e4b-b2eb-b6a696a8ec80.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541295-7d7f2162-2189-4e0a-abbd-703f4779e1cd.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541294-aa7f7735-a973-4e17-ada0-1fe3acbb1772.jpg) |
 
+### [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
+
+[Full feature list here](https://github.com/comfyanonymous/ComfyUI#features), Screenshot:
+
+| Workflow                                                                         |
+| -------------------------------------------------------------------------------- |
+| ![](https://github.com/comfyanonymous/ComfyUI/raw/master/comfyui_screenshot.png) |
+
 ## Contributing
 
 Contributions are welcome! **Create a discussion first of what the problem is and what you want to contribute (before you implement anything)**
@@ -51,5 +59,6 @@ Special thanks to everyone behind these awesome projects, without them, none of 
 - [AUTOMATIC1111/stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
 - [InvokeAI](https://github.com/invoke-ai/InvokeAI)
 - [Sygil-webui](https://github.com/Sygil-Dev/sygil-webui)
+- [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 - [CompVis/stable-diffusion](https://github.com/CompVis/stable-diffusion)
 - and many many more.

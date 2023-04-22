@@ -16,6 +16,7 @@ jobs:
           - auto
           - sygil
           - invoke
+          - comfy
           - download
     runs-on: ubuntu-latest
     name: ${{ matrix.profile }}

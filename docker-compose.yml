@@ -48,7 +48,6 @@ services:
       - PRELOAD=true
       - CLI_ARGS=--no-nsfw_checker --no-safety_checker --xformers
 
-
   sygil: &sygil
     <<: *base_service
     profiles: ["sygil"]
@@ -63,3 +62,19 @@ services:
     profiles: ["sygil-sl"]
     environment:
       - USE_STREAMLIT=1
+
+  comfy: &comfy
+    <<: *base_service
+    profiles: ["comfy"]
+    build: ./services/comfy/
+    image: sd-comfy:1
+    environment:
+      - CLI_ARGS=
+
+
+  comfy-cpu:
+    <<: *comfy
+    profiles: ["comfy-cpu"]
+    deploy: {}
+    environment:
+      - CLI_ARGS=--cpu
