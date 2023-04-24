@@ -9,7 +9,6 @@ find "${ROOT}/scripts/" -maxdepth 1 -type l -delete
 cp -vrfTs /data/config/auto/scripts/ "${ROOT}/scripts/"
 
 # config.json for auto
-cp -n /docker/config.json /data/config/auto/config.json
 ## Step 1: Copy default config to user config if missing
 cp -n /docker/config.json /data/config/auto/config.json
 ## Step 2: Put the default config and user config into vars
