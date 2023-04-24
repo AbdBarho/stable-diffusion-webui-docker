@@ -8,8 +8,23 @@ mkdir -p /data/config/auto/scripts/
 find "${ROOT}/scripts/" -maxdepth 1 -type l -delete
 cp -vrfTs /data/config/auto/scripts/ "${ROOT}/scripts/"
 
+# config.json for auto
 cp -n /docker/config.json /data/config/auto/config.json
-jq '. * input' /docker/config.json /data/config/auto/config.json | sponge /data/config/auto/config.json
+## Step 1: Copy default config to user config if missing
+cp -n /docker/config.json /data/config/auto/config.json
+## Step 2: Put the default config and user config into vars
+cfg_json_default=$(cat /docker/config.json)
+cfg_json_user=$(cat /data/config/auto/config.json)
+## Step 3: delete invalid entries from user.json
+cfg_json_user=$(echo $cfg_json_user | jq '
+  . as $original
+    | reduce (to_entries[] | select((.key | startswith("outdir_"))
+        and (.value | test("^\/output(\\.)?(\/\\.?[\\w\\-\\_]+)+\/?")|not)))
+        as $item
+        ($original; del(.[$item.key]))
+')
+## Step 4: Merge and save config
+echo $cfg_json_default $cfg_json_user | jq '. * input' | sponge /data/config/auto/config.json
 
 if [ ! -f /data/config/auto/ui-config.json ]; then
   echo '{}' >/data/config/auto/ui-config.json
