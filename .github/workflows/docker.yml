@@ -28,8 +28,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: daozhao
+          username: ${{env.DOCKERHUB_USERNAME}}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: echo "docker build is ok." ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_TOKEN }}
+      - run: echo "docker build is ok." ${{ env.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_TOKEN }}
 
 
