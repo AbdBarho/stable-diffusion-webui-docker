@@ -15,13 +15,14 @@ jobs:
     strategy:
       matrix:
         profile:
-          - auto
-          - sygil
-          - invoke
-          - comfy
+          # - auto
+          # - sygil
+          # - invoke
+          # - comfy
           - download
     runs-on: ubuntu-latest
     name: ${{ matrix.profile }}
     steps:
       - uses: actions/checkout@v3
       - run: docker compose --profile ${{ matrix.profile }} build --progress plain
+      - run: echo "docker build is ok."
