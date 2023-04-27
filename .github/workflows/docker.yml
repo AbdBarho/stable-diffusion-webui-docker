@@ -15,6 +15,8 @@ jobs:
     strategy:
       matrix:
         profile: [auto , sygil , invoke ,comfy , download]
+        dockerTag: [sd-auto:51,sd-sygil:16, sd-invoke:27, sd-comfy:1 , sd-download:51]
+        dockerHubTag: [sd-auto , sd-sygil , sd-invoke ,sd-comfy , sd-download]
           # - auto
           # - sygil
           # - invoke
@@ -30,6 +32,6 @@ jobs:
     #     with:
     #       username: ${{secrets.DOCKERHUB_USERNAME}}
     #       password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: echo "docker build is ok." ${{matrix.profile}}
+      - run: echo "docker build is ok." ${{matrix.profile}} ${{matrix.dockerTag}} ${{matrix.dockerHubTag}}
 
 
