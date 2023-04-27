@@ -13,10 +13,15 @@ on:
 jobs:
   build:
     strategy:
+      max-parallel: 3
       matrix:
         profile: [auto , sygil , invoke ,comfy , download]
-        dockertag: ["sd-auto:51","sd-sygil:16", "sd-invoke:27", "sd-comfy:1" , "sd-download:51"]
-        dockerhubtag: [sd-auto , sd-sygil , sd-invoke ,sd-comfy , sd-download]
+        include:
+          - profile: auto
+            dockertag: "sd-auto:51"
+            dockerhubtag: "sd-auto:latest"
+        # dockertag: ["sd-auto:51","sd-sygil:16", "sd-invoke:27", "sd-comfy:1" , "sd-download:51"]
+        # dockerhubtag: [sd-auto , sd-sygil , sd-invoke ,sd-comfy , sd-download]
           # - auto
           # - sygil
           # - invoke
@@ -33,5 +38,6 @@ jobs:
     #       username: ${{secrets.DOCKERHUB_USERNAME}}
     #       password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: echo "docker build is ok." ${{matrix.profile}} ${{matrix.dockertag}} ${{matrix.dockerhubtag}}
+          
 
 
