@@ -22,7 +22,7 @@ jobs:
           # - download
     runs-on: ubuntu-latest
     name: ${{ matrix.profile }}
-    # steps:
+    steps:
     #   # - uses: actions/checkout@v3
     #   # - run: docker compose --profile ${{ matrix.profile }} build --progress plain
     #   - name: Login to Docker Hub
