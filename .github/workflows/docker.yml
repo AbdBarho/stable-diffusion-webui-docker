@@ -20,6 +20,18 @@ jobs:
           - profile: auto
             dockertag: "sd-auto:51"
             dockerhubtag: "sd-auto:latest"
+          - profile: sygil
+            dockertag: "sd-sygil:16"
+            dockerhubtag: "sd-sygil:latest"
+          - profile: invoke
+            dockertag: "sd-invoke:27"
+            dockerhubtag: "sd-comfy:1"
+          - profile: comfy
+            dockertag: "sd-comfy:1"
+            dockerhubtag: "sd-comfy:latest"
+          - profile: download
+            dockertag: "sd-download:51"
+            dockerhubtag: "sd-downlaod:latest"
         # dockertag: ["sd-auto:51","sd-sygil:16", "sd-invoke:27", "sd-comfy:1" , "sd-download:51"]
         # dockerhubtag: [sd-auto , sd-sygil , sd-invoke ,sd-comfy , sd-download]
           # - auto
