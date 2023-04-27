@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         profile: [auto , sygil , invoke ,comfy , download]
-        dockerTag: [sd-auto:51,sd-sygil:16, sd-invoke:27, sd-comfy:1 , sd-download:51]
+        dockertag: [sd-auto:51,sd-sygil:16, sd-invoke:27, sd-comfy:1 , sd-download:51]
         dockerHubTag: [sd-auto , sd-sygil , sd-invoke ,sd-comfy , sd-download]
           # - auto
           # - sygil
