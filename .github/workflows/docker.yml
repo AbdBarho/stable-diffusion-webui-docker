@@ -54,7 +54,7 @@ jobs:
         run: echo "This step will always run"
 
       - name: ehco info
-        if: {{vars.DOCKERHUB_USERNAME}} 
+        if: vars.DOCKERHUB_USERNAME 
         run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
       # - name: Login to Docker Hub and push images.
         # if:  ${{ vars.DOCKERHUB_USERNAME }} 
