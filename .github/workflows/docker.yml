@@ -50,15 +50,15 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME}}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: echo "docker build is ok." ${{matrix.profile}} ${{matrix.dockertag}} ${{matrix.dockerhubtag}}
-      - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
+      # - run: echo "docker build is ok." ${{matrix.profile}} ${{matrix.dockertag}} ${{matrix.dockerhubtag}}
+      # - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
       - run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
-      - run: echo ${SHORT_SHA}
+      # - run: echo ${SHORT_SHA}
       - run: docker image ls
       - run: docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:latest
       - run: docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:${SHORT_SHA}
       - run: docker image ls
-      - run: echo docker push --all-tags ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}
+      - run: docker push --all-tags ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}
    
 
 
