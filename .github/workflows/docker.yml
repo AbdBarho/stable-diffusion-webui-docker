@@ -17,18 +17,18 @@ jobs:
       matrix:
         profile: [download]
         include:
-          - profile: auto
-            dockertag: "sd-auto:51"
-            dockerhubtag: "sd-auto"
-          - profile: sygil
-            dockertag: "sd-sygil:16"
-            dockerhubtag: "sd-sygil"
-          - profile: invoke
-            dockertag: "sd-invoke:27"
-            dockerhubtag: "sd-invoke"
-          - profile: comfy
-            dockertag: "sd-comfy:1"
-            dockerhubtag: "sd-comfy"
+          # - profile: auto
+          #   dockertag: "sd-auto:51"
+          #   dockerhubtag: "sd-auto"
+          # - profile: sygil
+          #   dockertag: "sd-sygil:16"
+          #   dockerhubtag: "sd-sygil"
+          # - profile: invoke
+          #   dockertag: "sd-invoke:27"
+          #   dockerhubtag: "sd-invoke"
+          # - profile: comfy
+          #   dockertag: "sd-comfy:1"
+          #   dockerhubtag: "sd-comfy"
           - profile: download
             dockertag: "sd-download:51"
             dockerhubtag: "sd-downlaod"
