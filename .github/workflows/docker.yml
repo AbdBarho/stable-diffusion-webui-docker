@@ -31,7 +31,7 @@ jobs:
           #   dockerhubtag: "sd-comfy"
           - profile: download
             dockertag: "sd-download:51"
-            dockerhubtag: "sd-downlaod"
+            dockerhubtag: "sd-download"
         # dockertag: ["sd-auto:51","sd-sygil:16", "sd-invoke:27", "sd-comfy:1" , "sd-download:51"]
         # dockerhubtag: [sd-auto , sd-sygil , sd-invoke ,sd-comfy , sd-download]
           # - auto
