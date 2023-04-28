@@ -15,7 +15,7 @@ jobs:
     strategy:
       max-parallel: 3
       matrix:
-        profile: [auto , sygil , invoke ,comfy , download]
+        profile: [download]
         include:
           - profile: auto
             dockertag: "sd-auto:51"
@@ -55,6 +55,8 @@ jobs:
       - run: echo ${SHORT_SHA}
       - run: echo docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:latest
       - run: echo docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:${SHORT_SHA}
+      - run: echo docker image ls
+      - run: echo docker image push --all-tags ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}
    
 
 
