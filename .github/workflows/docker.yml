@@ -42,6 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     name: ${{ matrix.profile }}
     steps:
+      - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
       - uses: actions/checkout@v3
       - run: docker compose --profile ${{ matrix.profile }} build --progress plain
       - name: Login to Docker Hub
@@ -57,7 +58,7 @@ jobs:
       - run: docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:latest
       - run: docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:${SHORT_SHA}
       - run: docker image ls
-      - run: echo docker image push --all-tags ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}
+      # - run: echo docker image push --all-tags ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}
    
 
 
