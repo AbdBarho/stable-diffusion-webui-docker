@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     name: ${{ matrix.profile }}
     steps:
-      - name: Build the docker images.
+      - name: Git checkout the code.
         uses: actions/checkout@v3
       - name: Build the docker images.
         run: docker compose --profile ${{ matrix.profile }} build --progress plain
