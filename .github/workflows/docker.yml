@@ -41,27 +41,27 @@ jobs:
           # - download
     runs-on: ubuntu-latest
     name: ${{ matrix.profile }}
-    steps:
-      - name: Build the docker images.
-      - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
+    - steps:
+        - name: Build the docker images.
+        - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
       # - uses: actions/checkout@v3
       # - run: docker compose --profile ${{ matrix.profile }} build --progress plain
 
       # - name: Login to Docker Hub and push images.
         # if:  ${{ vars.DOCKERHUB_USERNAME }} 
-      - run: echo  11 "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
+      # - run: echo  11 "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
         # uses: docker/login-action@v2
         # with:
         #   username: ${{ vars.DOCKERHUB_USERNAME}}
         #   password: ${{ secrets.DOCKERHUB_TOKEN }}
       # - run: echo "docker build is ok." ${{matrix.profile}} ${{matrix.dockertag}} ${{matrix.dockerhubtag}}
       # - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
-      - run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
+      # - run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
       # - run: docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:latest
       # - run: docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:${SHORT_SHA}
       # - run: docker push --all-tags ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}
-    steps:
-      - name: docker images push.
-      - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
+    - steps:
+        - name: docker images push.
+        - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
 
 
