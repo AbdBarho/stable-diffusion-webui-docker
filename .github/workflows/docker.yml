@@ -19,19 +19,19 @@ jobs:
         include:
           - profile: auto
             dockertag: "sd-auto:51"
-            dockerhubtag: "sd-auto:latest"
+            dockerhubtag: "sd-auto"
           - profile: sygil
             dockertag: "sd-sygil:16"
-            dockerhubtag: "sd-sygil:latest"
+            dockerhubtag: "sd-sygil"
           - profile: invoke
             dockertag: "sd-invoke:27"
-            dockerhubtag: "sd-comfy:1"
+            dockerhubtag: "sd-invoke"
           - profile: comfy
             dockertag: "sd-comfy:1"
-            dockerhubtag: "sd-comfy:latest"
+            dockerhubtag: "sd-comfy"
           - profile: download
             dockertag: "sd-download:51"
-            dockerhubtag: "sd-downlaod:latest"
+            dockerhubtag: "sd-downlaod"
         # dockertag: ["sd-auto:51","sd-sygil:16", "sd-invoke:27", "sd-comfy:1" , "sd-download:51"]
         # dockerhubtag: [sd-auto , sd-sygil , sd-invoke ,sd-comfy , sd-download]
           # - auto
@@ -52,7 +52,7 @@ jobs:
       - run: echo "docker build is ok." ${{matrix.profile}} ${{matrix.dockertag}} ${{matrix.dockerhubtag}}
       - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
       - run: echo sha ${{github.sha}} 
-      - run: echo ${{ github.sha.substr(0, 7) }}
+      # - run: echo ${{ github.sha.substr(0, 7) }}
    
 
 
