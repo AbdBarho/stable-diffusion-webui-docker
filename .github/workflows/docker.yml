@@ -47,15 +47,27 @@ jobs:
       - name: Build the docker images.
         run: docker compose --profile ${{ matrix.profile }} build --progress plain
 
-      - name: Not on Monday or Wednesday
-        if: github.event.schedule != '30 5 * * 1,3'
-        run: echo "This step will be skipped on Monday and Wednesday"
-      - name: Every time
-        run: echo "This step will always run"
+      - run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
 
-      - name: ehco info
+      - name: Login to Docker Hub
         if: vars.DOCKERHUB_USERNAME 
-        run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
+        uses: docker/login-action@v2
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME}}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Tags docker images latest
+        if: vars.DOCKERHUB_USERNAME 
+        run: docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:latest
+      - name: Tags docker images with sha 
+        if: vars.DOCKERHUB_USERNAME 
+        run: docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:${SHORT_SHA}
+      - name: push images to docker hub
+        if: vars.DOCKERHUB_USERNAME 
+        run: docker push --all-tags ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}
+      # - name: ehco info
+      #   if: vars.DOCKERHUB_USERNAME 
+      #   run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
       # - name: Login to Docker Hub and push images.
         # if:  ${{ vars.DOCKERHUB_USERNAME }} 
       # - run: echo  11 "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
@@ -70,8 +82,5 @@ jobs:
       # - run: docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:latest
       # - run: docker tag ${{matrix.dockertag}} ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}:${SHORT_SHA}
       # - run: docker push --all-tags ${{vars.DOCKERHUB_USERNAME}}/${{matrix.dockerhubtag}}
-    # - steps:
-    #     - name: docker images push.
-    #     - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
 
 
