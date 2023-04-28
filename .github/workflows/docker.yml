@@ -50,7 +50,8 @@ jobs:
     #       username: ${{secrets.DOCKERHUB_USERNAME}}
     #       password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: echo "docker build is ok." ${{matrix.profile}} ${{matrix.dockertag}} ${{matrix.dockerhubtag}}
-      - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}}    
+      - run: echo env ${{env.DOCKERHUB_USERNAME}}  vars ${{vars.DOCKERHUB_USERNAME}} 
+      - run: echo sha ${{github.sha}} sha shor ${{ github.sha | truncate(7, '') }}    
    
 
 
