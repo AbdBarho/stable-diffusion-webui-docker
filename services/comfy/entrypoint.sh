@@ -8,26 +8,32 @@ declare -A MOUNTS
 mkdir -vp /data/config/comfy/
 
 # cache
-MOUNTS["/root/.cache"]=/data/.cache
+MOUNTS["/root/.cache"]="/data/.cache"
+
 # ui specific
 MOUNTS["${ROOT}/models/checkpoints"]="/data/StableDiffusion"
 MOUNTS["${ROOT}/models/controlnet"]="/data/ControlNet"
+MOUNTS["${ROOT}/models/vae"]="/data/VAE"
+MOUNTS["${ROOT}/models/loras"]="/data/Lora"
+MOUNTS["${ROOT}/models/embeddings"]="/data/embeddings"
+MOUNTS["${ROOT}/models/hypernetworks"]="/data/Hypernetworks"
+
 MOUNTS["${ROOT}/models/upscale_models/RealESRGAN"]="/data/RealESRGAN"
 MOUNTS["${ROOT}/models/upscale_models/GFPGAN"]="/data/GFPGAN"
 MOUNTS["${ROOT}/models/upscale_models/SwinIR"]="/data/SwinIR"
-MOUNTS["${ROOT}/models/vae"]="/data/VAE"
-
-# data
-MOUNTS["${ROOT}/models/loras"]="/data/Lora"
-MOUNTS["${ROOT}/models/embeddings"]="/data/embeddings"
 
 # config
 # TODO: I am not sure if this is final, maybe it should change in the future
-MOUNTS["${ROOT}/models/clip"]="/data/.cache/comfy/clip"
-MOUNTS["${ROOT}/models/clip_vision"]="/data/.cache/comfy/clip_vision"
-MOUNTS["${ROOT}/models/custom_nodes"]="/data/config/comfy/custom_nodes"
-MOUNTS["${ROOT}/models/style_models"]="/data/config/comfy/style_models"
-MOUNTS["${ROOT}/models/t2i_adapter"]="/data/config/comfy/t2i_adapter"
+MOUNTS["${ROOT}/input"]="/data/config/comfy/input"
+MOUNTS["${ROOT}/custom_nodes"]="/data/config/comfy/custom_nodes"
+MOUNTS["${ROOT}/models/configs"]="/data/config/comfy/configs"
+
+MOUNTS["${ROOT}/models/style_models"]="/data/config/comfy/models/style_models"
+MOUNTS["${ROOT}/models/t2i_adapter"]="/data/config/comfy/models/t2i_adapter"
+MOUNTS["${ROOT}/models/clip"]="/data/config/comfy/models/clip"
+MOUNTS["${ROOT}/models/clip_vision"]="/data/config/comfy/models/clip_vision"
+MOUNTS["${ROOT}/models/gligen"]="/data/config/comfy/models/gligen"
+MOUNTS["${ROOT}/models/diffusers"]="/data/config/comfy/models/diffusers"
 
 # output
 MOUNTS["${ROOT}/output"]="/output/comfy"
