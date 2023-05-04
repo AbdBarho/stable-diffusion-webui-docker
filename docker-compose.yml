@@ -29,7 +29,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:51
+    image: sd-auto:54
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
 
@@ -69,6 +69,7 @@ services:
     profiles: ["comfy"]
     build: ./services/comfy/
     image: sd-comfy:1
+    tty: true
     environment:
       - CLI_ARGS=
 
