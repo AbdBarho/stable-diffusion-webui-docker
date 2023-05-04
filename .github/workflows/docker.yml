@@ -4,9 +4,9 @@ on:
   push:
     branches: master
   pull_request:
-    paths:
-      - docker-compose.yml
-      - services
+      paths:
+        - docker-compose.yml
+        - services
 
 jobs:
   build:
@@ -22,18 +22,4 @@ jobs:
     name: ${{ matrix.profile }}
     steps:
       - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            auto:
-              - 'services/auto/**'
-            sygil:
-              - 'services/sygil/**'
-            invoke:
-              - 'services/invoke/**'
-            comfy:
-              - 'services/comfy/**'
-
       - run: docker compose --profile ${{ matrix.profile }} build --progress plain
-        if: github.ref == 'refs/heads/master' || steps.changes.outputs.${{ matrix.profile }} == 'true'
