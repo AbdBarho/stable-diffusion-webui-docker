@@ -29,6 +29,10 @@ if [ ! -f /data/config/auto/ui-config.json ]; then
   echo '{}' >/data/config/auto/ui-config.json
 fi
 
+if [ ! -f /data/config/auto/styles.csv ]; then
+  touch /data/config/auto/styles.csv
+fi
+
 declare -A MOUNTS
 
 MOUNTS["/root/.cache"]="/data/.cache"
@@ -49,12 +53,15 @@ MOUNTS["${ROOT}/models/torch_deepdanbooru"]="/data/Deepdanbooru"
 MOUNTS["${ROOT}/models/BLIP"]="/data/BLIP"
 MOUNTS["${ROOT}/models/midas"]="/data/MiDaS"
 MOUNTS["${ROOT}/models/Lora"]="/data/Lora"
+MOUNTS["${ROOT}/models/LyCORIS"]="/data/LyCORIS"
 MOUNTS["${ROOT}/models/ControlNet"]="/data/ControlNet"
 MOUNTS["${ROOT}/models/openpose"]="/data/openpose"
+MOUNTS["${ROOT}/models/ModelScope"]="/data/ModelScope"
 
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
 MOUNTS["${ROOT}/config.json"]="/data/config/auto/config.json"
 MOUNTS["${ROOT}/ui-config.json"]="/data/config/auto/ui-config.json"
+MOUNTS["${ROOT}/styles.csv"]="/data/config/auto/styles.csv"
 MOUNTS["${ROOT}/extensions"]="/data/config/auto/extensions"
 
 # extra hacks
