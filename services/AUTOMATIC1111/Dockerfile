@@ -26,6 +26,8 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
 RUN --mount=type=cache,target=/root/.cache/pip pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
 
+# RUN --mount=type=cache,target=/root/.cache/pip pip install torch==2.0.0+cu118 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+
 RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
 
 
@@ -75,7 +77,8 @@ RUN \
   python3 /docker/info.py ${ROOT}/modules/ui.py && \
   mv ${ROOT}/style.css ${ROOT}/user.css && \
   # one of the ugliest hacks I ever wrote \
-  sed -i 's/in_app_dir = .*/in_app_dir = True/g' /usr/local/lib/python3.10/site-packages/gradio/routes.py
+  sed -i 's/in_app_dir = .*/in_app_dir = True/g' /usr/local/lib/python3.10/site-packages/gradio/routes.py && \
+  git config --global --add safe.directory '*'
 
 WORKDIR ${ROOT}
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
