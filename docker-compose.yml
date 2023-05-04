@@ -21,7 +21,6 @@ services:
   download:
     build: ./services/download/
     profiles: ["download"]
-    image: sd-download:51
     volumes:
       - *v1
 

@@ -35,7 +35,7 @@ jobs:
             dockertag: "sd-comfy:1"
             dockerhubtag: "sd-comfy"
           - profile: download
-            dockertag: "sd-download:51"
+            dockertag: "webui-docker-download:latest"
             dockerhubtag: "sd-download"
     runs-on: ubuntu-latest
     name: ${{ matrix.profile }}
