@@ -23,7 +23,7 @@ jobs:
           - download
         include:
           - profile: auto
-            dockertag: "sd-auto:51"
+            dockertag: "sd-auto:54"
             dockerhubtag: "sd-auto"
           - profile: sygil
             dockertag: "sd-sygil:16"
