@@ -3,4 +3,4 @@
 
 # VSCode specific
 *.code-workspace
-/.vscode/settings.json
+/.vscode
