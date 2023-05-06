@@ -28,7 +28,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:51
+    image: sd-auto:55
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
 
@@ -39,14 +39,21 @@ services:
     environment:
       - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
 
-  invoke:
+  invoke: &invoke
     <<: *base_service
     profiles: ["invoke"]
     build: ./services/invoke/
-    image: sd-invoke:27
+    image: sd-invoke:28
     environment:
       - PRELOAD=true
-      - CLI_ARGS=--no-nsfw_checker --no-safety_checker --xformers
+      - CLI_ARGS=--xformers
+
+  # invoke-cpu:
+  #   <<: *invoke
+  #   profiles: ["invoke-cpu"]
+  #   environment:
+  #     - PRELOAD=true
+  #     - CLI_ARGS=--always_use_cpu
 
   sygil: &sygil
     <<: *base_service

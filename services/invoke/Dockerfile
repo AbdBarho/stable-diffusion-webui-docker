@@ -1,6 +1,6 @@
 FROM alpine:3.17 as xformers
 RUN apk add --no-cache aria2
-RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/5.0.0/xformers-0.0.17.dev449-cp310-cp310-manylinux2014_x86_64.whl'
+RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/5.0.3/xformers-0.0.20.dev528-cp310-cp310-manylinux2014_x86_64-pytorch1.13.whl'
 
 
 
@@ -22,27 +22,26 @@ RUN --mount=type=cache,target=/var/cache/apt \
   ln -sf opencv4.pc opencv.pc
 
 
-
 ENV ROOT=/InvokeAI
 RUN git clone https://github.com/invoke-ai/InvokeAI.git ${ROOT}
 WORKDIR ${ROOT}
 
 RUN --mount=type=cache,target=/root/.cache/pip \
   git reset --hard 4463124bddd221c333d4c70e73aa2949ad35453d && \
-  pip install .
+  pip install -e .
 
 
-ARG BRANCH=main SHA=50eb02f68be912276a9c106d5e8038a5671a0386
+ARG BRANCH=main SHA=d73f1c363c3f2fe00f14ed34e276b4366b32a886
 RUN --mount=type=cache,target=/root/.cache/pip \
   git fetch && \
   git reset --hard && \
   git checkout ${BRANCH} && \
   git reset --hard ${SHA} && \
-  pip install -U .
+  pip install -U -e .
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.17-cp310-cp310-linux_x86_64.whl \
-  pip install -U opencv-python-headless triton /xformers-0.0.17-cp310-cp310-linux_x86_64.whl && \
+  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.20-cp310-cp310-linux_x86_64.whl \
+  pip install -U opencv-python-headless triton /xformers-0.0.20-cp310-cp310-linux_x86_64.whl && \
   python3 -c "from patchmatch import patch_match"
 
 
@@ -54,5 +53,7 @@ ENV PYTHONUNBUFFERED=1 PRELOAD=false HF_HOME=/root/.cache/huggingface CONFIG_DIR
 EXPOSE 7860
 
 ENTRYPOINT ["/docker/entrypoint.sh"]
-CMD invokeai --web --host 0.0.0.0 --port 7860 --root_dir ${ROOT} --config ${CONFIG_DIR}/models.yaml --outdir /output/invoke ${CLI_ARGS}
-# TODO: make sure the config is persisted between sessions
+CMD invokeai --web --host 0.0.0.0 --port 7860 --root_dir ${ROOT} --config ${CONFIG_DIR}/models.yaml \
+  --outdir /output/invoke --embedding_directory /data/embeddings/ --lora_directory /data/Lora \
+  --no-nsfw_checker --no-safety_checker ${CLI_ARGS}
+
