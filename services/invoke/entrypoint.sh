@@ -4,7 +4,7 @@ set -Eeuo pipefail
 
 declare -A MOUNTS
 
-mkdir -p ${CONFIG_DIR}
+mkdir -p ${CONFIG_DIR} ${ROOT}/configs/stable-diffusion/
 
 # cache
 MOUNTS["/root/.cache"]=/data/.cache/
@@ -19,8 +19,6 @@ MOUNTS["${ROOT}/models/gfpgan/weights"]=/data/GFPGAN/
 MOUNTS["${ROOT}/models/realesrgan"]=/data/RealESRGAN/
 
 MOUNTS["${ROOT}/models/ldm"]=/data/.cache/invoke/ldm/
-
-MOUNTS["${ROOT}/embeddings"]=/data/embeddings/
 
 # hacks
 
