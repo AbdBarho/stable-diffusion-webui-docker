@@ -55,21 +55,6 @@ services:
   #     - PRELOAD=true
   #     - CLI_ARGS=--always_use_cpu
 
-  sygil: &sygil
-    <<: *base_service
-    profiles: ["sygil"]
-    build: ./services/sygil/
-    image: sd-sygil:16
-    environment:
-      - CLI_ARGS=--optimized-turbo
-      - USE_STREAMLIT=0
-
-  sygil-sl:
-    <<: *sygil
-    profiles: ["sygil-sl"]
-    environment:
-      - USE_STREAMLIT=1
-
   comfy: &comfy
     <<: *base_service
     profiles: ["comfy"]
