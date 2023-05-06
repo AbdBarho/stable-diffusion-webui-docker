@@ -74,8 +74,10 @@ services:
     <<: *base_service
     profiles: ["comfy"]
     build: ./services/comfy/
-    image: sd-comfy:1
+    image: sd-comfy:2
     tty: true
+    volumes:
+      - *v2
     environment:
       - CLI_ARGS=
 
