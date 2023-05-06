@@ -26,14 +26,6 @@ This repository provides multiple UIs for you to play around with stable diffusi
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | ![](https://user-images.githubusercontent.com/24505302/195158552-39f58cb6-cfcc-4141-9995-a626e3760752.jpg) | ![](https://user-images.githubusercontent.com/24505302/195158553-152a0ab8-c0fd-4087-b121-4823bcd8d6b5.jpg) | ![](https://user-images.githubusercontent.com/24505302/195158548-e118206e-c519-4915-85d6-4c248eb10fc0.jpg) |
 
-### [Sygil (sd-webui / hlky)](https://github.com/Sygil-Dev/sygil-webui)
-
-[Full feature list here](https://github.com/Sygil-Dev/sygil-webui/blob/master/README.md), Screenshots:
-
-| Text to image                                                                                              | Image to image                                                                                             | Image Lab                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| ![](https://user-images.githubusercontent.com/24505302/189541298-f902b021-a1eb-4e4b-b2eb-b6a696a8ec80.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541295-7d7f2162-2189-4e0a-abbd-703f4779e1cd.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541294-aa7f7735-a973-4e17-ada0-1fe3acbb1772.jpg) |
-
 ### [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 
 [Full feature list here](https://github.com/comfyanonymous/ComfyUI#features), Screenshot:
@@ -58,7 +50,7 @@ Special thanks to everyone behind these awesome projects, without them, none of 
 
 - [AUTOMATIC1111/stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
 - [InvokeAI](https://github.com/invoke-ai/InvokeAI)
-- [Sygil-webui](https://github.com/Sygil-Dev/sygil-webui)
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 - [CompVis/stable-diffusion](https://github.com/CompVis/stable-diffusion)
+- [Sygil-webui](https://github.com/Sygil-Dev/sygil-webui)
 - and many many more.
