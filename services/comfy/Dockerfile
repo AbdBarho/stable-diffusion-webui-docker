@@ -33,6 +33,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # add info
 COPY . /docker/
+RUN cp /docker/extra_model_paths.yaml ${ROOT}
 RUN chmod u+x /docker/entrypoint.sh
 RUN cp /docker/extra_model_paths.yaml ${ROOT}
 
