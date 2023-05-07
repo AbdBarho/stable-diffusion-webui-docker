@@ -25,8 +25,8 @@ done
 if [ "$(ls -A /stable-diffusion/custom_nodes)" ]; then
   chmod 777 -R "/stable-diffusion/custom_nodes/"
   apt-get install build-essential -y
-  for dir in "/stable-diffusion/custom_nodes/*/"; do
-    if [ -d $dir ]; then
+  for dir in "/stable-diffusion/custom_nodes/*"; do
+    if [ -e "$dir/requirements.txt" ]; then
       echo $dir
       cd $dir
       pip install -r requirements.txt
