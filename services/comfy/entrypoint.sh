@@ -44,4 +44,16 @@ for to_path in "${!MOUNTS[@]}"; do
   echo Mounted $(basename "${from_path}")
 done
 
+if [ "$(ls -A /stable-diffusion/custom_nodes)" ]; then
+  chmod 777 -R "/stable-diffusion/custom_nodes/"
+  apt-get install build-essential -y
+  for dir in "/stable-diffusion/custom_nodes/*/"; do
+    if [ -d $dir ]; then
+      echo $dir
+      cd $dir
+      pip install -r requirements.txt
+    fi
+  done
+fi
+
 exec "$@"
