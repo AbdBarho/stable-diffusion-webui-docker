@@ -39,6 +39,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # add info
 COPY . /docker/
+RUN chmod u+x /docker/entrypoint.sh
 
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility NVIDIA_VISIBLE_DEVICES=all
 ENV PYTHONPATH="${PYTHONPATH}:${PWD}" CLI_ARGS=""
