@@ -44,16 +44,16 @@ for to_path in "${!MOUNTS[@]}"; do
   echo Mounted $(basename "${from_path}")
 done
 
-if [ "$(ls -A /stable-diffusion/custom_nodes)" ]; then
-  chmod 777 -R "/stable-diffusion/custom_nodes/"
-  apt-get install build-essential -y
-  for dir in "/stable-diffusion/custom_nodes/*"; do
-    if [ -e "$dir/requirements.txt" ]; then
-      echo $dir
-      cd $dir
-      pip install -r requirements.txt
-    fi
-  done
+if [ -f "/data/config/comfy/startup.sh" ]; then
+  pushd ${ROOT}
+  . /data/config/comfy/startup.sh
+  popd
 fi
+
+shopt -s nullglob
+list=(${ROOT}/custom_nodes/*/requirements.txt)
+for req in "${list[@]}"; do
+  pip install -r "$req"
+done
 
 exec "$@"
