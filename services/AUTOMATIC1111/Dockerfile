@@ -21,7 +21,7 @@ RUN apk add --no-cache aria2
 RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/5.0.3/xformers-0.0.20.dev528-cp310-cp310-manylinux2014_x86_64-pytorch2.whl'
 
 
-FROM python:3.10.9-slim
+FROM python:3.10.9
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
@@ -75,6 +75,19 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless
 
 COPY . /docker
+
+# Download extensions, install python pip dependencies, then throw extensions away
+RUN --mount=type=cache,target=/root/.cache/pip \
+    --mount=type=cache,target=/.automatic_extensions_cache \
+  apt-get update && apt-get install libgl1 -y && \
+  chmod +x /docker/download_automatic1111_extensions.sh && \ 
+  /docker/download_automatic1111_extensions.sh /docker/automatic1111_extensions.txt /.automatic_extensions_cache && \
+  cd /.automatic_extensions_cache && \
+  for extension_name in */; do \
+    if [ -e $extension_name/requirements.txt ]; then \
+      pip install -r $extension_name/requirements.txt; \
+    fi ; \
+  done ; 
 
 RUN \
   python3 /docker/info.py ${ROOT}/modules/ui.py && \

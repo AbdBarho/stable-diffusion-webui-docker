@@ -2,6 +2,9 @@
 
 set -Eeuo pipefail
 
+#Download extensions
+/docker/download_automatic1111_extensions.sh /docker/automatic1111_extensions.txt /data/config/auto/extensions/
+
 # TODO: move all mkdir -p ?
 mkdir -p /data/config/auto/scripts/
 # mount scripts individually

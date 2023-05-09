@@ -1,0 +1,7 @@
+https://github.com/yfszzx/stable-diffusion-webui-images-browser.git a42c7a30181636a05815e62426d5eff4d3340529
+https://github.com/DominikDoom/a1111-sd-webui-tagcomplete.git 40edb89974d55d496722a1ef6de95494a6f1f7fe
+https://github.com/adieyal/sd-dynamic-prompts a53adac96e0872b19e08a4f691ff680c5896aa13
+https://github.com/nonnonstop/sd-webui-3d-open-pose-editor f2d5aac51d891bc5f266b1549f3cf4495fc52160
+https://github.com/kohya-ss/sd-webui-additional-networks 75141070b71cb46c1d3e7a44286740fe6818bccd
+https://github.com/Mikubill/sd-webui-controlnet 791b451c4ea36570cc67f385bd1a961b956be6be
+
