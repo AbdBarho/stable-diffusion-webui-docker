@@ -91,3 +91,7 @@ jobs:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
+
+    - name: Run ECS task
+      run : |
+        aws ecs run-task --cluster ${{ env.ECS_CLUSTER }} --task-definition ${{ steps.task-def.outputs.task-definition }}
