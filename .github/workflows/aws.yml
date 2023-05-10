@@ -95,4 +95,4 @@ jobs:
 
     - name: Run ECS task
       run : |
-        aws ecs run-task --cluster ${{ env.ECS_CLUSTER }} --task-definition ${{ steps.deploy-ecs-task.outputs.task-definition-arn }}
+        aws ecs run-task --cluster ${{ env.ECS_CLUSTER }} --task-definition ${{ steps.deploy-ecs-task.outputs.task-definition-arn }} --launch-type FARGATE
