@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:430472357735:task-definition/automatic1111-api:1",
+    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:430472357735:task-definition/automatic1111-api",
     "containerDefinitions": [
         {
             "name": "automatic1111-api",
