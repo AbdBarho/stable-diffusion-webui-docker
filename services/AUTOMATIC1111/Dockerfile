@@ -83,10 +83,21 @@ RUN \
   sed -i 's/in_app_dir = .*/in_app_dir = True/g' /usr/local/lib/python3.10/site-packages/gradio/routes.py && \
   git config --global --add safe.directory '*'
 
+RUN pip install webuiapi
+
+RUN apt-get update && \
+	apt-get install -y curl unzip && \
+	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+	unzip awscliv2.zip && \
+	./aws/install
+
 WORKDIR ${ROOT}
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV CLI_ARGS=""
 EXPOSE 7860
+
 ENTRYPOINT ["/docker/entrypoint.sh"]
-CMD python -u webui.py --listen --port 7860 ${CLI_ARGS}
+
+# CMD python -c "print('Hello')"
+CMD python -u webui.py --api --nowebui --listen --port 7860 ${CLI_ARGS}

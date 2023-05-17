@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -Eeuo pipefail
+DEPLOY_ENV=${DEPLOY_ENV:-''}
 
 # TODO: move all mkdir -p ?
 mkdir -p /data/config/auto/scripts/
@@ -56,12 +57,13 @@ MOUNTS["${ROOT}/repositories/CodeFormer/weights/facelib"]="/data/.cache"
 for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
   from_path="${MOUNTS[${to_path}]}"
-  rm -rf "${to_path}"
   if [ ! -f "$from_path" ]; then
     mkdir -vp "$from_path"
   fi
-  mkdir -vp "$(dirname "${to_path}")"
-  ln -sT "${from_path}" "${to_path}"
+  if [ ! -d "${to_path}" ]; then
+    mkdir -vp "$(dirname "${to_path}")"
+    ln -sT "${from_path}" "${to_path}"
+  fi
   echo Mounted $(basename "${from_path}")
 done
 
@@ -71,4 +73,8 @@ if [ -f "/data/config/auto/startup.sh" ]; then
   popd
 fi
 
+if [[ $DEPLOY_ENV == "AWS" ]]; then
+  # Fetch images and weights from S3
+  aws s3 cp s3://medieval-news-press/weights/StableDiffusion/ /data/StableDiffusion --recursive
+fi
 exec "$@"
