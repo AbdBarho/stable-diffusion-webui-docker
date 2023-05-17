@@ -2,7 +2,7 @@
 
 set -Eeuo pipefail
 
-mkdir -vp /data/config/comfy/
+mkdir -vp /data/config/comfy/custom_nodes
 
 declare -A MOUNTS
 
