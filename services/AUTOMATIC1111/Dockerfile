@@ -21,7 +21,7 @@ RUN apk add --no-cache aria2
 RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/5.0.3/xformers-0.0.20.dev528-cp310-cp310-manylinux2014_x86_64-pytorch2.whl'
 
 
-FROM python:3.10.9-slim
+FROM pytorch/pytorch:2.0.0-cuda11.7-cudnn8-runtime
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
@@ -32,24 +32,17 @@ RUN --mount=type=cache,target=/var/cache/apt \
   # extensions needs those
   ffmpeg libglfw3-dev libgles2-mesa-dev pkg-config libcairo2 libcairo2-dev
 
-RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip \
-  aria2c -x 5 --dir /cache --out torch-2.0.0-cp310-cp310-linux_x86_64.whl -c \
-  https://download.pytorch.org/whl/cu118/torch-2.0.0%2Bcu118-cp310-cp310-linux_x86_64.whl && \
-  pip install /cache/torch-2.0.0-cp310-cp310-linux_x86_64.whl torchvision --index-url https://download.pytorch.org/whl/cu118
-
-
+ENV ROOT=/stable-diffusion-webui
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-  git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
-  cd stable-diffusion-webui && \
-  git reset --hard d7aec59c4eb02f723b3d55c6f927a42e97acd679 && \
+  git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git ${ROOT} && \
+  cd ${ROOT} && \
+  git reset --hard 89f9faa63388756314e8a1d96cf86bf5e0663045 && \
   pip install -r requirements_versions.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip  \
   --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.20.dev528-cp310-cp310-manylinux2014_x86_64.whl \
   pip install /xformers-0.0.20.dev528-cp310-cp310-manylinux2014_x86_64.whl
-
-ENV ROOT=/stable-diffusion-webui
 
 
 COPY --from=download /repositories/ ${ROOT}/repositories/
@@ -72,20 +65,17 @@ ENV LD_PRELOAD=libtcmalloc.so
 
 ARG SHA=89f9faa63388756314e8a1d96cf86bf5e0663045
 RUN --mount=type=cache,target=/root/.cache/pip \
-  cd stable-diffusion-webui && \
+  cd ${ROOT} && \
   git fetch && \
   git reset --hard ${SHA} && \
   pip install -r requirements_versions.txt
 
-RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless
-
 COPY . /docker
 
-RUN \
-  python3 /docker/info.py ${ROOT}/modules/ui.py && \
+RUN ls ${ROOT} && python3 /docker/info.py ${ROOT}/modules/ui.py && \
   mv ${ROOT}/style.css ${ROOT}/user.css && \
   # one of the ugliest hacks I ever wrote \
-  sed -i 's/in_app_dir = .*/in_app_dir = True/g' /usr/local/lib/python3.10/site-packages/gradio/routes.py && \
+  sed -i 's/in_app_dir = .*/in_app_dir = True/g' /opt/conda/lib/python3.10/site-packages/gradio/routes.py && \
   git config --global --add safe.directory '*'
 
 WORKDIR ${ROOT}
