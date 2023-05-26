@@ -71,6 +71,4 @@ if [ -f "/data/config/auto/startup.sh" ]; then
   popd
 fi
 
-echo "Hello World"
-
 exec "$@"
