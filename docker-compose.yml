@@ -30,14 +30,14 @@ services:
     build: ./services/AUTOMATIC1111
     image: sd-auto:56
     environment:
-      - CLI_ARGS=${WEB_UI_ARGS:---allow-code --medvram --xformers --enable-insecure-extension-access --api}
+      - CLI_ARGS=${WEBUI_ARGS:---allow-code --medvram --xformers --enable-insecure-extension-access --api}
 
   auto-cpu:
     <<: *automatic
     profiles: ["auto-cpu"]
     deploy: {}
     environment:
-      - CLI_ARGS=${WEB_UI_ARGS:---no-half --precision full --allow-code --enable-insecure-extension-access --api}
+      - CLI_ARGS=${WEBUI_ARGS:---no-half --precision full --allow-code --enable-insecure-extension-access --api}
 
   invoke: &invoke
     <<: *base_service
@@ -46,14 +46,14 @@ services:
     image: sd-invoke:28
     environment:
       - PRELOAD=true
-      - CLI_ARGS=${WEB_UI_ARGS:---xformers}
+      - CLI_ARGS=${WEBUI_ARGS:---xformers}
 
   # invoke-cpu:
   #   <<: *invoke
   #   profiles: ["invoke-cpu"]
   #   environment:
   #     - PRELOAD=true
-  #     - CLI_ARGS=${WEB_UI_ARGS:---always_use_cpu}
+  #     - CLI_ARGS=${WEBUI_ARGS:---always_use_cpu}
 
   comfy: &comfy
     <<: *base_service
@@ -62,11 +62,11 @@ services:
     image: sd-comfy:2
     tty: true
     environment:
-      - CLI_ARGS=${WEB_UI_ARGS:-}
+      - CLI_ARGS=${WEBUI_ARGS:-}
 
   comfy-cpu:
     <<: *comfy
     profiles: ["comfy-cpu"]
     deploy: {}
     environment:
-      - CLI_ARGS=${WEB_UI_ARGS:---cpu}
+      - CLI_ARGS=${WEBUI_ARGS:---cpu}
