@@ -42,7 +42,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 COPY . /docker/
 
-ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_VISIBLE_DEVICES=all
 ENV PYTHONUNBUFFERED=1 PRELOAD=false HF_HOME=/root/.cache/huggingface CONFIG_DIR=/data/config/invoke CLI_ARGS=""
 EXPOSE 7860
 

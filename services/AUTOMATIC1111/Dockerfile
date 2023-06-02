@@ -88,7 +88,6 @@ RUN \
   git config --global --add safe.directory '*'
 
 WORKDIR ${ROOT}
-ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV CLI_ARGS=""
 EXPOSE 7860
