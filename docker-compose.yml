@@ -13,7 +13,7 @@ x-base_service: &base_service
         devices:
           - driver: nvidia
             device_ids: ["0"]
-            capabilities: [gpu]
+            capabilities: [compute, utility]
 
 name: webui-docker
 
@@ -28,7 +28,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:57
+    image: sd-auto:58
     environment:
       - CLI_ARGS=${WEBUI_ARGS:---allow-code --medvram --xformers --enable-insecure-extension-access --api}
 
@@ -43,7 +43,7 @@ services:
     <<: *base_service
     profiles: ["invoke"]
     build: ./services/invoke/
-    image: sd-invoke:28
+    image: sd-invoke:29
     environment:
       - PRELOAD=true
       - CLI_ARGS=${WEBUI_ARGS:---xformers}
