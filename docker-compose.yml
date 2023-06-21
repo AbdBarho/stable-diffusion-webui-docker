@@ -3,7 +3,7 @@ version: '3.9'
 x-base_service:
   &base_service
   ports:
-    - "24567:7860"
+    - "${CONTAINER_PORT}:7860"
   volumes:
     - &v1 ./data:/data
     - &v2 ./output:/output
@@ -32,7 +32,7 @@ services:
     build: ./services/AUTOMATIC1111
     image: sd-auto:58
     environment:
-      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api --gradio-auth ${GRADIO_AUTH}
+      - CLI_ARGS=--allow-code --medvram --xformers --api --gradio-auth ${GRADIO_AUTH}
   auto-cpu:
     <<: *automatic
     profiles: [ "auto-cpu" ]
