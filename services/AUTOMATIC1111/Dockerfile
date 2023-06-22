@@ -80,6 +80,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 COPY . /docker
 
+RUN pip install rich
+RUN pip install numexpr
+RUN pip install python-dotenv
+RUN pip install segno
+
 RUN \
   python3 /docker/info.py ${ROOT}/modules/ui.py && \
   mv ${ROOT}/style.css ${ROOT}/user.css && \
