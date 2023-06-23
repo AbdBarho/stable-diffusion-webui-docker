@@ -71,3 +71,47 @@ services:
     deploy: {}
     environment:
       - CLI_ARGS=--cpu
+
+  tunnel-auto: &tunnel
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    profiles: ["auto"]
+    environment:
+      - TUNNEL_URL=http://auto:7860
+    command: tunnel --no-autoupdate
+
+  tunnel-auto-cpu:
+    <<: *tunnel
+    profiles: ["auto-cpu"]
+    environment:
+      - TUNNEL_URL=http://auto-cpu:7860
+
+  tunnel-invoke:
+    <<: *tunnel
+    profiles: ["invoke"]
+    environment:
+      - TUNNEL_URL=http://invoke:7860
+
+  tunnel-sygil:
+    <<: *tunnel
+    profiles: ["sygil"]
+    environment:
+      - TUNNEL_URL=http://sygil:7860
+
+  tunnel-sygil-sl:
+    <<: *tunnel
+    profiles: ["sygil-sl"]
+    environment:
+      - TUNNEL_URL=http://sygil-sl:7860
+
+  tunnel-comfy:
+    <<: *tunnel
+    profiles: ["comfy"]
+    environment:
+      - TUNNEL_URL=http://comfy:7860
+
+  tunnel-comfy-cpu:
+    <<: *tunnel
+    profiles: ["comfy-cpu"]
+    environment:
+      - TUNNEL_URL=http://comfy-cpu:7860
