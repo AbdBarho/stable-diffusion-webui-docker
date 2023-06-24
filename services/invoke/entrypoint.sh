@@ -13,10 +13,10 @@ MOUNTS["/root/.cache"]=/data/.cache/
 rm -rf ${HF_HOME}/diffusers
 
 # ui specific
-MOUNTS["${ROOT}/models/codeformer"]=/data/Codeformer/
-MOUNTS["${ROOT}/models/gfpgan/GFPGANv1.4.pth"]=/data/GFPGAN/GFPGANv1.4.pth
-MOUNTS["${ROOT}/models/gfpgan/weights"]=/data/GFPGAN/
-MOUNTS["${ROOT}/models/realesrgan"]=/data/RealESRGAN/
+MOUNTS["${ROOT}/models/codeformer"]=/data/models/Codeformer/
+MOUNTS["${ROOT}/models/gfpgan/GFPGANv1.4.pth"]=/data/models/GFPGAN/GFPGANv1.4.pth
+MOUNTS["${ROOT}/models/gfpgan/weights"]=/data/models/GFPGAN/
+MOUNTS["${ROOT}/models/realesrgan"]=/data/models/RealESRGAN/
 
 MOUNTS["${ROOT}/models/ldm"]=/data/.cache/invoke/ldm/
 
