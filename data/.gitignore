@@ -1,2 +1,4 @@
-/*
-!/.gitignore
+/.cache
+/config
+/embeddings
+/models
