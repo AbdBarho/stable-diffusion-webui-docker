@@ -2,7 +2,7 @@ version: '3.9'
 
 x-base_service: &base_service
     ports:
-      - "7860:7860"
+      - "${WEBUI_PORT:-7860}:7860"
     volumes:
       - &v1 ./data:/data
       - &v2 ./output:/output
