@@ -57,6 +57,7 @@ chown -R root ~/.cache/
 chmod 766 ~/.cache/
 
 shopt -s nullglob
+# For install.py, please refer to https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Developing-extensions#installpy
 list=(./extensions/*/install.py)
 for installscript in "${list[@]}"; do
   PYTHONPATH=${ROOT} python "$installscript"
