@@ -57,9 +57,9 @@ chown -R root ~/.cache/
 chmod 766 ~/.cache/
 
 shopt -s nullglob
-list=(./extensions/*/requirements.txt)
-for req in "${list[@]}"; do
-  pip install -r "$req"
+list=(./extensions/*/install.py)
+for installscript in "${list[@]}"; do
+  PYTHONPATH=${ROOT} python "$installscript"
 done
 
 if [ -f "/data/config/auto/startup.sh" ]; then
