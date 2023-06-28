@@ -4,30 +4,18 @@ set -Eeuo pipefail
 
 # TODO: maybe just use the .gitignore file to create all of these
 mkdir -vp /data/.cache \
-  /data/StableDiffusion \
-  /data/LyCORIS \
-  /data/Codeformer \
-  /data/ModelScope \
-  /data/GFPGAN \
-  /data/ESRGAN \
-  /data/BSRGAN \
-  /data/RealESRGAN \
-  /data/SwinIR \
-  /data/LDSR \
-  /data/ScuNET \
   /data/embeddings \
-  /data/VAE \
-  /data/Deepdanbooru \
-  /data/MiDaS \
-  /data/Lora \
-  /data/ControlNet \
-  /data/openpose \
-  /data/GLIGEN \
-  /data/CLIPEncoder # this is different from the cached pre-train ViT saved in /data/.cache/clip TODO: find out how
+  /data/config/ \
+  /data/models/ \
+  /data/models/Stable-diffusion \
+  /data/models/GFPGAN \
+  /data/models/RealESRGAN \
+  /data/models/LDSR \
+  /data/models/VAE
 
 echo "Downloading, this might take a while..."
 
-aria2c -x 10 --disable-ipv6 --input-file /docker/links.txt --dir /data --continue
+aria2c -x 10 --disable-ipv6 --input-file /docker/links.txt --dir /data/models --continue
 
 echo "Checking SHAs..."
 
@@ -39,11 +27,5 @@ https://github.com/AbdBarho/stable-diffusion-webui-docker/blob/master/LICENSE
 https://github.com/CompVis/stable-diffusion/blob/main/LICENSE
 https://github.com/AUTOMATIC1111/stable-diffusion-webui/blob/master/LICENSE.txt
 https://github.com/invoke-ai/InvokeAI/blob/main/LICENSE
-https://github.com/sd-webui/stable-diffusion-webui/blob/master/LICENSE
-https://github.com/cszn/BSRGAN/blob/main/LICENSE
-https://github.com/sczhou/CodeFormer/blob/master/LICENSE
-https://github.com/TencentARC/GFPGAN/blob/master/LICENSE
-https://github.com/xinntao/Real-ESRGAN/blob/master/LICENSE
-https://github.com/xinntao/ESRGAN/blob/master/LICENSE
-https://github.com/cszn/SCUNet/blob/main/LICENSE
+And licenses of all UIs, third party libraries, and extensions.
 EOF
