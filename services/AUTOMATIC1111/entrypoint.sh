@@ -20,6 +20,8 @@ if [ ! -f /data/config/auto/styles.csv ]; then
 fi
 
 # copy models from original models folder
+mkdir -p /data/models/VAE-approx/ /data/models/karlo/
+
 rsync -a --info=NAME ${ROOT}/models/VAE-approx/ /data/models/VAE-approx/
 rsync -a --info=NAME ${ROOT}/models/karlo/ /data/models/karlo/
 
@@ -57,9 +59,10 @@ chown -R root ~/.cache/
 chmod 766 ~/.cache/
 
 shopt -s nullglob
-list=(./extensions/*/requirements.txt)
-for req in "${list[@]}"; do
-  pip install -r "$req"
+# For install.py, please refer to https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Developing-extensions#installpy
+list=(./extensions/*/install.py)
+for installscript in "${list[@]}"; do
+  PYTHONPATH=${ROOT} python "$installscript"
 done
 
 if [ -f "/data/config/auto/startup.sh" ]; then
