@@ -8,27 +8,19 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
 RUN apt-get update && apt-get install -y git && apt-get clean
 
-ENV ROOT=/stable-diffusion
-RUN --mount=type=cache,target=/root/.cache/pip \
-  git clone https://github.com/unphased/ComfyUI.git ${ROOT} && \
-  cd ${ROOT} && \
-  git checkout master && \
-  # git reset --hard 884ea653c8d6fe19b3724f45a04a0d74cd881f2f && \
-  pip install -r requirements.txt
-
 RUN --mount=type=cache,target=/root/.cache/pip  \
   --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.21-cp310-cp310-linux_x86_64.whl \
   pip install /xformers-0.0.21-cp310-cp310-linux_x86_64.whl
 
+ENV ROOT=/stable-diffusion
+RUN --mount=type=cache,target=/root/.cache/pip \
+  git clone https://github.com/comfyanonymous/ComfyUI.git ${ROOT} && \
+  cd ${ROOT} && \
+  git checkout master && \
+  git reset --hard 91ed2815d542c96fdad75edba2205140de3cbba6 && \
+  pip install -r requirements.txt
 
 WORKDIR ${ROOT}
-
-ARG BRANCH=master SHA=8607c2d42d10b0108de02528e813cc703e58813f
-RUN --mount=type=cache,target=/root/.cache/pip \
-  git fetch && \
-  git checkout ${BRANCH} && \
-  git reset --hard ${SHA} && \
-  pip install -r requirements.txt
 
 # add info
 COPY . /docker/
