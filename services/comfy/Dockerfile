@@ -22,6 +22,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 WORKDIR ${ROOT}
 
+ADD https://github.com/madebyollin/taesd/raw/main/taesd_decoder.pth \
+  ${ROOT}/models/vae_approx/taesd_decoder.pth
+ADD https://github.com/madebyollin/taesd/raw/main/taesdxl_decoder.pth \
+  ${ROOT}/models/vae_approx/taesdxl_decoder.pth
+
 # add info
 COPY . /docker/
 RUN cp /docker/extra_model_paths.yaml ${ROOT}
