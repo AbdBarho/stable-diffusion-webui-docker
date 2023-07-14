@@ -25,18 +25,13 @@ WORKDIR ${ROOT}
 
 ARG BRANCH=master SHA=8607c2d42d10b0108de02528e813cc703e58813f
 RUN --mount=type=cache,target=/root/.cache/pip \
-  ls -la models && \
-  ls -la models/vae_approx && \
   git fetch && \
   git checkout ${BRANCH} && \
-  echo cach_bust 2 && \
-  git pull && \
-  # git reset --hard ${SHA} && \
+  git reset --hard ${SHA} && \
   pip install -r requirements.txt
 
 # add info
 COPY . /docker/
-RUN ls -la /docker
 RUN cp /docker/extra_model_paths.yaml ${ROOT}
 
 ENV NVIDIA_VISIBLE_DEVICES=all
