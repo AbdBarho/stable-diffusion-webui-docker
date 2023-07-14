@@ -15,6 +15,7 @@ a111:
   gligen: models/GLIGEN
   clip: models/CLIPEncoder
   embeddings: embeddings
+  vae_approx: models/vae_approx
 
   custom_nodes: config/comfy/custom_nodes
 

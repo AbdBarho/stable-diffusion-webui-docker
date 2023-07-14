@@ -4,8 +4,9 @@ x-base_service: &base_service
     ports:
       - "${WEBUI_PORT:-7860}:7860"
     volumes:
-      - &v1 ./data:/data
+      - &v1 /vat/backups/StableDiffusion/data:/data
       - &v2 ./output:/output
+      - ./models_on_nvme:/data/models/Stable-diffusion/nvme
     stop_signal: SIGKILL
     tty: true
     deploy:
@@ -31,7 +32,8 @@ services:
     build: ./services/AUTOMATIC1111
     image: sd-auto:62
     environment:
-      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
+      # - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api --distributed-remotes testrig_ftw3:192.168.1.41:7860 velka7:192.168.1.20:7860 --distributed-skip-verify-remotes --distributed-remotes-autosave --distributed-debug
+      - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --listen
 
   auto-cpu:
     <<: *automatic
@@ -62,7 +64,7 @@ services:
     build: ./services/comfy/
     image: sd-comfy:3
     environment:
-      - CLI_ARGS=
+      - CLI_ARGS=--preview-method=taesd
 
 
   comfy-cpu:
