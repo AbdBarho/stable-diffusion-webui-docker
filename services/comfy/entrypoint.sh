@@ -28,10 +28,4 @@ if [ -f "/data/config/comfy/startup.sh" ]; then
   popd
 fi
 
-shopt -s nullglob
-list=(${ROOT}/custom_nodes/*/requirements.txt)
-for req in "${list[@]}"; do
-  pip install -r "$req"
-done
-
 exec "$@"
