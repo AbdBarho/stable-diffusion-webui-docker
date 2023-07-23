@@ -47,7 +47,7 @@ ENV PYTHONUNBUFFERED=1 PRELOAD=false HF_HOME=/root/.cache/huggingface CONFIG_DIR
 EXPOSE 7860
 
 ENTRYPOINT ["/docker/entrypoint.sh"]
-CMD invokeai --web --host 0.0.0.0 --port 7860 --root_dir ${ROOT} --config ${CONFIG_DIR}/models.yaml \
-  --outdir /output/invoke --embedding_directory /data/embeddings/ --lora_directory /data/models/Lora \
-  --no-nsfw_checker --no-safety_checker ${CLI_ARGS}
+CMD invokeai --web --host 0.0.0.0 --port 7860 --root ${ROOT} --conf_path ${CONFIG_DIR}/models.yaml \
+  --outdir /output/invoke --embedding_dir /data/embeddings/ --lora_dir /data/models/Lora --controlnet_dir /data/models/ControlNet \
+  --no-nsfw_checker --no-nsfw_checker ${CLI_ARGS}
 
