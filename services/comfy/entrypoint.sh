@@ -22,4 +22,10 @@ for to_path in "${!MOUNTS[@]}"; do
   echo Mounted $(basename "${from_path}")
 done
 
+if [ -f "/data/config/comfy/startup.sh" ]; then
+  pushd ${ROOT}
+  . /data/config/comfy/startup.sh
+  popd
+fi
+
 exec "$@"
