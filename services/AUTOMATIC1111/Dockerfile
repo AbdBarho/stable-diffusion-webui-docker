@@ -69,7 +69,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # instead, update the repo state in a later step
 
 # TODO: either remove if fixed in A1111 (unlikely) or move to the top with other apt stuff
-RUN apt-get -y install libgoogle-perftools-dev curl && apt-get clean
+RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
 ARG SHA=68f336bd994bed5442ad95bad6b6ad5564a5409a
