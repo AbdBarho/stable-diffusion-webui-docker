@@ -14,6 +14,7 @@ RUN . /clone.sh CodeFormer https://github.com/sczhou/CodeFormer.git c5b4593074ba
 RUN . /clone.sh BLIP https://github.com/salesforce/BLIP.git 48211a1594f1321b00f14c9f7a5b4813144b2fb9
 RUN . /clone.sh k-diffusion https://github.com/crowsonkb/k-diffusion.git c9fe758757e022f05ca5a53fa8fac28889e4f1cf
 RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interrogator 2486589f24165c8e3b303f84e9dbbea318df83e8
+RUN . /clone.sh generative-models https://github.com/Stability-AI/generative-models 45c443b316737a4ab6e40413d7794a7f5657c19f
 
 
 FROM alpine:3.17 as xformers
@@ -71,7 +72,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
-ARG SHA=394ffa7b0a7fff3ec484bcd084e673a8b301ccc8
+ARG SHA=68f336bd994bed5442ad95bad6b6ad5564a5409a
 RUN --mount=type=cache,target=/root/.cache/pip \
   cd stable-diffusion-webui && \
   git fetch && \
