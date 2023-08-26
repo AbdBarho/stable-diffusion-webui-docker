@@ -145,6 +145,7 @@ RUN rm -rf ${INVOKEAI_ROOT}/models/core/upscaling/realesrgan && \
   ln -s /data/models/RealESRGAN ${INVOKEAI_ROOT}/models/core/upscaling/realesrgan
 RUN rm -rf ${INVOKEAI_ROOT}/models/core/convert && \
   ln -s /data/models/invoke/ ${INVOKEAI_ROOT}/models/core/convert
+RUN ln -s /data/config/invoke/.cache ${INVOKEAI_ROOT}/models/
 
 #COPY docker/docker-entrypoint.sh ./
 RUN cp ${INVOKEAI_SRC}/docker/docker-entrypoint.sh ./
