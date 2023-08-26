@@ -45,14 +45,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         torchvision==$TORCHVISION_VERSION
 
 RUN git clone https://github.com/invoke-ai/InvokeAI.git ${INVOKEAI_SRC}
+# Define specific hash here
 
 # Install the local package.
 # Editable mode helps use the same image for development:
 # the local working copy can be bind-mounted into the image
 # at path defined by ${INVOKEAI_SRC}
-#COPY invokeai ./invokeai
-#COPY pyproject.toml ./
-#RUN cp ${INVOKEAI_SRC}/pyproject.toml ./
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     # xformers + triton fails to install on arm64
     if [ "$GPU_DRIVER" = "cuda" ] && [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
@@ -130,7 +129,7 @@ RUN python3 -c "from patchmatch import patch_match"
 RUN useradd --create-home --shell /bin/bash -u 1000 --comment "container local user" invoke
 RUN mkdir -p ${INVOKEAI_ROOT} && chown -R invoke:invoke ${INVOKEAI_ROOT}
 
-# Create autoimport directories
+# Create autoimport directories for symlinks
 RUN mkdir -p ${INVOKEAI_ROOT}/autoimport/embedding
 RUN mkdir ${INVOKEAI_ROOT}/autoimport/main
 RUN mkdir ${INVOKEAI_ROOT}/autoimport/lora
