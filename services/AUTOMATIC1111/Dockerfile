@@ -72,7 +72,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
-ARG SHA=68f336bd994bed5442ad95bad6b6ad5564a5409a
+ARG SHA=c9c8485bc1e8720aba70f029d25cba1c4abf2b5c
 RUN --mount=type=cache,target=/root/.cache/pip \
   cd stable-diffusion-webui && \
   git fetch && \
