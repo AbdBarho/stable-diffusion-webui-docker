@@ -40,11 +40,12 @@ RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip 
   pip install /cache/torch-2.0.1-cp310-cp310-linux_x86_64.whl torchvision --index-url https://download.pytorch.org/whl/cu118
 
 
+ARG STABLE_DIFFUDION_WEBUI_SHA=c9c8485bc1e8720aba70f029d25cba1c4abf2b5c
 
 RUN --mount=type=cache,target=/root/.cache/pip \
   git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
   cd stable-diffusion-webui && \
-  git reset --hard 20ae71faa8ef035c31aa3a410b707d792c8203a3 && \
+  git reset --hard ${STABLE_DIFFUDION_WEBUI_SHA} && \
   pip install -r requirements_versions.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip  \
@@ -65,18 +66,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
   git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b
 
-# Note: don't update the sha of previous versions because the install will take forever
-# instead, update the repo state in a later step
-
 # TODO: either remove if fixed in A1111 (unlikely) or move to the top with other apt stuff
 RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
-ARG SHA=c9c8485bc1e8720aba70f029d25cba1c4abf2b5c
 RUN --mount=type=cache,target=/root/.cache/pip \
   cd stable-diffusion-webui && \
   git fetch && \
-  git reset --hard ${SHA} && \
+  git reset --hard ${STABLE_DIFFUDION_WEBUI_SHA} && \
   pip install -r requirements_versions.txt
 
 COPY . /docker
