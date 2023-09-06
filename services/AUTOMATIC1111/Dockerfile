@@ -40,7 +40,7 @@ RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip 
   pip install /cache/torch-2.0.1-cp310-cp310-linux_x86_64.whl torchvision --index-url https://download.pytorch.org/whl/cu118
 
 
-ARG STABLE_DIFFUDION_WEBUI_SHA=c9c8485bc1e8720aba70f029d25cba1c4abf2b5c
+ARG STABLE_DIFFUDION_WEBUI_SHA=5ef669de080814067961f28357256e8fe27544f4 # Automatic1111 Stable Diffusion Webui v1.6.0 Aug 31, 2023
 
 RUN --mount=type=cache,target=/root/.cache/pip \
   git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
