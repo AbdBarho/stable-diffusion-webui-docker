@@ -72,7 +72,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
-ARG SHA=c9c8485bc1e8720aba70f029d25cba1c4abf2b5c
+# Freezing at current stable tag 1.6.0
+# See current tags at: https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases
+ARG SHA=5ef669de080814067961f28357256e8fe27544f4
 RUN --mount=type=cache,target=/root/.cache/pip \
   cd stable-diffusion-webui && \
   git fetch && \
