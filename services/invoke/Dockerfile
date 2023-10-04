@@ -22,11 +22,11 @@ RUN git clone https://github.com/invoke-ai/InvokeAI.git ${ROOT}
 WORKDIR ${ROOT}
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-  git reset --hard f3b2e02921927d9317255b1c3811f47bd40a2bf9 && \
+  git reset --hard dedead672f2e9f995b6b96d7ada37456dab15b55 && \
   pip install -e .
 
 
-ARG BRANCH=main SHA=f3b2e02921927d9317255b1c3811f47bd40a2bf9
+ARG BRANCH=main SHA=dedead672f2e9f995b6b96d7ada37456dab15b55
 RUN --mount=type=cache,target=/root/.cache/pip \
   git fetch && \
   git reset --hard && \
@@ -50,4 +50,3 @@ ENTRYPOINT ["/docker/entrypoint.sh"]
 CMD invokeai --web --host 0.0.0.0 --port 7860 --root_dir ${ROOT} --config ${CONFIG_DIR}/models.yaml \
   --outdir /output/invoke --embedding_directory /data/embeddings/ --lora_directory /data/models/Lora \
   --no-nsfw_checker --no-safety_checker ${CLI_ARGS}
-
