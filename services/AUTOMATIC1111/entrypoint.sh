@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -Eeuo pipefail
+RSYNC_FLAGS="${RSYNC_FLAGS:--a}"
 
 # TODO: move all mkdir -p ?
 mkdir -p /data/config/auto/scripts/
@@ -22,12 +23,12 @@ fi
 # copy models from original models folder
 mkdir -p /data/models/VAE-approx/ /data/models/karlo/
 
-rsync -a --info=NAME ${ROOT}/models/VAE-approx/ /data/models/VAE-approx/
-rsync -a --info=NAME ${ROOT}/models/karlo/ /data/models/karlo/
+rsync "$RSYNC_FLAGS" --info=NAME ${ROOT}/models/VAE-approx/ /data/models/VAE-approx/
+rsync "$RSYNC_FLAGS" --info=NAME ${ROOT}/models/karlo/ /data/models/karlo/
 
 declare -A MOUNTS
 
-MOUNTS["/root/.cache"]="/data/.cache"
+MOUNTS["${USER_HOME}/.cache"]="/data/.cache"
 MOUNTS["${ROOT}/models"]="/data/models"
 
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
@@ -55,8 +56,8 @@ done
 echo "Installing extension dependencies (if any)"
 
 # because we build our container as root:
-chown -R root ~/.cache/
-chmod 766 ~/.cache/
+chown -R $PUID:$PGID ~/.cache/
+chmod 776 ~/.cache/
 
 shopt -s nullglob
 # For install.py, please refer to https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Developing-extensions#installpy

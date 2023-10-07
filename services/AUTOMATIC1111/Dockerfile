@@ -1,5 +1,4 @@
 FROM alpine/git:2.36.2 as download
-
 COPY clone.sh /clone.sh
 
 
@@ -19,7 +18,6 @@ FROM alpine:3.17 as xformers
 RUN apk add --no-cache aria2
 RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/6.0.0/xformers-0.0.21.dev544-cp310-cp310-manylinux2014_x86_64-pytorch201.whl'
 
-
 FROM python:3.10.9-slim
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
@@ -29,8 +27,46 @@ RUN --mount=type=cache,target=/var/cache/apt \
   # we need those
   apt-get install -y fonts-dejavu-core rsync git jq moreutils aria2 \
   # extensions needs those
-  ffmpeg libglfw3-dev libgles2-mesa-dev pkg-config libcairo2 libcairo2-dev build-essential
+  ffmpeg libglfw3-dev libgles2-mesa-dev pkg-config libcairo2 libcairo2-dev build-essential \
+  # TODO: remove if fixed in A1111 (unlikely)
+  libgoogle-perftools-dev && apt-get clean
 
+ARG PUID=0
+ARG PGID=0
+ARG USER_HOME=/root
+# set build args as container environment variables for entrypoint reference
+ENV PUID=$PUID
+ENV PGID=$PGID
+ENV USER_HOME=$USER_HOME
+
+# if user home does not exist, create it
+RUN mkdir -p "$USER_HOME"
+
+# home already exists, chown it
+RUN chown -R "${PUID}:${PGID}" "$USER_HOME"
+
+# Only groupadd if we're non root
+RUN if [ "$PGID" -ne "0" ]; then \
+      echo non root group detected; \
+      groupadd \
+        --gid "$PGID" \
+        stablediffusion ;\
+    else \
+      echo "root group detected" ; \
+    fi
+
+# Only useradd if we're non root
+RUN if [ "$PUID" -ne "0" ]; then \
+      echo non root user detected; \
+      useradd \
+        --gid="$PGID" \
+        --no-user-group \
+        -M \
+        --home "$USER_HOME" \
+        stablediffusion ; \
+    else \
+      echo "root group detected" ; \
+    fi
 
 RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip \
   aria2c -x 5 --dir /cache --out torch-2.0.1-cp310-cp310-linux_x86_64.whl -c \
@@ -48,10 +84,17 @@ RUN --mount=type=cache,target=/root/.cache/pip  \
   --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.21.dev544-cp310-cp310-manylinux2014_x86_64.whl \
   pip install /xformers-0.0.21.dev544-cp310-cp310-manylinux2014_x86_64.whl
 
+# one of the ugliest hacks I ever wrote
+RUN  sed -i 's/in_app_dir = .*/in_app_dir = True/g' /usr/local/lib/python3.10/site-packages/gradio/routes.py
+
+RUN chown -R "$PUID:$PGID" /stable-diffusion-webui
+
+# drop permissions (if build targets non root)
+USER $PUID:$PGID
+
 ENV ROOT=/stable-diffusion-webui
 
-
-COPY --from=download /repositories/ ${ROOT}/repositories/
+COPY --from=download --chown=${PUID}:${PGID} /repositories/ ${ROOT}/repositories/
 RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/clip_interrogator/data/* ${ROOT}/interrogate
 RUN --mount=type=cache,target=/root/.cache/pip \
   pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt
@@ -66,8 +109,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-# TODO: either remove if fixed in A1111 (unlikely) or move to the top with other apt stuff
-RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
 ARG SHA=5ef669de080814067961f28357256e8fe27544f4
@@ -77,13 +118,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   git reset --hard ${SHA} && \
   pip install -r requirements_versions.txt
 
-COPY . /docker
+COPY --chown=$PUID:$PGID . /docker
 
 RUN \
   python3 /docker/info.py ${ROOT}/modules/ui.py && \
   mv ${ROOT}/style.css ${ROOT}/user.css && \
-  # one of the ugliest hacks I ever wrote \
-  sed -i 's/in_app_dir = .*/in_app_dir = True/g' /usr/local/lib/python3.10/site-packages/gradio/routes.py && \
   git config --global --add safe.directory '*'
 
 WORKDIR ${ROOT}
