@@ -41,13 +41,9 @@ RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip 
 RUN --mount=type=cache,target=/root/.cache/pip \
   git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
   cd stable-diffusion-webui && \
-<<<<<<< HEAD
   git switch dev && \
   git pull && \
   git fetch && \
-=======
-  git reset --hard 5ef669de080814067961f28357256e8fe27544f4 && \
->>>>>>> 6a34739135eb112667f00943c1fac98ab294716a
   pip install -r requirements_versions.txt
 
 
@@ -83,21 +79,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
-<<<<<<< HEAD
 #ARG SHA=68f336bd994bed5442ad95bad6b6ad5564a5409a
 #RUN --mount=type=cache,target=/root/.cache/pip \
 #  cd stable-diffusion-webui && \
 #  git fetch && \
 #  git reset --hard ${SHA} && \
 #  pip install -r requirements_versions.txt
-=======
-ARG SHA=5ef669de080814067961f28357256e8fe27544f4
-RUN --mount=type=cache,target=/root/.cache/pip \
-  cd stable-diffusion-webui && \
-  git fetch && \
-  git reset --hard ${SHA} && \
-  pip install -r requirements_versions.txt
->>>>>>> 6a34739135eb112667f00943c1fac98ab294716a
 
 COPY . /docker
 
