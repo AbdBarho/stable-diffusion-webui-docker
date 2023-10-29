@@ -2,18 +2,19 @@ version: '3.9'
 
 x-base_service: &base_service
     ports:
-      - "${WEBUI_PORT:-7860}:7860"
+      - "${WEBUI_PORT:-7880}:7880"
     volumes:
       - &v1 ./data:/data
       - &v2 ./output:/output
     stop_signal: SIGKILL
+    restart: always
     tty: true
     deploy:
       resources:
         reservations:
           devices:
               - driver: nvidia
-                device_ids: ['0']
+                device_ids: ["0"]
                 capabilities: [compute, utility]
 
 name: webui-docker
@@ -30,8 +31,9 @@ services:
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
     image: sd-auto:63
+    restart: always
     environment:
-      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
+      - CLI_ARGS=--allow-code --medvram --enable-insecure-extension-access --xformers --api --listen --port 7880 --ckpt models/Stable-diffusion/sd_xl_base_1.0.safetensors 
 
   auto-cpu:
     <<: *automatic

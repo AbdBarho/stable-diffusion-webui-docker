@@ -44,8 +44,14 @@ RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip 
 RUN --mount=type=cache,target=/root/.cache/pip \
   git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
   cd stable-diffusion-webui && \
-  git reset --hard 20ae71faa8ef035c31aa3a410b707d792c8203a3 && \
+  git switch dev && \
+  git pull && \
+  git fetch && \
   pip install -r requirements_versions.txt
+
+
+#  git reset --hard 20ae71faa8ef035c31aa3a410b707d792c8203a3 && \
+#  pip install -r requirements_versions.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip  \
   --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.21.dev544-cp310-cp310-manylinux2014_x86_64.whl \
@@ -61,9 +67,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
   pip install pyngrok \
-  git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
-  git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
-  git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b
+  git+https://github.com/openai/CLIP.git \
+  git+https://github.com/TencentARC/GFPGAN.git
+
+#  git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
+#  git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
+#  git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
@@ -72,12 +81,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
-ARG SHA=68f336bd994bed5442ad95bad6b6ad5564a5409a
-RUN --mount=type=cache,target=/root/.cache/pip \
-  cd stable-diffusion-webui && \
-  git fetch && \
-  git reset --hard ${SHA} && \
-  pip install -r requirements_versions.txt
+#ARG SHA=68f336bd994bed5442ad95bad6b6ad5564a5409a
+#RUN --mount=type=cache,target=/root/.cache/pip \
+#  cd stable-diffusion-webui && \
+#  git fetch && \
+#  git reset --hard ${SHA} && \
+#  pip install -r requirements_versions.txt
 
 COPY . /docker
 
@@ -91,6 +100,6 @@ RUN \
 WORKDIR ${ROOT}
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV CLI_ARGS=""
-EXPOSE 7860
+EXPOSE 7880
 ENTRYPOINT ["/docker/entrypoint.sh"]
-CMD python -u webui.py --listen --port 7860 ${CLI_ARGS}
+CMD python -u webui.py ${CLI_ARGS}
