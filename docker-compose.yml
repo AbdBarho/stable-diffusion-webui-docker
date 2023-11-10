@@ -30,7 +30,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:67
+    image: auto:latest
     restart: always
     environment:
       - CLI_ARGS=--allow-code --medvram --enable-insecure-extension-access --xformers --api --listen --port 7880 --ckpt models/Stable-diffusion/sd_xl_base_1.0.safetensors 
