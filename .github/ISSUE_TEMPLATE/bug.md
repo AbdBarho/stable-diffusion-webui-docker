@@ -19,7 +19,7 @@ assignees: ""
 
 **Which UI**
 
-auto or auto-cpu or invoke or sygil?
+auto or auto-cpu or invoke or comfy?
 
 **Hardware / Software**
 
