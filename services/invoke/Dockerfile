@@ -3,6 +3,7 @@ RUN apk add --no-cache aria2
 RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/6.0.0/xformers-0.0.21.dev544-cp310-cp310-manylinux2014_x86_64-pytorch201.whl'
 
 
+# TODO: next version is going to support pytorch/pytorch:2.1.0-cuda12.1-cudnn8-runtime
 FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_EXISTS_ACTION=w PIP_PREFER_BINARY=1
@@ -17,26 +18,19 @@ RUN --mount=type=cache,target=/var/cache/apt \
   ln -sf opencv4.pc opencv.pc
 
 
+WORKDIR /
 ENV ROOT=/InvokeAI
-RUN git clone https://github.com/invoke-ai/InvokeAI.git ${ROOT}
-WORKDIR ${ROOT}
+RUN git clone --depth 1 https://github.com/invoke-ai/InvokeAI.git ${ROOT}
 
+WORKDIR ${ROOT}
 RUN --mount=type=cache,target=/root/.cache/pip \
+  # dont fetch entire repo, it is HUGE!
+  git fetch origin dedead672f2e9f995b6b96d7ada37456dab15b55 --depth=1 && \
   git reset --hard dedead672f2e9f995b6b96d7ada37456dab15b55 && \
   pip install -e .
 
-
-ARG BRANCH=main SHA=dedead672f2e9f995b6b96d7ada37456dab15b55
 RUN --mount=type=cache,target=/root/.cache/pip \
-  git fetch && \
-  git reset --hard && \
-  git checkout ${BRANCH} && \
-  git reset --hard ${SHA} && \
-  pip install -U -e .
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.21-cp310-cp310-linux_x86_64.whl \
-  pip install -U opencv-python-headless triton /xformers-0.0.21-cp310-cp310-linux_x86_64.whl && \
+  pip install -U opencv-python-headless xformers==0.0.22 && \
   python3 -c "from patchmatch import patch_match"
 
 

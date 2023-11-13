@@ -44,7 +44,7 @@ services:
     <<: *base_service
     profiles: ["invoke"]
     build: ./services/invoke/
-    image: sd-invoke:30
+    image: sd-invoke:31
     environment:
       - PRELOAD=true
       - CLI_ARGS=--xformers
