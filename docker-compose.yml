@@ -71,3 +71,11 @@ services:
     deploy: {}
     environment:
       - CLI_ARGS=--cpu
+
+  fooocus: &fooocus
+    <<: *base_service
+    profiles: ["fooocus"]
+    build: ./services/fooocus/
+    image: sd-fooocus:3
+    environment:
+      - CLI_ARGS=
