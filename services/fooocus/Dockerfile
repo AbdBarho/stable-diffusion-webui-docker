@@ -8,12 +8,12 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
 RUN apt-get update && apt-get install -y git && apt-get clean
 
-# add some packages for some custom nodes in comfyui
+# add in required packages
 RUN apt-get install 'libglib2.0-0'  -y
-RUN apt-get update
 RUN apt-get install 'libgl1-mesa-glx' -y
 RUN apt-get install 'python-dev' -y
 
+# set this to your target branch commit
 ARG BRANCH=main SHA=8e62a72a63b30a3067d1a1bc3f8d226824bd9283
 
 ENV ROOT=/stable-diffusion
@@ -39,10 +39,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # add info
 COPY . /docker/
+RUN cp /docker/config.txt ${ROOT}
 RUN chmod u+x /docker/entrypoint.sh
 
-#ENV NVIDIA_VISIBLE_DEVICES=all
-#ENV PYTHONPATH="${PYTHONPATH}:${PWD}" CLI_ARGS=""
 EXPOSE 7860
 ENTRYPOINT ["/docker/entrypoint.sh"]
 CMD python -u entry_with_update.py --listen --port 7860 ${CLI_ARGS}
