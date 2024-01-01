@@ -48,6 +48,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
   git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b
 
+# there seems to be a memory leak (or maybe just memory not being freed fast eno8ugh) that is fixed by this version of malloc
+# maybe move this up to the dependencies list.
+RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
+ENV LD_PRELOAD=libtcmalloc.so
 
 COPY . /docker
 
