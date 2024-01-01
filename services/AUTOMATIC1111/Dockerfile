@@ -46,7 +46,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   pip install pyngrok xformers \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
-  git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b
+  git+https://github.com/mlfoundations/open_clip.git@v2.20.0
 
 # there seems to be a memory leak (or maybe just memory not being freed fast eno8ugh) that is fixed by this version of malloc
 # maybe move this up to the dependencies list.
