@@ -2,6 +2,8 @@
 
 set -Eeuo pipefail
 
+mkdir -vp /data/config/fooocus/wildcards
+
 declare -A MOUNTS
 
 MOUNTS["${ROOT}/outputs"]="/output/fooocus"
@@ -12,6 +14,7 @@ MOUNTS["${ROOT}/models/loras"]=/data/models/Lora/
 MOUNTS["${ROOT}/models/embeddings"]=/data/models/embeddings/
 MOUNTS["${ROOT}/models/vae_approx"]=/data/models/VAE/
 MOUNTS["${ROOT}/models/upscale_models"]=/data/models/upscale_models/
+MOUNTS["${ROOT}/wildcards"]=/data/config/fooocus/wildcards
 
 for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
