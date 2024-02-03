@@ -43,3 +43,9 @@ if "${PRELOAD}" == "true"; then
 fi
 
 exec "$@"
+
+# TODO: We still need to adapt our code to the new structure, it seems that our current folder structure is not
+# supported anymore by invoke, they have their own nested folder hierarchy with different models and different kinds
+# separate v1 and v2, upscalers, etc...
+# it is likely the case the we would need to have a separate folder for invoke stuff, merging it with our `data` might
+# be uselessly complicated.
