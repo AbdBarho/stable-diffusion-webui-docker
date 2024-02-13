@@ -1,0 +1,25 @@
+a111:
+  base_path: /data
+
+  checkpoints: models/Stable-diffusion
+  configs: models/Stable-diffusion
+  vae: models/VAE
+  loras: models/Lora
+  upscale_models: |
+    models/RealESRGAN
+    models/ESRGAN
+    models/SwinIR
+    models/GFPGAN
+  hypernetworks: models/hypernetworks
+  controlnet: models/ControlNet
+  gligen: models/GLIGEN
+  clip: models/CLIPEncoder
+  embeddings: embeddings
+
+  custom_nodes: config/comfy/custom_nodes
+
+  # TODO: I am unsure about these, need more testing
+  # style_models: config/comfy/style_models
+  # t2i_adapter: config/comfy/t2i_adapter
+  # clip_vision: config/comfy/clip_vision
+  # diffusers: config/comfy/diffusers

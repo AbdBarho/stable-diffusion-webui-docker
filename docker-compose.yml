@@ -2,18 +2,19 @@ version: '3.9'
 
 x-base_service: &base_service
     ports:
-      - "7860:7860"
+      - "${WEBUI_PORT:-7860}:7860"
     volumes:
       - &v1 ./data:/data
       - &v2 ./output:/output
-    stop_signal: SIGINT
+    stop_signal: SIGKILL
+    tty: true
     deploy:
       resources:
         reservations:
           devices:
               - driver: nvidia
                 device_ids: ['0']
-                capabilities: [gpu]
+                capabilities: [compute, utility]
 
 name: webui-docker
 
@@ -34,7 +35,7 @@ services:
     profiles: ["auto"]
     mem_limit: 16g
     build: ./services/AUTOMATIC1111
-    image: sd-auto:51
+    image: sd-auto:72
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api --listen
 
@@ -47,16 +48,16 @@ services:
     environment:
       - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
 
-  invoke:
+  invoke: &invoke
     <<: *base_service
     container_name: invoke
     restart: on-failure
     profiles: ["invoke"]
     build: ./services/invoke/
-    image: sd-invoke:27
+    image: sd-invoke:30
     environment:
       - PRELOAD=true
-      - CLI_ARGS=--no-nsfw_checker --no-safety_checker --xformers
+      - CLI_ARGS=--xformers
 
   sygil: &sygil
     <<: *base_service
@@ -77,14 +78,21 @@ services:
     environment:
       - USE_STREAMLIT=1
 
+  # invoke-cpu:
+  #   <<: *invoke
+  #   profiles: ["invoke-cpu"]
+  #   environment:
+  #     - PRELOAD=true
+  #     - CLI_ARGS=--always_use_cpu
+
+
   comfy: &comfy
     <<: *base_service
     profiles: ["comfy"]
     build: ./services/comfy/
-    image: sd-comfy:1
+    image: sd-comfy:6
     environment:
       - CLI_ARGS=
-
 
   comfy-cpu:
     <<: *comfy
