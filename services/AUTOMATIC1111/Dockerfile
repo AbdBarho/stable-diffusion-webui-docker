@@ -2,12 +2,10 @@ FROM alpine/git:2.36.2 as download
 
 COPY clone.sh /clone.sh
 
+RUN . /clone.sh stable-diffusion-webui-assets https://github.com/AUTOMATIC1111/stable-diffusion-webui-assets.git 6f7db241d2f8ba7457bac5ca9753331f0c266917
 
 RUN . /clone.sh stable-diffusion-stability-ai https://github.com/Stability-AI/stablediffusion.git cf1d67a6fd5ea1aa600c4df58e5b47da45f6bdbf \
   && rm -rf assets data/**/*.png data/**/*.jpg data/**/*.gif
-
-RUN . /clone.sh CodeFormer https://github.com/sczhou/CodeFormer.git c5b4593074ba6214284d6acd5f1719b6c5d739af \
-  && rm -rf assets inputs
 
 RUN . /clone.sh BLIP https://github.com/salesforce/BLIP.git 48211a1594f1321b00f14c9f7a5b4813144b2fb9
 RUN . /clone.sh k-diffusion https://github.com/crowsonkb/k-diffusion.git ab527a9a6d347f364e3d185ba6d714e22d80cb3c
@@ -31,7 +29,7 @@ WORKDIR /
 RUN --mount=type=cache,target=/root/.cache/pip \
   git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
   cd stable-diffusion-webui && \
-  git reset --hard cf2772fab0af5573da775e7437e6acdca424f26e && \
+  git reset --hard v1.8.0 && \
   pip install -r requirements_versions.txt
 
 
@@ -39,8 +37,6 @@ ENV ROOT=/stable-diffusion-webui
 
 COPY --from=download /repositories/ ${ROOT}/repositories/
 RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/clip_interrogator/data/* ${ROOT}/interrogate
-RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
   pip install pyngrok xformers==0.0.23.post1 \
