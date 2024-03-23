@@ -71,3 +71,11 @@ services:
     deploy: {}
     environment:
       - CLI_ARGS=--cpu
+
+
+  auto-m1:
+    <<: *automatic
+    profiles: ["auto-m1"]
+    deploy: {}
+    environment:
+      - CLI_ARGS=--skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate
