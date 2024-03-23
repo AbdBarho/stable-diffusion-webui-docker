@@ -2,6 +2,14 @@
 
 Run Stable Diffusion on your machine with a nice UI without any hassle!
 
+## TODO ##
+
+- [ ] Fix compose build context for non-m1
+- [ ] Link results to mounted output volume
+- [ ] Clean up Dockerfile
+- [ ] Convert `*.py` and `*.sh` file changes to `sed` commands, so whole files dont need to be stored
+    - ...or at least make them a sub-dir `./services/AUTOMATIC1111/m1_modified_files/.`
+
 ## Setup & Usage
 
 Visit the wiki for [Setup](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Setup) and [Usage](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Usage) instructions, checkout the [FAQ](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/FAQ) page if you face any problems, or create a new issue!
