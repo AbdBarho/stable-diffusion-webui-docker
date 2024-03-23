@@ -1,5 +1,7 @@
 # Stable Diffusion WebUI Docker
 
+> TODO: fix compose build context for non-m1
+
 Run Stable Diffusion on your machine with a nice UI without any hassle!
 
 ## Setup & Usage
