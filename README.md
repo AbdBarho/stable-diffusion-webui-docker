@@ -4,7 +4,7 @@ Run Stable Diffusion on your Radeon machine with a nice UI without any hassle!
 
 NOTE:
 - Only ROCm supported for now
-- Only AUTOMATIC1111 is confirmed to work for now
+- Supports AUTOMATIC1111 and ComfyUI
 - CUDA support to be worked on later
 - Requires podman-compose 1.1.0 or newer
 
@@ -33,6 +33,8 @@ $ podman generate systemd --new webui-docker_auto_1 > ~/.config/systemd/user/aut
 ```
 $ systemctl --user enable --now automatic1111.service
 ```
+
+**You can change `--profile auto` to `--profile comfy` to change AUTOMATIC1111 to ComfyUI**
 
 ## Features
 

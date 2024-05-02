@@ -59,15 +59,15 @@ services:
   #   environment:
   #     - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
   #
-  invoke: &invoke
-    <<: *base_service
-    profiles: ["invoke"]
-    build: ./services/invoke/
-    image: sd-invoke:30
-    environment:
-      - PRELOAD=true
-      # - CLI_ARGS=--xformers
-      - CLI_ARGS=
+  # invoke: &invoke
+  #   <<: *base_service
+  #   profiles: ["invoke"]
+  #   build: ./services/invoke/
+  #   image: sd-invoke:30
+  #   environment:
+  #     - PRELOAD=true
+  #     # - CLI_ARGS=--xformers
+  #     - CLI_ARGS=
 
   # invoke-cpu:
   #   <<: *invoke
