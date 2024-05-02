@@ -12,12 +12,6 @@ NOTE:
 
 > Note: In progress (TBD)
 
-**Set allow container to use devices on SELinux**
-```
-$ sudo setsebool -P container_use_devices=true
-
-```
-
 **Download necessary models**
 ```
 $ podman-compose --profile download build

@@ -6,8 +6,8 @@ x-base_service: &base_service
     volumes:
       - &v1 ./data:/data:Z
       - &v2 ./output:/output:Z
-    # security:
-      # - security-opt label=disable
+    security_opt:
+      - label=disable
     devices:
       - /dev/dri
       - /dev/kfd
