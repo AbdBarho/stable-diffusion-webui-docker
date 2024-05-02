@@ -3,14 +3,14 @@
 Run Stable Diffusion on your Radeon machine with a nice UI without any hassle!
 
 NOTE:
-- Project in progress
 - Only ROCm supported for now
+- Only AUTOMATIC1111 is confirmed to work for now
 - CUDA support to be worked on later
 - Requires podman-compose 1.1.0 or newer
 
 ## Setup & Usage
 
-> Note: In progress (TBD)
+> Note: In progress
 
 **Download necessary models**
 ```
@@ -22,6 +22,16 @@ $ podman-compose --profile download up -d
 ```
 $ podman-compose --profile auto build
 $ podman-compose --profile auto up -d
+```
+
+**Create AUTOMATIC1111 Stable Diffusion Web UI Podman service**
+```
+$ podman generate systemd --new webui-docker_auto_1 > ~/.config/systemd/user/automatic1111.service
+```
+
+**Enable and run AUTOMATIC1111 Stable Diffusion Web UI Podman service**
+```
+$ systemctl --user enable --now automatic1111.service
 ```
 
 ## Features
