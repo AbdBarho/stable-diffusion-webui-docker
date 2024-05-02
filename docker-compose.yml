@@ -3,6 +3,20 @@ version: '3.9'
 x-base_service: &base_service
     ports:
       - "${WEBUI_PORT:-7860}:7860"
+    volumes:
+      - &v1 ./data:/data:Z
+      - &v2 ./output:/output:Z
+    # security:
+      # - security-opt label=disable
+    devices:
+      - /dev/dri
+      - /dev/kfd
+    ipc:
+      - host
+    # ulimit:
+    #   - host
+    # cgroupns:
+    #   - host
     # volumes:
       # - &v1 ./data:/data
       # - &v2 ./output:/output
@@ -24,13 +38,13 @@ name: webui-docker
 services:
   download:
     build: ./services/download/
-    # profiles: ["download"]
-    # volumes:
-    #   - *v1
+    profiles: ["download"]
+    volumes:
+      - *v1
 
   auto: &automatic
     <<: *base_service
-    # profiles: ["auto"]
+    profiles: ["auto"]
     build: ./services/AUTOMATIC1111
     image: sd-auto:72
     environment:
@@ -45,14 +59,15 @@ services:
   #   environment:
   #     - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
   #
-  # invoke: &invoke
-  #   <<: *base_service
-  #   profiles: ["invoke"]
-  #   build: ./services/invoke/
-  #   image: sd-invoke:30
-  #   environment:
-  #     - PRELOAD=true
-  #     - CLI_ARGS=--xformers
+  invoke: &invoke
+    <<: *base_service
+    profiles: ["invoke"]
+    build: ./services/invoke/
+    image: sd-invoke:30
+    environment:
+      - PRELOAD=true
+      # - CLI_ARGS=--xformers
+      - CLI_ARGS=
 
   # invoke-cpu:
   #   <<: *invoke
@@ -61,13 +76,13 @@ services:
   #     - PRELOAD=true
   #     - CLI_ARGS=--always_use_cpu
 
-  # comfy: &comfy
-  #   <<: *base_service
-  #   profiles: ["comfy"]
-  #   build: ./services/comfy/
-  #   image: sd-comfy:6
-  #   environment:
-  #     - CLI_ARGS=
+  comfy: &comfy
+    <<: *base_service
+    profiles: ["comfy"]
+    build: ./services/comfy/
+    image: sd-comfy:6
+    environment:
+      - CLI_ARGS=
   #
   #
   # comfy-cpu:

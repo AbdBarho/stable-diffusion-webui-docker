@@ -1,10 +1,34 @@
-# Stable Diffusion WebUI Docker
+# Stable Diffusion WebUI Podman
 
-Run Stable Diffusion on your machine with a nice UI without any hassle!
+Run Stable Diffusion on your Radeon machine with a nice UI without any hassle!
+
+NOTE:
+- Project in progress
+- Only ROCm supported for now
+- CUDA support to be worked on later
+- Requires podman-compose 1.1.0 or newer
 
 ## Setup & Usage
 
-Visit the wiki for [Setup](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Setup) and [Usage](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Usage) instructions, checkout the [FAQ](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/FAQ) page if you face any problems, or create a new issue!
+> Note: In progress (TBD)
+
+**Set allow container to use devices on SELinux**
+```
+$ sudo setsebool -P container_use_devices=true
+
+```
+
+**Download necessary models**
+```
+$ podman-compose --profile download build
+$ podman-compose --profile download up -d
+```
+
+**Run AUTOMATIC1111 Stable Diffusion Web UI**
+```
+$ podman-compose --profile auto build
+$ podman-compose --profile auto up -d
+```
 
 ## Features
 
@@ -53,4 +77,5 @@ Special thanks to everyone behind these awesome projects, without them, none of 
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 - [CompVis/stable-diffusion](https://github.com/CompVis/stable-diffusion)
 - [Sygil-webui](https://github.com/Sygil-Dev/sygil-webui)
+- [AbdBarho/stable-diffusion-webui-docker](https://github.com/AbdBarho/stable-diffusion-webui-docker)
 - and many many more.
