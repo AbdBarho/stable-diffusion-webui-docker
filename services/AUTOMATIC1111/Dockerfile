@@ -15,35 +15,41 @@ RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interr
 RUN . /clone.sh generative-models https://github.com/Stability-AI/generative-models 45c443b316737a4ab6e40413d7794a7f5657c19f
 
 
-FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-runtime
+# FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-runtime
+FROM rocm/pytorch:rocm6.1_ubuntu22.04_py3.10_pytorch_2.1.2
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
-RUN --mount=type=cache,target=/var/cache/apt \
+RUN --mount=type=cache,target=/var/cache/apt,Z \
   apt-get update && \
   # we need those
-  apt-get install -y fonts-dejavu-core rsync git jq moreutils aria2 \
+  apt-get install -y fonts-dejavu-core rsync git jq moreutils aria2 cargo\
   # extensions needs those
   ffmpeg libglfw3-dev libgles2-mesa-dev pkg-config libcairo2 libcairo2-dev build-essential
 
 
 WORKDIR /
-RUN --mount=type=cache,target=/root/.cache/pip \
+RUN --mount=type=cache,target=/root/.cache/pip,Z \
   git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
   cd stable-diffusion-webui && \
-  git reset --hard cf2772fab0af5573da775e7437e6acdca424f26e && \
-  pip install -r requirements_versions.txt
-
+#  git reset --hard cf2772fab0af5573da775e7437e6acdca424f26e && \
+  git checkout tags/v1.9.3 && \
+  pip install --upgrade pip && \
+  pip install -r requirements.txt && \
+  pip install pytorch_lightning==1.7.7 torchmetrics==0.11.4 pydantic==1.10.11 && \
+  mkdir repositories && cd repositories && \
+  git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-assets.git
 
 ENV ROOT=/stable-diffusion-webui
 
 COPY --from=download /repositories/ ${ROOT}/repositories/
 RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/clip_interrogator/data/* ${ROOT}/interrogate
-RUN --mount=type=cache,target=/root/.cache/pip \
+RUN --mount=type=cache,target=/root/.cache/pip,Z \
   pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install pyngrok xformers==0.0.23.post1 \
+RUN --mount=type=cache,target=/root/.cache/pip,Z \
+  # pip install pyngrok xformers==0.0.23.post1 \
+  pip install pyngrok \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
   git+https://github.com/mlfoundations/open_clip.git@v2.20.0
@@ -58,11 +64,14 @@ COPY . /docker
 RUN \
   # mv ${ROOT}/style.css ${ROOT}/user.css && \
   # one of the ugliest hacks I ever wrote \
-  sed -i 's/in_app_dir = .*/in_app_dir = True/g' /opt/conda/lib/python3.10/site-packages/gradio/routes.py && \
+#   ls /opt/conda/lib/python3.12/site-packages && \
+#   which python3 && \
+#   pip show gradio && \
+  sed -i 's/in_app_dir = .*/in_app_dir = True/g' /opt/conda/envs/py_3.10/lib/python3.10/site-packages/gradio/routes.py && \
   git config --global --add safe.directory '*'
 
 WORKDIR ${ROOT}
-ENV NVIDIA_VISIBLE_DEVICES=all
+# ENV NVIDIA_VISIBLE_DEVICES=all
 ENV CLI_ARGS=""
 EXPOSE 7860
 ENTRYPOINT ["/docker/entrypoint.sh"]

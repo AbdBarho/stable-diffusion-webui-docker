@@ -1,11 +1,12 @@
-FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-runtime
+# FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-runtime
+FROM rocm/pytorch:rocm6.1_ubuntu22.04_py3.10_pytorch_2.1.2
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
 RUN apt-get update && apt-get install -y git && apt-get clean
 
 ENV ROOT=/stable-diffusion
-RUN --mount=type=cache,target=/root/.cache/pip \
+RUN --mount=type=cache,target=/root/.cache/pip,Z \
   git clone https://github.com/comfyanonymous/ComfyUI.git ${ROOT} && \
   cd ${ROOT} && \
   git checkout master && \
@@ -16,7 +17,8 @@ WORKDIR ${ROOT}
 COPY . /docker/
 RUN chmod u+x /docker/entrypoint.sh && cp /docker/extra_model_paths.yaml ${ROOT}
 
-ENV NVIDIA_VISIBLE_DEVICES=all PYTHONPATH="${PYTHONPATH}:${PWD}" CLI_ARGS=""
+# ENV NVIDIA_VISIBLE_DEVICES=all PYTHONPATH="${PYTHONPATH}:${PWD}" CLI_ARGS=""
+ENV PYTHONPATH="${PYTHONPATH}:${PWD}" CLI_ARGS=""
 EXPOSE 7860
 ENTRYPOINT ["/docker/entrypoint.sh"]
 CMD python -u main.py --listen --port 7860 ${CLI_ARGS}

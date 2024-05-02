@@ -3,13 +3,14 @@ RUN apk add --no-cache aria2
 RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/6.0.0/xformers-0.0.21.dev544-cp310-cp310-manylinux2014_x86_64-pytorch201.whl'
 
 
-FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime
+# FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime
+FROM rocm/pytorch:rocm6.1_ubuntu22.04_py3.10_pytorch_2.1.2
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_EXISTS_ACTION=w PIP_PREFER_BINARY=1
 
 # patch match:
 # https://github.com/invoke-ai/InvokeAI/blob/main/docs/installation/INSTALL_PATCHMATCH.md
-RUN --mount=type=cache,target=/var/cache/apt \
+RUN --mount=type=cache,target=/var/cache/apt,Z \
   apt-get update && \
   apt-get install make g++ git libopencv-dev -y && \
   apt-get clean && \
@@ -21,20 +22,20 @@ ENV ROOT=/InvokeAI
 RUN git clone https://github.com/invoke-ai/InvokeAI.git ${ROOT}
 WORKDIR ${ROOT}
 
-RUN --mount=type=cache,target=/root/.cache/pip \
+RUN --mount=type=cache,target=/root/.cache/pip,Z \
   git reset --hard f3b2e02921927d9317255b1c3811f47bd40a2bf9 && \
   pip install -e .
 
 
 ARG BRANCH=main SHA=f3b2e02921927d9317255b1c3811f47bd40a2bf9
-RUN --mount=type=cache,target=/root/.cache/pip \
+RUN --mount=type=cache,target=/root/.cache/pip,Z \
   git fetch && \
   git reset --hard && \
   git checkout ${BRANCH} && \
   git reset --hard ${SHA} && \
   pip install -U -e .
 
-RUN --mount=type=cache,target=/root/.cache/pip \
+RUN --mount=type=cache,target=/root/.cache/pip,Z \
   --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.21-cp310-cp310-linux_x86_64.whl \
   pip install -U opencv-python-headless triton /xformers-0.0.21-cp310-cp310-linux_x86_64.whl && \
   python3 -c "from patchmatch import patch_match"
@@ -42,7 +43,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 COPY . /docker/
 
-ENV NVIDIA_VISIBLE_DEVICES=all
+# ENV NVIDIA_VISIBLE_DEVICES=all
 ENV PYTHONUNBUFFERED=1 PRELOAD=false HF_HOME=/root/.cache/huggingface CONFIG_DIR=/data/config/invoke CLI_ARGS=""
 EXPOSE 7860
 
