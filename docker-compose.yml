@@ -58,7 +58,7 @@ services:
     <<: *base_service
     profiles: ["comfy"]
     build: ./services/comfy/
-    image: sd-comfy:6
+    image: sd-comfy:7
     environment:
       - CLI_ARGS=
 
