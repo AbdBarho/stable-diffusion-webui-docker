@@ -6,6 +6,9 @@
 # "Z" will force all files to be accessable by the current build step, fixing
 # the "file not found" issue.
 
+# WARNING: DON'T RUN THIS FOR NOW!
+# TODO: INTEGRATE THIS SCRIPT SOMEHOW FOR DOCKER COMPATIBILITY
+
 disabled_pip="/root/.cache/pip "
 enabled_pip="/root/.cache/pip,Z "
 disabled_apt="/var/cache/apt "

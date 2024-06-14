@@ -8,32 +8,10 @@ x-base_service: &base_service
       - &v2 ./output:/output:Z
     security_opt:
       - label=disable
-    devices:
-      - /dev/dri
-      - /dev/kfd
     ipc:
       - host
-    # ulimit:
-    #   - host
-    # cgroupns:
-    #   - host
-    # volumes:
-      # - &v1 ./data:/data
-      # - &v2 ./output:/output
-    # stop_signal: SIGKILL
-    # tty: true
-    # security_opt:
-    #   - label=type:nvidia_container_t
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - /dev/dri:/dev/kfd
-              # - driver: nvidia
-              #   device_ids: ['0']
-              #   capabilities: [compute, utility]
 
-name: webui-docker
+name: webui-podman
 
 services:
   download:
@@ -42,11 +20,25 @@ services:
     volumes:
       - *v1
 
-  auto: &automatic
+  auto-cuda: &automatic-cuda
     <<: *base_service
-    profiles: ["auto"]
-    build: ./services/AUTOMATIC1111
-    image: sd-auto:72
+    profiles: ["auto-cuda"]
+    build: ./services/AUTOMATIC1111-cuda
+    image: sd-auto:193
+    devices:
+      - nvidia.com/gpu=all
+    environment:
+      # - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
+      - CLI_ARGS=--allow-code --enable-insecure-extension-access --api
+
+  auto-rocm: &automatic-rocm
+    <<: *base_service
+    profiles: ["auto-rocm"]
+    build: ./services/AUTOMATIC1111-rocm
+    image: sd-auto:193
+    devices:
+      - /dev/dri
+      - /dev/kfd
     environment:
       # - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
       - CLI_ARGS=--allow-code --enable-insecure-extension-access --api
@@ -76,13 +68,27 @@ services:
   #     - PRELOAD=true
   #     - CLI_ARGS=--always_use_cpu
 
-  comfy: &comfy
+  comfy-cuda: &comfy-cuda
     <<: *base_service
-    profiles: ["comfy"]
-    build: ./services/comfy/
-    image: sd-comfy:6
+    profiles: ["comfy-cuda"]
+    build: ./services/comfy-cuda/
+    image: sd-comfy:5eb98f00927ace00b6b3d01ed9c76b113fc4ec9f
+    devices:
+      - nvidia.com/gpu=all
     environment:
       - CLI_ARGS=
+
+  comfy-rocm: &comfy-rocm
+    <<: *base_service
+    profiles: ["comfy-rocm"]
+    build: ./services/comfy-rocm/
+    image: sd-comfy:5eb98f00927ace00b6b3d01ed9c76b113fc4ec9f
+    devices:
+      - /dev/dri
+      - /dev/kfd
+    environment:
+      - CLI_ARGS=
+
   #
   #
   # comfy-cpu:

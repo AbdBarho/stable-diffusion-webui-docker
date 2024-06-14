@@ -1,16 +1,15 @@
 # Stable Diffusion WebUI Podman
 
-Run Stable Diffusion on your Radeon machine with a nice UI without any hassle!
+Run Stable Diffusion web browser accessible UI on your CUDA/ROCm machine without any hassle!
 
 NOTE:
-- Only ROCm supported for now
 - Supports AUTOMATIC1111 and ComfyUI
-- CUDA support to be worked on later
+- Supports CUDA and ROCm
+- Supports SD 1.5 and SDXL for AUTOMATIC1111 and ComfyUI
+- Supports SD 3 for ComfyUI
 - Requires podman-compose 1.1.0 or newer
 
-## Setup & Usage
-
-> Note: In progress
+## Quick Setup
 
 **Download necessary models**
 ```
@@ -18,15 +17,35 @@ $ podman-compose --profile download build
 $ podman-compose --profile download up -d
 ```
 
-**Run AUTOMATIC1111 Stable Diffusion Web UI**
+**Run AUTOMATIC1111 Stable Diffusion Web UI with CUDA support**
 ```
-$ podman-compose --profile auto build
-$ podman-compose --profile auto up -d
+$ podman-compose --profile auto-cuda build
+$ podman-compose --profile auto-cuda up -d
 ```
 
+**You can change `--profile auto-cuda` to different profile:**
+
+| Profile    | Description |
+|--------------|---------------------------------|
+| auto-cuda    | AUTOMATIC1111 with CUDA support |
+| auto-rocm    | AUTOMATIC1111 with ROCm support |
+| comfyui-cuda | ComfyUI with CUDA support       |
+| comfyui-rocm | ComfyUI with ROCm support       |
+
+## Set the container as systemd service to allow running on user login
+
 **Create AUTOMATIC1111 Stable Diffusion Web UI Podman service**
+
+Find the name of the running container
+
 ```
-$ podman generate systemd --new webui-docker_auto_1 > ~/.config/systemd/user/automatic1111.service
+$ podman ps
+```
+
+Set the container as systemd service. E.g. for container named `webui-podman_auto_1`:
+
+```
+$ podman generate systemd --new webui-podman_auto_1 > ~/.config/systemd/user/automatic1111.service
 ```
 
 **Enable and run AUTOMATIC1111 Stable Diffusion Web UI Podman service**
@@ -34,7 +53,20 @@ $ podman generate systemd --new webui-docker_auto_1 > ~/.config/systemd/user/aut
 $ systemctl --user enable --now automatic1111.service
 ```
 
-**You can change `--profile auto` to `--profile comfy` to change AUTOMATIC1111 to ComfyUI**
+## Stable Diffusion 3
+
+**Download models here:**
+[Stable Diffusion 3 on HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-3-medium)
+
+**Put SD3 models here:**
+```
+/data/models/Stable-diffusion
+```
+
+**Put SD3 text encoders here:**
+```
+/data/models/CLIPEncoder
+```
 
 ## Features
 
@@ -47,14 +79,6 @@ This repository provides multiple UIs for you to play around with stable diffusi
 | Text to image                                                                                              | Image to image                                                                                             | Extras                                                                                                     |
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | ![](https://user-images.githubusercontent.com/24505302/189541954-46afd772-d0c8-4005-874c-e2eca40c02f2.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541956-5b528de7-1b5d-479f-a1db-d3f5a53afc59.jpg) | ![](https://user-images.githubusercontent.com/24505302/189541957-cf78b352-a071-486d-8889-f26952779a61.jpg) |
-
-### [InvokeAI](https://github.com/invoke-ai/InvokeAI)
-
-[Full feature list here](https://github.com/invoke-ai/InvokeAI#features), Screenshots:
-
-| Text to image                                                                                              | Image to image                                                                                             | Extras                                                                                                     |
-| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| ![](https://user-images.githubusercontent.com/24505302/195158552-39f58cb6-cfcc-4141-9995-a626e3760752.jpg) | ![](https://user-images.githubusercontent.com/24505302/195158553-152a0ab8-c0fd-4087-b121-4823bcd8d6b5.jpg) | ![](https://user-images.githubusercontent.com/24505302/195158548-e118206e-c519-4915-85d6-4c248eb10fc0.jpg) |
 
 ### [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 

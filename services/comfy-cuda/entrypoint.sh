@@ -8,6 +8,8 @@ declare -A MOUNTS
 
 MOUNTS["/root/.cache"]="/data/.cache"
 MOUNTS["${ROOT}/input"]="/data/config/comfy/input"
+MOUNTS["${ROOT}/custom_nodes"]="/data/config/comfy/custom_nodes"
+MOUNTS["${ROOT}/my_workflows"]="/data/config/comfy/my_workflows"
 MOUNTS["${ROOT}/output"]="/output/comfy"
 
 for to_path in "${!MOUNTS[@]}"; do
@@ -21,6 +23,14 @@ for to_path in "${!MOUNTS[@]}"; do
   ln -sT "${from_path}" "${to_path}"
   echo Mounted $(basename "${from_path}")
 done
+
+if [ -z "$(ls -A /data/config/comfy/custom_nodes/ComfyUI_UltimateSDUpscale)" ]; then
+  git -C /data/config/comfy/custom_nodes clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
+fi
+
+if [ -z "$(ls -A /data/config/comfy/custom_nodes/comfyui-workspace-manager)" ]; then
+  git -C /data/config/comfy/custom_nodes clone https://github.com/11cafe/comfyui-workspace-manager.git
+fi
 
 if [ -f "/data/config/comfy/startup.sh" ]; then
   pushd ${ROOT}

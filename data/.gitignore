@@ -1,4 +1,6 @@
 /.cache
-/config
+/config/auto
+/config/comfy/custom_nodes
+/config/comfy/input
 /embeddings
 /models
