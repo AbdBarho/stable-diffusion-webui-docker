@@ -14,7 +14,6 @@ jobs:
       matrix:
         profile:
           - auto
-          - invoke
           - comfy
           - download
     runs-on: ubuntu-latest
