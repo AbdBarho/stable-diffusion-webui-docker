@@ -31,6 +31,19 @@ services:
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
 
+  auto-rocm:
+    <<: *base_service
+    profiles: ["auto-rocm"]
+    build: 
+      context: ./services/AUTOMATIC1111
+      dockerfile: Dockerfile.rocm
+    devices:
+      - "/dev/kfd"
+      - "/dev/dri"
+    deploy: {}
+    environment:
+      - CLI_ARGS=--allow-code --medvram --enable-insecure-extension-access --api
+
   auto-cpu:
     <<: *automatic
     profiles: ["auto-cpu"]
