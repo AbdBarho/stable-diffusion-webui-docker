@@ -31,6 +31,14 @@ services:
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
 
+  forge: &forge
+    <<: *base_service
+    profiles: ["forge"]
+    build: ./services/forge
+    image: sd-forge-fgcustom:72
+    environment:
+      - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --pin-shared-memory --cuda-malloc --cuda-stream
+
   auto-cpu:
     <<: *automatic
     profiles: ["auto-cpu"]
