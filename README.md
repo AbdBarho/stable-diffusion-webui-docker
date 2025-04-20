@@ -26,6 +26,12 @@ This repository provides multiple UIs for you to play around with stable diffusi
 | -------------------------------------------------------------------------------- |
 | ![](https://github.com/comfyanonymous/ComfyUI/raw/master/comfyui_screenshot.png) |
 
+### Model paths
+
+Volume is mounted from `./data` to `/data`. 
+Download models into the `/data/models` directory. 
+See [mapping configuration file](https://github.com/AbdBarho/stable-diffusion-webui-docker/blob/master/services/comfy/extra_model_paths.yaml) for details on folder names based on model type. 
+
 ## Contributing
 
 Contributions are welcome! **Create a discussion first of what the problem is and what you want to contribute (before you implement anything)**
