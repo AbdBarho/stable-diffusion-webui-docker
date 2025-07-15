@@ -26,6 +26,14 @@ This repository provides multiple UIs for you to play around with stable diffusi
 | -------------------------------------------------------------------------------- |
 | ![](https://github.com/comfyanonymous/ComfyUI/raw/master/comfyui_screenshot.png) |
 
+### [Fooocus](https://github.com/comfyanonymous/ComfyUI)
+
+[Full feature list here](https://github.com/lllyasviel/Fooocus#fooocus), Screenshot:
+
+| Simplified UI                                                                    |
+| -------------------------------------------------------------------------------- |
+| ![](https://github.com/lllyasviel/Fooocus/assets/19834515/483fb86d-c9a2-4c20-997c-46dafc124f25) |
+
 ## Contributing
 
 Contributions are welcome! **Create a discussion first of what the problem is and what you want to contribute (before you implement anything)**
