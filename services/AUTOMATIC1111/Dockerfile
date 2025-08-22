@@ -32,6 +32,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   cd stable-diffusion-webui && \
   git reset --hard v1.9.4 && \
   pip install -r requirements_versions.txt
+  RUN pip install --upgrade typing_extensions
+
 
 
 ENV ROOT=/stable-diffusion-webui
