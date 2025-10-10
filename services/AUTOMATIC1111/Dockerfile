@@ -50,6 +50,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
+
 COPY . /docker
 
 RUN \
@@ -57,6 +58,33 @@ RUN \
   # one of the ugliest hacks I ever wrote \
   sed -i 's/in_app_dir = .*/in_app_dir = True/g' /opt/conda/lib/python3.10/site-packages/gradio/routes.py && \
   git config --global --add safe.directory '*'
+
+# After the base Python/Conda setup, add:
+RUN pip install insightface
+# Fix numpy compatibility issues
+RUN pip install --no-cache-dir \
+    numpy==1.23.5 \
+    scikit-image==0.19.3 \
+    opencv-python-headless==4.8.1.78
+
+# Install system dependencies for ControlNet
+RUN apt-get update && apt-get install -y \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libgomp1 \
+    libgstreamer1.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install mediapipe for ControlNet
+RUN pip install --no-cache-dir mediapipe==0.10.9
+
+# Pre-install ControlNet (optional - if you want it built-in)
+RUN cd /stable-diffusion-webui/extensions && \
+    git clone https://github.com/Mikubill/sd-webui-controlnet.git && \
+    cd sd-webui-controlnet && \
+    pip install --no-cache-dir -r requirements.txt
 
 WORKDIR ${ROOT}
 ENV NVIDIA_VISIBLE_DEVICES=all
