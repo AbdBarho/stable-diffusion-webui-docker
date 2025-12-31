@@ -4,7 +4,7 @@ COPY clone.sh /clone.sh
 
 RUN . /clone.sh stable-diffusion-webui-assets https://github.com/AUTOMATIC1111/stable-diffusion-webui-assets.git 6f7db241d2f8ba7457bac5ca9753331f0c266917
 
-RUN . /clone.sh stable-diffusion-stability-ai https://github.com/Stability-AI/stablediffusion.git cf1d67a6fd5ea1aa600c4df58e5b47da45f6bdbf \
+RUN . /clone.sh stable-diffusion-stability-ai https://github.com/w-e-w/stablediffusion.git cf1d67a6fd5ea1aa600c4df58e5b47da45f6bdbf \
   && rm -rf assets data/**/*.png data/**/*.jpg data/**/*.gif
 
 RUN . /clone.sh BLIP https://github.com/salesforce/BLIP.git 48211a1594f1321b00f14c9f7a5b4813144b2fb9
@@ -31,7 +31,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
   cd stable-diffusion-webui && \
   git reset --hard v1.9.4 && \
-  pip install -r requirements_versions.txt
+  pip install -r requirements_versions.txt && \
+  pip install --upgrade typing-extensions
 
 
 ENV ROOT=/stable-diffusion-webui
