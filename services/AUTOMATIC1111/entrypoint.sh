@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#set -x
 set -Eeuo pipefail
 
 # TODO: move all mkdir -p ?
@@ -26,12 +26,13 @@ fi
 # copy models from original models folder
 mkdir -p /data/models/VAE-approx/ /data/models/karlo/
 
-rsync -a --info=NAME ${ROOT}/models/VAE-approx/ /data/models/VAE-approx/
-rsync -a --info=NAME ${ROOT}/models/karlo/ /data/models/karlo/
+rsync --info=NAME ${ROOT}/models/VAE-approx/ /data/models/VAE-approx/
+rsync --info=NAME ${ROOT}/models/karlo/ /data/models/karlo/
 
 declare -A MOUNTS
 
 MOUNTS["/root/.cache"]="/data/.cache"
+#MOUNTS["${USER_HOME}/.cache"]="/data/.cache"
 MOUNTS["${ROOT}/models"]="/data/models"
 
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
@@ -50,6 +51,7 @@ for to_path in "${!MOUNTS[@]}"; do
   rm -rf "${to_path}"
   if [ ! -f "$from_path" ]; then
     mkdir -vp "$from_path"
+#    mkdir -vp "$from_path" || true
   fi
   mkdir -vp "$(dirname "${to_path}")"
   ln -sT "${from_path}" "${to_path}"
@@ -58,9 +60,11 @@ done
 
 echo "Installing extension dependencies (if any)"
 
-# because we build our container as root:
-chown -R root ~/.cache/
-chmod 766 ~/.cache/
+#chown -R $PUID:$PGID ~/.cache/
+#chmod 766 ~/.cache/
+#
+#chown -R $PUID:$PGID /output
+#chmod 766 /output
 
 shopt -s nullglob
 # For install.py, please refer to https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Developing-extensions#installpy

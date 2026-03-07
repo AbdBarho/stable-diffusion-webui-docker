@@ -1,3 +1,15 @@
+I have forked this as AbdBarho hasn't been around for a while.  I'm not great with git, Linux , docker or stable diffusion but I manage to get along a bit.  Slowly.  with more commits than it takes.
+
+I am happy to look at PR's as and when.  Also happy to pass this back, as and whe, and if, they return.
+
+supports:
+- AUTOMATIC1111
+- comfy
+- fooocus
+- forge
+- reforge
+- swarmui _**(be aware comfyui backend can take some time to start, up to a minute or 2)**_
+
 # Stable Diffusion WebUI Docker
 
 Run Stable Diffusion on your machine with a nice UI without any hassle!
@@ -5,6 +17,11 @@ Run Stable Diffusion on your machine with a nice UI without any hassle!
 ## Setup & Usage
 
 Visit the wiki for [Setup](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Setup) and [Usage](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/Usage) instructions, checkout the [FAQ](https://github.com/AbdBarho/stable-diffusion-webui-docker/wiki/FAQ) page if you face any problems, or create a new issue!
+
+```
+docker compose --profile comfy up --build
+docker compose --progress=plain --profile=comfy up --build
+```
 
 ## Features
 
@@ -25,6 +42,14 @@ This repository provides multiple UIs for you to play around with stable diffusi
 | Workflow                                                                         |
 | -------------------------------------------------------------------------------- |
 | ![](https://github.com/comfyanonymous/ComfyUI/raw/master/comfyui_screenshot.png) |
+
+### [Fooocus](https://github.com/comfyanonymous/ComfyUI)
+
+[Full feature list here](https://github.com/lllyasviel/Fooocus#fooocus), Screenshot:
+
+| Simplified UI                                                                    |
+| -------------------------------------------------------------------------------- |
+| ![](https://github.com/lllyasviel/Fooocus/assets/19834515/483fb86d-c9a2-4c20-997c-46dafc124f25) |
 
 ## Contributing
 

@@ -4,3 +4,7 @@
 # VSCode specific
 *.code-workspace
 /.vscode
+.idea
+TODO.md
+*.env
+*.old

@@ -1,18 +1,33 @@
 x-base_service: &base_service
+    stop_signal: SIGKILL
+    tty: true
+    restart: unless-stopped
+    deploy:
+      resources:
+#        limits:
+#          cpus: 8
+#          memory: 48G
+        reservations:
+#          cpus: 4
+#          memory: 24G
+          devices:
+              - driver: nvidia
+                device_ids: ['0']
+                capabilities: [compute, utility, gpu]
+
+x-defaults: &defaults
+    <<: *base_service
     ports:
       - "${WEBUI_PORT:-7860}:7860"
     volumes:
       - &v1 ./data:/data
       - &v2 ./output:/output
-    stop_signal: SIGKILL
-    tty: true
-    deploy:
-      resources:
-        reservations:
-          devices:
-              - driver: nvidia
-                device_ids: ['0']
-                capabilities: [compute, utility]
+
+x-auto_service: &auto_service
+    <<: *defaults
+    container_name: auto
+    build: ./services/AUTOMATIC1111
+    image: sd-auto:latest
 
 name: webui-docker
 
@@ -23,33 +38,145 @@ services:
     volumes:
       - *v1
 
-  auto: &automatic
-    <<: *base_service
+  auto:
+    <<: *auto_service
     profiles: ["auto"]
-    build: ./services/AUTOMATIC1111
-    image: sd-auto:78
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
 
   auto-cpu:
-    <<: *automatic
+    <<: *auto_service
     profiles: ["auto-cpu"]
     deploy: {}
     environment:
       - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
 
+  auto-full:
+    <<: *auto_service
+    profiles: [ "full" ]
+    environment:
+      - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --no-half-vae --api
+
+  auto-rocm:
+    <<: *auto_service
+    profiles: ["auto-rocm"]
+    container_name: auto-rocm
+    build:
+      context: ./services/AUTOMATIC1111
+      dockerfile: ROCM.dockerfile
+    devices:
+      - "/dev/kfd"
+      - "/dev/dri"
+    deploy: {}
+    environment:
+      - CLI_ARGS=--allow-code --medvram --enable-insecure-extension-access --api
+
   comfy: &comfy
     <<: *base_service
     profiles: ["comfy"]
-    build: ./services/comfy/
-    image: sd-comfy:7
+    container_name: comfy
+    build:
+      context: ./services/comfy/
+      dockerfile: Dockerfile
+    image: sd-comfy:latest
+    restart: no
+#    command:
+#      - python main.py --preview-method auto --force-fp16
+    volumes:
+      - ./data/models:/opt/comfyui/models
+      - ./data/config/comfy/custom_nodes:/opt/comfyui/custom_nodes
+      - ./data/config/comfy/user:/opt/comfyui/user
+      - ./output/comfy:/opt/comfyui/output
+    ports:
+      - "${COMFYUI_PORT:-7861}:7861"
     environment:
+      - COMFYUI_PATH=/opt/comfyui
+      - COMFYUI_MODEL_PATH=/opt/comfyui/models
+      - USER_ID=1000
+      - GROUP_ID=1000
       - CLI_ARGS=
-
+#      - TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1
 
   comfy-cpu:
     <<: *comfy
     profiles: ["comfy-cpu"]
     deploy: {}
+    ports:
+      - "${COMFYUI_PORT:-7861}:7861"
     environment:
       - CLI_ARGS=--cpu
+
+  swarmui:
+    <<: *base_service
+    profiles: ["swarmui"]
+    container_name: swarmui
+    build: ./services/swarmui
+    image: sd-swarmui:latest
+    ports:
+      - "${SWARMUI_PORT:-7801}:7801"
+    volumes:
+      - ./data/swarmui:/SwarmUI/Data
+      - ./data/models:/SwarmUI/Models
+      - ./data/embeddings:/SwarmUI/Models/Embeddings
+# comfyui
+      - ./data/config/comfy/custom_nodes:/SwarmUI/dlbackend/ComfyUI/custom_nodes
+#      - ./data/models/configs:/SwarmUI/dlbackend/ComfyUI/user/default/ # TODO rm old
+      - ./data/config/configs:/SwarmUI/dlbackend/ComfyUI/user/default/
+# output
+      - ./output/swarmui:/SwarmUI/Output
+      - ./output/swarmui/comfy:/SwarmUI/dlbackend/ComfyUI/output
+    environment:
+      - COMFYUI_PATH=/opt/comfyui
+      - COMFYUI_MODEL_PATH=/opt/comfyui/models
+#      - USER_ID=1000
+#      - GROUP_ID=1000
+
+  reforge: &reforge
+    <<: *base_service
+    profiles: ["reforge"]
+    build: ./services/reforge
+    image: sd-reforge:latest
+    environment:
+      - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --pin-shared-memory --cuda-malloc --cuda-stream
+
+  forge: &forge
+    <<: *base_service
+    profiles: ["forge"]
+    build: ./services/forge
+    image: sd-forge:latest
+    environment:
+      - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --pin-shared-memory --cuda-malloc --cuda-stream
+
+  fooocus: &fooocus
+    <<: *base_service
+    profiles: ["fooocus"]
+    build: ./services/fooocus/
+    image: sd-fooocus:latest
+    environment:
+      - CLI_ARGS=
+
+  ai-toolkit:
+    <<: *base_service
+    profiles: [ "ai-toolkit" ]
+    container_name: ai-toolkit
+    build: ./services/ai-toolkit
+    image: sd-aitoolkit:latest
+    ports:
+      - "8675:8675"
+    volumes:
+      - ./data/.cache/huggingface/hub:/root/.cache/huggingface/hub
+#      - ./data/aitk_db.db:/app/ai-toolkit/aitk_db.db
+      - ./data/datasets:/app/ai-toolkit/datasets
+      - ./data/config/ai-toolkit:/app/ai-toolkit/config
+      - ./data/models:/app/ai-toolkit/models
+      - ./output/ai-toolkit:/app/ai-toolkit/output
+    environment:
+      - AI_TOOLKIT_AUTH=${AI_TOOLKIT_AUTH:-password}
+      - NODE_ENV=production
+      - TZ=UTC
+    secrets:
+      - my_secret
+
+secrets:
+   my_secret:
+     file: ./services/ai-toolkit/secret.env

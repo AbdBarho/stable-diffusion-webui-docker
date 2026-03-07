@@ -1,0 +1,12 @@
+{
+    "path_checkpoints": "/stable-diffusion/models/checkpoints",
+    "path_loras": "/stable-diffusion/models/loras",
+    "path_embeddings": "/stable-diffusion/models/embeddings",
+    "path_vae_approx": "/stable-diffusion/models/vae_approx",
+    "path_upscale_models": "/stable-diffusion/models/upscale_models",
+    "path_inpaint": "/stable-diffusion/models/inpaint",
+    "path_controlnet": "/stable-diffusion/models/controlnet",
+    "path_clip_vision": "/stable-diffusion/models/clip_vision",
+    "path_fooocus_expansion": "/stable-diffusion/models/prompt_expansion/fooocus_expansion",
+    "path_outputs": "/stable-diffusion/outputs"
+}

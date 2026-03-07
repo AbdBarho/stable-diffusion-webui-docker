@@ -12,12 +12,66 @@ jobs:
   build:
     strategy:
       matrix:
-        profile:
-          - auto
-          - comfy
-          - download
+        include:
+        -  image: simonmcnair/AUTOMATIC1111
+           dockerfile: services/AUTOMATIC1111/Dockerfile
+           context: services/AUTOMATIC1111/
+    
+   #     -  image: simonmcnair/AUTOMATIC1111-rocm
+   #        dockerfile: services/AUTOMATIC1111/Dockerfile.rocm
+   #        context: services/AUTOMATIC1111/
+
+        -  image: simonmcnair/comfy
+           dockerfile: services/comfy/Dockerfile
+           context: services/comfy/
+
+        -  image: simonmcnair/download
+           dockerfile: services/download/Dockerfile
+           context: services/download/
+
+        -  image: simonmcnair/fooocus
+           dockerfile: services/fooocus/Dockerfile
+           context: services/fooocus/
+
+        -  image: simonmcnair/forge
+           dockerfile: services/forge/Dockerfile
+           context: services/forge/
+
+        -  image: simonmcnair/reforge
+           dockerfile: services/reforge/Dockerfile
+           context: services/reforge/
+
     runs-on: ubuntu-latest
     name: ${{ matrix.profile }}
     steps:
-      - uses: actions/checkout@v3
-      - run: docker compose --profile ${{ matrix.profile }} build --progress plain
+     # - uses: actions/checkout@v3
+     # - run: docker compose --profile ${{ matrix.profile }} build --progress plain
+
+       -  name: Checkout
+          uses: actions/checkout@v3
+       -  name: Set up QEMU
+          uses: docker/setup-qemu-action@v1
+       -  name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v1
+       -  name: Login to DockerHub
+          uses: docker/login-action@v1 
+          with:
+             username: ${{ secrets.DOCKER_HUB_USERNAME }}
+             password: ${{ secrets.DOCKER_HUB_TOKEN }} 
+       -  name: Extract metadata (tags, labels) for Docker
+          id: meta
+          uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+          with:
+             images: ${{ matrix.image }}
+       -  name: Build and push Docker image
+          uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+          with:
+             context: ${{ matrix.context }}
+             file: ${{ matrix.dockerfile }}
+             push: true
+             #This is needed because it is called main instead of master to get the latest tag in docker
+            # tags: |
+                # set latest tag for default branch
+            #    type=raw,value=latest,enable={{is_default_branch}}
+             tags: ${{ steps.meta.outputs.tags }}
+             labels: ${{ steps.meta.outputs.labels }}

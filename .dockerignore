@@ -1,0 +1,11 @@
+.devscripts
+.github
+.vscode
+.idea
+.editorconfig
+.gitattributes
+.gitignore
+*.md
+docs
+data
+output
